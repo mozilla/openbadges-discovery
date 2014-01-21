@@ -1,0 +1,20 @@
+{
+  "name": "openbadges-discovery",
+  "description": "Mozilla Openbadges Discovery",
+  "version": "0.1.0",
+  "homepage": "https://github.com/mozilla/openbadges-discovery",
+  "authors": [
+    "Mozilla Open Badges http://openbadges.org"
+  ],
+  "license": "MPL 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3"
+  }
+}

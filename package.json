@@ -11,7 +11,8 @@
     "url": "git://github.com/mozilla/openbadges-discovery.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec test/*.test.js"
+    "test": "./node_modules/.bin/mocha -R spec test/*.test.js",
+    "postinstall": "./node_modules/.bn/bower install"
   },
   "dependencies": {
     "express": "~3.4.0",
@@ -24,7 +25,10 @@
     "streamsql": "~0.4.1",
     "mysql": "~2.0.0-rc1",
     "moonboots": "~1.2.1",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "human-model": "~2.6.0",
+    "human-view": "~1.6.0",
+    "bower": "~1.2.8"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
