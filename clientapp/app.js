@@ -5,9 +5,9 @@ var PathwayView = require('./views/pathway');
 
 module.exports = {
   launch: function () {
-    var pathway = new Pathway({
 
-    });
+    var pathway = new Pathway({});
+
     $(function () {
       var view = new PathwayView({
         model: pathway,

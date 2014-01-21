@@ -28,7 +28,8 @@
     "underscore": "~1.5.2",
     "human-model": "~2.6.0",
     "human-view": "~1.6.0",
-    "bower": "~1.2.8"
+    "bower": "~1.2.8",
+    "node-sass": "~0.8.1"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
