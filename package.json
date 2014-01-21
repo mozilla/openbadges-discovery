@@ -29,6 +29,7 @@
   "devDependencies": {
     "mocha": "~1.15.1",
     "async": "~0.2.9",
-    "should": "~2.1.1"
+    "should": "~2.1.1",
+    "precommit-hook": "~0.3.9"
   }
 }

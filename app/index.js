@@ -15,7 +15,7 @@ var staticRoot = '/static';
 app.use(function (req, res, next) {
   res.locals.static = function static (staticPath) {
     return path.join(app.mountPoint, staticRoot, staticPath);
-  }
+  };
   next();
 });
 
