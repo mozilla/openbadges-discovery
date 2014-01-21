@@ -22,7 +22,9 @@
     "config-store": "~0.2.0",
     "db-migrate": "~0.6.3",
     "streamsql": "~0.4.1",
-    "mysql": "~2.0.0-rc1"
+    "mysql": "~2.0.0-rc1",
+    "moonboots": "~1.2.1",
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

@@ -1,15 +1,11 @@
+const express = require('express');
+const clientApp = require('../clientapp');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
-const express = require('express');
 const path = require('path');
 const middleware = require('./middleware');
-const views = require('./views');
 
 var app = express();
-
-var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, './templates')), {autoescape: true});
-
-env.express(app);
 
 require('express-monkey-patch')(app);
 
@@ -30,10 +26,8 @@ app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir));
 
-app.get('/', 'home', function (req, res, next) {
-  res.type('text');
-  return res.send('       _~\n    _~ )_)_~\n    )_))_))_)\n    _!__!__!_\n    \\______t/\n  ~~~~~~~~~~~~~\n  ');
-});
+var cApp = clientApp(app);
+app.get('*', cApp.html());
 
 if (!module.parent) {
   const port = config('PORT', 3000);
