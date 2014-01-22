@@ -5,6 +5,8 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const middleware = require('./middleware');
 
+const DEV_MODE = config('DEV', false);
+
 var app = express();
 
 require('express-monkey-patch')(app);
@@ -24,7 +26,7 @@ app.use(express.bodyParser());
 app.use(middleware.session());
 app.use(middleware.csrf({ whitelist: [] }));
 
-app.use(staticRoot, express.static(staticDir));
+app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 
 var cApp = clientApp(app, {
   developmentMode: config('DEV', false)
