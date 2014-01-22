@@ -1,15 +1,13 @@
+const express = require('express');
+const clientApp = require('../clientapp');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
-const express = require('express');
 const path = require('path');
 const middleware = require('./middleware');
-const views = require('./views');
+
+const DEV_MODE = config('DEV', false);
 
 var app = express();
-
-var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(__dirname, './templates')), {autoescape: true});
-
-env.express(app);
 
 require('express-monkey-patch')(app);
 
@@ -19,7 +17,7 @@ var staticRoot = '/static';
 app.use(function (req, res, next) {
   res.locals.static = function static (staticPath) {
     return path.join(app.mountPoint, staticRoot, staticPath);
-  }
+  };
   next();
 });
 
@@ -28,12 +26,12 @@ app.use(express.bodyParser());
 app.use(middleware.session());
 app.use(middleware.csrf({ whitelist: [] }));
 
-app.use(staticRoot, express.static(staticDir));
+app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 
-app.get('/', 'home', function (req, res, next) {
-  res.type('text');
-  return res.send('       _~\n    _~ )_)_~\n    )_))_))_)\n    _!__!__!_\n    \\______t/\n  ~~~~~~~~~~~~~\n  ');
+var cApp = clientApp(app, {
+  developmentMode: config('DEV', false)
 });
+app.get('*', cApp.html());
 
 if (!module.parent) {
   const port = config('PORT', 3000);

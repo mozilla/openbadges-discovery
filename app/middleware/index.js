@@ -26,10 +26,11 @@ exports.redirect = function (target, params, status) {
   }
 
   return function (req, res, next) {
+    var url;
     try {
-      var url = res.locals.url(target, params);
+      url = res.locals.url(target, params);
     } catch (e) {
-      var url = target;
+      url = target;
     }
 
     if (params._qsa && req.query) {
@@ -45,5 +46,5 @@ exports.redirect = function (target, params, status) {
     }
 
     return res.redirect(status || 302, url);
-  }
+  };
 };
