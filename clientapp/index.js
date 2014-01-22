@@ -11,7 +11,7 @@ module.exports = function (app, config) {
 
   var opts = _.extend({
     main: path.join(__dirname, 'app.js'),
-    developmentMode: true,
+    developmentMode: false,
     libraries: [
       path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js')
     ],
@@ -19,13 +19,6 @@ module.exports = function (app, config) {
       path.join(__dirname, 'build/normalize.css'),
       path.join(__dirname, 'build/styles.css')
     ],
-    beforeBuild: function () {
-      console.log("Precompiling templates...");
-      var templates = nunjucks.precompile(path.join(__dirname, '/templates'), {
-        include: [/.*\.html/]
-      });
-      fs.writeFileSync(path.join(__dirname, 'build/precompiled.js'), templates);
-    },
     beforeBuildCSS: function () {
       console.log("Compiling SCSS...");
       /* We assume each stylesheet listed above gets built from a similarly named
@@ -37,8 +30,17 @@ module.exports = function (app, config) {
         }));
       });
     },
+    beforeBuildJS: function () {
+      console.log("Precompiling templates...");
+      var templates = nunjucks.precompile(path.join(__dirname, '/templates'), {
+        include: [/.*\.html/]
+      });
+      fs.writeFileSync(path.join(__dirname, 'build/precompiled.js'), templates);
+    },
     server: app
   }, config);
+
+  console.log("Development mode:", !!opts.developmentMode);
 
   return new Moonboots(opts);
 };

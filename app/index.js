@@ -26,7 +26,9 @@ app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir));
 
-var cApp = clientApp(app);
+var cApp = clientApp(app, {
+  developmentMode: config('DEV', false)
+});
 app.get('*', cApp.html());
 
 if (!module.parent) {
