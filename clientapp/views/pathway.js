@@ -6,6 +6,8 @@ module.exports = HumanView.extend({
   events: {
     'dragstart .columns': 'drag',
     'dragover .columns': 'over',
+    'dragenter .columns': 'enter',
+    'dragleave .columns': 'leave',
     'drop .columns': 'drop'
   },
   render: function () {
@@ -18,8 +20,20 @@ module.exports = HumanView.extend({
     e.originalEvent.dataTransfer.setData('text/plain', start);
   },
   over: function (e) {
-    e.preventDefault();
-    return false;
+    e.originalEvent.dataTransfer.effectAllowed = 'move';
+    e.originalEvent.dataTransfer.dropEffect = 'move';
+    if (!$(e.currentTarget).find('.badge').length) {
+      e.preventDefault();
+      return false;
+    }
+  },
+  enter: function (e) {
+    if (!$(e.currentTarget).find('.badge').length) {
+      $(e.currentTarget).addClass('drop');
+    }
+  },
+  leave: function (e) {
+    $(e.currentTarget).removeClass('drop');
   },
   drop: function (e) {
     var end = $(e.currentTarget).data('cell-coords');
