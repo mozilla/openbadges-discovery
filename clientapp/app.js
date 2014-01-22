@@ -6,7 +6,34 @@ var PathwayView = require('./views/pathway');
 module.exports = {
   launch: function () {
 
-    var pathway = new Pathway({});
+    var pathway = new Pathway({
+      rows: [
+        {
+          cells: [
+            {badge: false},
+            {badge: true},
+            {badge: true},
+            {badge: false}
+          ]
+        },
+        {
+          cells: [
+            {badge: true},
+            {badge: false},
+            {badge: false},
+            {badge: false}
+          ]
+        },
+        {
+          cells: [
+            {badge: false},
+            {badge: false},
+            {badge: true},
+            {badge: false}
+          ]
+        }
+      ]
+    });
 
     $(function () {
       var view = new PathwayView({
