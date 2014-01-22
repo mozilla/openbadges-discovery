@@ -29,7 +29,7 @@ For example, ```node app --cookieSecret=macadamianuts``` or adding a `config.jso
 ```json
 {
   "cookie": {
-    "secret": macadamianuts
+    "secret": "macadamianuts"
   }
 }
 ```
@@ -38,9 +38,17 @@ are equivalent to using an environment parameter as shown in the quick start.
 
 See [js-config-store](https://github.com/andrewhayward/js-config-store#config-store) for more information.
 
-## Development Mode
+## Developers
+
+### Precommit Hooks
+
+At the moment this project is using [precommit-hook](https://github.com/nlf/precommit-hook) to run `jshint` and tests
+before commits. Feel free to propose changes to the jshint configuration; it is by no means final.
+
+### Development Mode
 
 Development mode can be enabled to rebuild CSS, recompile templates and rebuild the clientside JS, unminified, on each
 request. 
 
 This should **NOT** be turned on for production.
+
