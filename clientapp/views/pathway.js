@@ -17,14 +17,14 @@ module.exports = HumanView.extend({
   },
   drag: function (e) {
     var start = $(e.currentTarget).data('cell-coords');
-    e.originalEvent.dataTransfer.setData('text/plain', start);
+    e.originalEvent.dataTransfer.setData('Text', start);
   },
   over: function (e) {
     e.originalEvent.dataTransfer.effectAllowed = 'move';
     e.originalEvent.dataTransfer.dropEffect = 'move';
     if (!$(e.currentTarget).find('.badge').length) {
       e.preventDefault();
-      return false;
+      e.stopPropagation();
     }
   },
   enter: function (e) {
@@ -37,8 +37,9 @@ module.exports = HumanView.extend({
   },
   drop: function (e) {
     var end = $(e.currentTarget).data('cell-coords');
-    var start = e.originalEvent.dataTransfer.getData('text/plain');
+    var start = e.originalEvent.dataTransfer.getData('Text');
     this.model.move(start, end);
     e.preventDefault();
+    e.stopPropagation();
   }
 });
