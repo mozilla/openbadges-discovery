@@ -10,7 +10,8 @@ module.exports = HumanView.extend({
   },
   render: function () {
     this.renderAndBind({pathway: this.model});
-    this.model.on('move', this.render, this);
+    this.model.once('move', this.render, this);
+    return this;
   },
   drag: function (e) {
     var start = $(e.currentTarget).data('cell-coords');

@@ -37,10 +37,9 @@ module.exports = {
 
     $(function () {
       var view = new PathwayView({
-        model: pathway,
-        el: $(document.body)
+        model: pathway
       });
-      view.render();
+      $('body').append(view.render().el);
     });
   }
 };
