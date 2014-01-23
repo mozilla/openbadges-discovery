@@ -32,7 +32,12 @@ app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000})
 var cApp = clientApp(app, {
   developmentMode: config('DEV', false)
 });
-app.get('*', cApp.html());
+var clientConfig = middleware.clientConfig(function (req, res) {
+  return {
+    csrf: req.session._csrf
+  };
+});
+app.get('*', clientConfig, cApp.html());
 
 if (!module.parent) {
   const port = config('PORT', 3000);

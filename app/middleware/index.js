@@ -48,3 +48,13 @@ exports.redirect = function (target, params, status) {
     return res.redirect(status || 302, url);
   };
 };
+
+exports.clientConfig = function (config) {
+  return function clientConfigMiddleware(req, res, next) {
+    if (typeof config === 'function') {
+      config = config(req, res);
+    }
+    res.cookie('config', JSON.stringify(config));
+    next();
+  };
+};

@@ -1,10 +1,14 @@
-/* jshint browser: true */
-
+var config = require('clientconfig');
 var Pathway = require('./models/pathway');
 var PathwayView = require('./views/pathway');
 
 module.exports = {
   launch: function () {
+
+    $.ajaxPrefilter(function (options, originalOptions, xhr) {
+      options.headers = options.headers || {};
+      options.headers['x-csrf-token'] = config.csrf;
+    });
 
     var pathway = new Pathway({
       rows: [
