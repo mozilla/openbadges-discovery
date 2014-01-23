@@ -3,6 +3,7 @@ const clientApp = require('../clientapp');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const path = require('path');
+const http = require('http');
 const middleware = require('./middleware');
 
 const DEV_MODE = config('DEV', false);
