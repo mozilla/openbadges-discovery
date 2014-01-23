@@ -31,7 +31,8 @@
     "bower": "~1.2.8",
     "node-sass": "~0.8.1",
     "express-persona": "~0.1.1",
-    "clientconfig": "0.0.4"
+    "clientconfig": "0.0.4",
+    "backbone": "~1.1.0"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

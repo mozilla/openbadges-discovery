@@ -1,23 +1,26 @@
 var config = require('clientconfig');
-var persona = require('persona-observer');
+var AppState = require('./models/app-state');
 var Pathway = require('./models/pathway');
 var PathwayView = require('./views/pathway');
 
 module.exports = {
   launch: function () {
 
+    console.log("Initial config:", config);
+
     $.ajaxPrefilter(function (options, originalOptions, xhr) {
       options.headers = options.headers || {};
       options.headers['x-csrf-token'] = config.csrf;
     });
 
-    persona({
-      onloginSuccess: function () {
-        console.log('onloginSuccess');
-      },
-      onlogout: function () {
-        console.log('onlogout');
-      }
+    var self = window.app = this;
+    window.me = new AppState({
+      csrf: config.csrf,
+      loggedInUser: config.loggedInUser
+    });
+    me.startPersona();
+    me.on('all', function () {
+      console.log('App state', arguments) ;
     });
 
     var pathway = new Pathway({

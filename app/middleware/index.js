@@ -51,10 +51,8 @@ exports.redirect = function (target, params, status) {
 
 exports.clientConfig = function (config) {
   return function clientConfigMiddleware(req, res, next) {
-    if (typeof config === 'function') {
-      config = config(req, res);
-    }
-    res.cookie('config', JSON.stringify(config));
+    var clientConfig = (typeof config === 'function') ? config(req, res) : config;
+    res.cookie('config', JSON.stringify(clientConfig));
     next();
   };
 };

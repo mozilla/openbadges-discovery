@@ -41,7 +41,8 @@ var cApp = clientApp(app, {
 });
 var clientConfig = middleware.clientConfig(function (req, res) {
   return {
-    csrf: req.session._csrf
+    csrf: req.session._csrf,
+    loggedInUser: req.session.email
   };
 });
 app.get('*', clientConfig, cApp.html());
