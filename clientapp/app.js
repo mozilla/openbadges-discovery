@@ -19,8 +19,8 @@ module.exports = {
       loggedInUser: config.loggedInUser
     });
     me.startPersona();
-    me.on('all', function () {
-      console.log('App state', arguments) ;
+    me.on('login:failure', function (reason) {
+      alert('Persona error - ' + reason);
     });
 
     var pathway = new Pathway({
