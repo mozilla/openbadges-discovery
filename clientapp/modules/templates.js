@@ -1,5 +1,3 @@
-/* global window */
-
 var nunjucks = require('nunjucks');
 var templates = require('../build/precompiled.js');
 var path = require('path');
