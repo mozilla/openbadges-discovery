@@ -1,3 +1,5 @@
+/* jshint browser:false, node:true, esnext:true */
+
 var Moonboots = require('moonboots');
 var _ = require('underscore');
 var nunjucks = require('nunjucks');
