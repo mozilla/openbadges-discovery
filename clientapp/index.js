@@ -1,3 +1,5 @@
+/* jshint browser:false, node:true, esnext:true */
+
 var Moonboots = require('moonboots');
 var _ = require('underscore');
 var nunjucks = require('nunjucks');
@@ -11,9 +13,15 @@ module.exports = function (app, config) {
 
   var opts = _.extend({
     main: path.join(__dirname, 'app.js'),
+    modulesDir: path.join(__dirname, './modules'),
     developmentMode: false,
+    templateFile: path.join(__dirname, './templates/app.html'),
     libraries: [
+      path.join(__dirname, '../bower_components/foundation/js/vendor/modernizr.js'),
       path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js'),
+      path.join(__dirname, '../bower_components/foundation/js/vendor/fastclick.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.topbar.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.core.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.widget.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.mouse.js'),

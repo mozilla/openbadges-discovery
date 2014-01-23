@@ -29,7 +29,10 @@
     "human-model": "~2.6.0",
     "human-view": "~1.6.0",
     "bower": "~1.2.8",
-    "node-sass": "~0.8.1"
+    "node-sass": "~0.8.1",
+    "express-persona": "~0.1.1",
+    "clientconfig": "0.0.4",
+    "backbone": "~1.1.0"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
