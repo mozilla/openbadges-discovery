@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pathways</title>
+  <link href="#{cssFileName}" rel="stylesheet" type="text/css">
+  <!-- Include persona, use include.orig.js for unminified if necessary -->
+  <script src="https://login.persona.org/include.js"></script>
+  <script src="#{jsFileName}"></script>
+</head>
+<body>
+  <button onclick="navigator.id.request(); return false;">Log in</button>
+  <button onclick="navigator.id.logout(); return false;">Log out</button>
+</body>

@@ -11,7 +11,9 @@ module.exports = function (app, config) {
 
   var opts = _.extend({
     main: path.join(__dirname, 'app.js'),
+    modulesDir: path.join(__dirname, './modules'),
     developmentMode: false,
+    templateFile: path.join(__dirname, './templates/app.html'),
     libraries: [
       path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.core.js'),

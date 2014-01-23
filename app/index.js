@@ -2,11 +2,14 @@ const express = require('express');
 const clientApp = require('../clientapp');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
+const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
 
 const DEV_MODE = config('DEV', false);
+const PORT = config('PORT', 3000);
+const PERSONA_AUDIENCE = config('URL', 'http://localhost:' + PORT);
 
 var app = express();
 
@@ -29,6 +32,10 @@ app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 
+persona(app, {
+  audience: PERSONA_AUDIENCE
+});
+
 var cApp = clientApp(app, {
   developmentMode: config('DEV', false)
 });
@@ -40,14 +47,13 @@ var clientConfig = middleware.clientConfig(function (req, res) {
 app.get('*', clientConfig, cApp.html());
 
 if (!module.parent) {
-  const port = config('PORT', 3000);
-
-  app.listen(port, function(err) {
+  app.listen(PORT, function(err) {
     if (err) {
       throw err;
     }
 
-    console.log('Listening on port ' + port + '.');
+    console.log('Persona audience is ' + PERSONA_AUDIENCE + '.');
+    console.log('Listening on port ' + PORT + '.');
   });
 } else {
   module.exports = http.createServer(app);

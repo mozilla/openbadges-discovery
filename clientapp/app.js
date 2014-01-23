@@ -1,4 +1,5 @@
 var config = require('clientconfig');
+var persona = require('persona-observer');
 var Pathway = require('./models/pathway');
 var PathwayView = require('./views/pathway');
 
@@ -8,6 +9,15 @@ module.exports = {
     $.ajaxPrefilter(function (options, originalOptions, xhr) {
       options.headers = options.headers || {};
       options.headers['x-csrf-token'] = config.csrf;
+    });
+
+    persona({
+      onloginSuccess: function () {
+        console.log('onloginSuccess');
+      },
+      onlogout: function () {
+        console.log('onlogout');
+      }
     });
 
     var pathway = new Pathway({
