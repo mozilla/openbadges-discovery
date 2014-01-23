@@ -4,18 +4,18 @@ var templates = require('../templates');
 module.exports = HumanView.extend({
   template: templates.pathway,
   events: {
-    'dragstart .columns': 'start',
-    'drop .columns': 'drop'
+    'dragstart .pathway-cell': 'start',
+    'drop .pathway-cell': 'drop'
   },
   render: function () {
     this.renderAndBind({pathway: this.model});
-    this.$el.find('.badge').draggable({
+    this.$el.find('.pathway-badge').draggable({
       helper: "clone",
       revert: "invalid"
     });
-    this.$el.find('.columns').droppable({
+    this.$el.find('.pathway-cell').droppable({
       accept: function () {
-        return !$(this).find('.badge').length;
+        return !$(this).find('.pathway-badge').length;
       },
       hoverClass: 'drop'
     });

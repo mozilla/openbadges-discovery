@@ -1,12 +1,12 @@
 <section class="pathway">
   {% for row in pathway.rows %}
   {% set rowIndex = loop.index0 %}
-  <div class="row">
+  <div class="row pathway-row">
     {% for cell in row.cells %} 
     {% set cellIndex = loop.index0 %}
-    <div class="small-3 columns" data-cell-coords="{{rowIndex}},{{cellIndex}}">
+    <div class="small-3 columns pathway-cell" data-cell-coords="{{rowIndex}},{{cellIndex}}">
       {% if cell.badge %}
-      <div class="badge">
+      <div class="pathway-badge">
         <img src="/static/badge.png" draggable="false"/>
       </div>
       {% endif %}
