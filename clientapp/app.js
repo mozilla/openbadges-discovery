@@ -1,6 +1,7 @@
 var config = require('clientconfig');
 var AppState = require('./models/app-state');
 var Pathway = require('./models/pathway');
+var Layout = require('./views/layout');
 var PathwayView = require('./views/pathway');
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
     });
 
     var self = window.app = this;
-    window.me = new AppState({
+    var me = window.me = new AppState({
       csrf: config.csrf,
       loggedInUser: config.loggedInUser
     });
@@ -60,11 +61,18 @@ module.exports = {
       ]
     });
 
-    $(function () {
-      var view = new PathwayView({
-        model: pathway
+    me.on('ready', function () {
+      var layout = new Layout({
+        model: me
       });
-      $('body').append(view.render().el);
+      layout.render();
+      var view = new PathwayView({
+        model: pathway,
+        el: $('#pages', layout.$el)
+      });
+      view.render();
+      $('body').append(layout.el);
+      $(document).foundation();
     });
   }
 };

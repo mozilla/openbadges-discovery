@@ -17,7 +17,11 @@ module.exports = function (app, config) {
     developmentMode: false,
     templateFile: path.join(__dirname, './templates/app.html'),
     libraries: [
+      path.join(__dirname, '../bower_components/foundation/js/vendor/modernizr.js'),
       path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js'),
+      path.join(__dirname, '../bower_components/foundation/js/vendor/fastclick.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.topbar.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.core.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.widget.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.mouse.js'),

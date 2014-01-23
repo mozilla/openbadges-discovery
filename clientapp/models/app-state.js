@@ -6,6 +6,14 @@ module.exports = HumanModel.define({
     personaReady: ['boolean', true, false],
     loggedInUser: ['string', false, undefined]
   },
+  derived: {
+    username: {
+      deps: ['loggedInUser'],
+      fn: function () {
+        return this.loggedInUser || 'stranger!';
+      }
+    }
+  },
   startPersona: function () {
     var self = this;
     navigator.id.watch({
