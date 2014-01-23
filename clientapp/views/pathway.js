@@ -4,42 +4,32 @@ var templates = require('../templates');
 module.exports = HumanView.extend({
   template: templates.pathway,
   events: {
-    'dragstart .columns': 'drag',
-    'dragover .columns': 'over',
-    'dragenter .columns': 'enter',
-    'dragleave .columns': 'leave',
-    'drop .columns': 'drop'
+    'dragstart .pathway-cell': 'start',
+    'drop .pathway-cell': 'drop'
   },
   render: function () {
     this.renderAndBind({pathway: this.model});
+    this.$el.find('.pathway-badge').draggable({
+      helper: "clone",
+      revert: "invalid"
+    });
+    this.$el.find('.pathway-cell').droppable({
+      accept: function () {
+        return !$(this).find('.pathway-badge').length;
+      },
+      hoverClass: 'drop'
+    });
     this.model.once('move', this.render, this);
     return this;
   },
-  drag: function (e) {
+  start: function (e, ui) {
     var start = $(e.currentTarget).data('cell-coords');
-    e.originalEvent.dataTransfer.setData('Text', start);
+    ui.helper.start = start;
   },
-  over: function (e) {
-    e.originalEvent.dataTransfer.effectAllowed = 'move';
-    e.originalEvent.dataTransfer.dropEffect = 'move';
-    if (!$(e.currentTarget).find('.badge').length) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  },
-  enter: function (e) {
-    if (!$(e.currentTarget).find('.badge').length) {
-      $(e.currentTarget).addClass('drop');
-    }
-  },
-  leave: function (e) {
-    $(e.currentTarget).removeClass('drop');
-  },
-  drop: function (e) {
-    var end = $(e.currentTarget).data('cell-coords');
-    var start = e.originalEvent.dataTransfer.getData('Text');
-    this.model.move(start, end);
-    e.preventDefault();
-    e.stopPropagation();
+  drop: function (e, ui) {
+    var start = ui.helper.start;
+    var stop = $(e.currentTarget).data('cell-coords');
+    var that = this;
+    setTimeout(function () { that.model.move(start, stop); }, 0);
   }
 });

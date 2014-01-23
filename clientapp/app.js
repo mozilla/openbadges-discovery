@@ -31,6 +31,14 @@ module.exports = {
             {badge: true},
             {badge: false}
           ]
+        },
+        {
+          cells: [
+            {badge: false},
+            {badge: false},
+            {badge: false},
+            {badge: false}
+          ]
         }
       ]
     });

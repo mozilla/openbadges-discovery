@@ -13,7 +13,13 @@ module.exports = function (app, config) {
     main: path.join(__dirname, 'app.js'),
     developmentMode: false,
     libraries: [
-      path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js')
+      path.join(__dirname, '../bower_components/foundation/js/vendor/jquery.js'),
+      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.core.js'),
+      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.widget.js'),
+      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.mouse.js'),
+      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.draggable.js'),
+      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.droppable.js'),
+      path.join(__dirname, '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js')
     ],
     stylesheets: [
       path.join(__dirname, 'build/normalize.css'),
