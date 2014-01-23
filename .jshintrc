@@ -6,7 +6,6 @@
   "evil": true,
   "white": false,
   "undef": true,
-  "node": true,
   "predef": [
     "$",
     "FormBot",
