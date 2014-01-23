@@ -1,5 +1,6 @@
 const express = require('express');
 const clientApp = require('../clientapp');
+const api = require('./api');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
@@ -35,6 +36,8 @@ app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000})
 persona(app, {
   audience: PERSONA_AUDIENCE
 });
+
+api(app);
 
 var cApp = clientApp(app, {
   developmentMode: config('DEV', false)

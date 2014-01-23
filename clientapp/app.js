@@ -24,42 +24,8 @@ module.exports = {
       alert('Persona error - ' + reason);
     });
 
-    var pathway = new Pathway({
-      rows: [
-        {
-          cells: [
-            {badge: false},
-            {badge: true},
-            {badge: true},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: true},
-            {badge: false},
-            {badge: false},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: false},
-            {badge: false},
-            {badge: true},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: false},
-            {badge: false},
-            {badge: false},
-            {badge: false}
-          ]
-        }
-      ]
-    });
+    var pathway = new Pathway();
+    pathway.fetch();
 
     me.on('ready', function () {
       var layout = new Layout({
