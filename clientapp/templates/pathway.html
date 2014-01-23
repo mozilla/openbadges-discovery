@@ -6,8 +6,8 @@
     {% set cellIndex = loop.index0 %}
     <div class="small-3 columns" data-cell-coords="{{rowIndex}},{{cellIndex}}">
       {% if cell.badge %}
-      <div class="badge" draggable="true">
-        <img src="/static/badge.png"/>
+      <div class="badge">
+        <img src="/static/badge.png" draggable="false"/>
       </div>
       {% endif %}
     </div>
