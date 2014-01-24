@@ -1,8 +1,8 @@
 var config = require('clientconfig');
+var Backbone = require('backbone');
+var Router = require('./router');
 var AppState = require('./models/app-state');
-var Pathway = require('./models/pathway');
 var Layout = require('./views/layout');
-var PathwayView = require('./views/pathway');
 
 module.exports = {
   launch: function () {
@@ -15,6 +15,7 @@ module.exports = {
     });
 
     var self = window.app = this;
+
     var me = window.me = new AppState({
       csrf: config.csrf,
       loggedInUser: config.loggedInUser
@@ -24,22 +25,25 @@ module.exports = {
       alert('Persona error - ' + reason);
     });
 
-    var pathway = new Pathway();
-    pathway.fetch();
+    this.router = new Router({me: me});
+    this.history = Backbone.history;
 
     me.on('ready', function () {
-      var layout = new Layout({
+      var layout = app.layout = new Layout({
         model: me
       });
-      layout.render();
-      var view = new PathwayView({
-        model: pathway,
-        el: $('#pages', layout.$el)
-      });
-      view.render();
-      $('body').append(layout.el);
+      $('body').append(layout.render().el);
       $(document).foundation();
-    });
+      this.history.start({pushState: true, root: '/'});
+    }, this);
+  },
+
+  renderPage: function (view) {
+    if (app.currentPage)
+      app.currentPage.remove();
+
+    app.currentPage = view;
+    app.layout.$container.append(view.render().el);
   }
 };
 

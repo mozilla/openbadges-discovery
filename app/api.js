@@ -1,3 +1,7 @@
+/* TODO: consider writing this as a sub-app mounted at /api instead of
+         slapping routes on an existing app
+ */
+
 var pathway = {
   rows: [
     {
@@ -36,8 +40,8 @@ var pathway = {
 };
 
 module.exports = function (app) {
-  app.get('/pathway', function (req, res, next) {
-    res.json(pathway);
+  app.get('/api/pathway', function (req, res, next) {
+    return res.json(pathway);
   });
   return app;
 };

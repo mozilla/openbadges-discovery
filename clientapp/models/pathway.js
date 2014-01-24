@@ -1,7 +1,7 @@
 var HumanModel = require('human-model');
 
 module.exports = HumanModel.define({
-  url: '/pathway',
+  url: '/api/pathway',
   session: {
     rows: ['array']
   },

@@ -12,6 +12,7 @@ module.exports = HumanView.extend({
   },
   render: function () {
     this.renderAndBind();
+    this.$container = $('#pages', this.$el);
     return this;
   },
   login: function (e) {

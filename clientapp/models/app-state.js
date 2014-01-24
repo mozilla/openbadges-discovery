@@ -12,6 +12,12 @@ module.exports = HumanModel.define({
       fn: function () {
         return this.loggedInUser || 'stranger!';
       }
+    },
+    loggedIn: {
+      deps: ['loggedInUser'],
+      fn: function () {
+        return !!this.loggedInUser;
+      }
     }
   },
   startPersona: function () {
