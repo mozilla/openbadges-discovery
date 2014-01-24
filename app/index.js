@@ -33,11 +33,11 @@ app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 
+app.use('/api', api);
+
 persona(app, {
   audience: PERSONA_AUDIENCE
 });
-
-api(app);
 
 var cApp = clientApp(app, {
   developmentMode: config('DEV', false)

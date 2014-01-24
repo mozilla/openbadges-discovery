@@ -1,6 +1,5 @@
-/* TODO: consider writing this as a sub-app mounted at /api instead of
-         slapping routes on an existing app
- */
+const express = require('express');
+const http = require('http');
 
 var pathway = {
   rows: [
@@ -39,9 +38,25 @@ var pathway = {
   ]
 };
 
-module.exports = function (app) {
-  app.get('/api/pathway', function (req, res, next) {
-    return res.json(pathway);
+var app = express();
+
+app.get('/pathway', function (req, res, next) {
+  return res.json(pathway);
+});
+app.all('*', function (req, res, next) {
+  return res.send(404); 
+});
+
+if (!module.parent) {
+  const config = require('./lib/config');
+  const PORT = config('PORT', 3001);
+  app.listen(PORT, function(err) {
+    if (err) {
+      throw err;
+    }
+
+    console.log('Listening on port ' + PORT + '.');
   });
-  return app;
-};
+} else {
+  module.exports = http.createServer(app);
+}
