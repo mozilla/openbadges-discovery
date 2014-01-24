@@ -19,6 +19,7 @@ This app can also be easily [deployed to Heroku](https://devcenter.heroku.com/ar
 Available parameters are:
 
 * COOKIE_SECRET: **required** Should be a large, unguessable string.
+* URL: **required** The url (protocol, host, port) where your app lives. This is used as the Persona audience, and must match what you see in your browser's url bar exactly.
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
 
