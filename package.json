@@ -11,7 +11,7 @@
     "url": "git://github.com/mozilla/openbadges-discovery.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec test/*.test.js",
+    "test": "./node_modules/.bin/mocha -R spec clientapp/tests/*.test.js",
     "postinstall": "./node_modules/.bin/bower install"
   },
   "dependencies": {
@@ -37,7 +37,7 @@
   "devDependencies": {
     "mocha": "~1.15.1",
     "async": "~0.2.9",
-    "should": "~2.1.1",
+    "should": "~3.1.0",
     "precommit-hook": "~0.3.9"
   }
 }
