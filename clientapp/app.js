@@ -2,6 +2,7 @@ var config = require('clientconfig');
 var Backbone = require('backbone');
 var Router = require('./router');
 var AppState = require('./models/app-state');
+var User = require('./models/user');
 var Layout = require('./views/layout');
 
 module.exports = {
@@ -18,11 +19,11 @@ module.exports = {
 
     var me = window.me = new AppState({
       csrf: config.csrf,
-      loggedInUser: config.loggedInUser
+      loggedInUser: config.user && new User(config.user)
     });
     me.startPersona();
     me.on('login:failure', function (reason) {
-      alert('Persona error - ' + reason);
+      alert('Login error - ' + reason);
     });
 
     this.router = new Router({me: me});

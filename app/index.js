@@ -1,6 +1,7 @@
 const express = require('express');
 const clientApp = require('../clientapp');
 const api = require('./api');
+const db = require('./lib/db');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
@@ -36,7 +37,33 @@ app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000})
 app.use('/api', api);
 
 persona(app, {
-  audience: PERSONA_AUDIENCE
+  audience: PERSONA_AUDIENCE,
+  verifyResponse: function (err, req, res, email) {
+    if (err) return res.json({
+      status: 'failure',
+      reason: err
+    });
+
+    db.query("MERGE (n:User {email: {email}}) RETURN n", {email: email}, function (err, results) {
+      if (err) {
+        console.log(err.message);
+        return res.json({
+          status: 'failure',
+          reason: 'Problem encountered getting user ' + email
+        });
+      }
+      var user = results[0].n;
+      req.session.user = user;
+      return res.json({
+        status: 'okay',
+        user: user
+      });
+    });
+  },
+  logoutResponse: function (err, req, res) {
+    req.session.user = null;
+    return res.json({status: 'okay'});
+  }
 });
 
 var cApp = clientApp(app, {
@@ -45,7 +72,7 @@ var cApp = clientApp(app, {
 var clientConfig = middleware.clientConfig(function (req, res) {
   return {
     csrf: req.session._csrf,
-    loggedInUser: req.session.email
+    user: req.session.user
   };
 });
 app.get('*', clientConfig, cApp.html());

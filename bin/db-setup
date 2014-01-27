@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+var db = require('../app/lib/db');
+
+var str = "CREATE CONSTRAINT ON (user:User) ASSERT user.email IS UNIQUE";
+db.query(str, {}, function (err) {
+  console.log(str);
+  if (err && err.indexOf('Already constrained') === -1) {
+    throw err;
+  }
+  else {
+    console.log('\t--> Ok');
+  }
+});
