@@ -1,13 +1,13 @@
 const express = require('express');
 const clientApp = require('../clientapp');
 const api = require('./api');
-const db = require('./lib/db');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
+const User = require('./models/user');
 
 const DEV_MODE = config('DEV', false);
 const PORT = config('PORT', 3000);
@@ -44,7 +44,7 @@ persona(app, {
       reason: err
     });
 
-    db.query("MERGE (n:User {email: {email}}) RETURN n", {email: email}, function (err, results) {
+    User.getOrCreate({email: email}, function (err, user) {
       if (err) {
         console.log(err.message);
         return res.json({
@@ -52,7 +52,6 @@ persona(app, {
           reason: 'Problem encountered getting user ' + email
         });
       }
-      var user = results[0].n;
       req.session.user = user;
       return res.json({
         status: 'okay',
