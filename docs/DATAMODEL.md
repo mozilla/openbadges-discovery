@@ -22,7 +22,7 @@ Additionally, a badge on a pathway isn't actually a badge—it's an indicator of
 
 With those things in mind, our basic data model looks like this:
 
-<img src="http://f.cl.ly/items/151X1h0k33352M373M0f/model.png" width=800>
+<img src="model.png" width=800>
 
 A `User` owns a `Pathway` which contains `Requirement`s that reference `BadgeClass`es. More detail on each node type follows:
 
