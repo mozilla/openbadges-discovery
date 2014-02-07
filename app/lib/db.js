@@ -6,7 +6,6 @@ var Neo4jStreamDeserializer = require('./neo4j-stream-deserializer');
 var util = require('util');
 
 var BASE = config('NEO4J_URL', 'http://localhost:7474');
-console.log(BASE);
 
 module.exports = {
   query: function run (query, params, cb) {

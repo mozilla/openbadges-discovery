@@ -4,7 +4,40 @@ const db = require('./lib/db');
 const f = require('util').format;
 const through = require('through');
 
+function stringify (key) {
+  return through(function write (data) {
+    this.emit('data', JSON.stringify(key ? data[key] : data));
+  });
+}
+
+function arrayify () {
+  return through(
+    function write (data) {
+      if (!this.start) {
+        this.emit('data', '[');
+        this.start = true;
+      }
+      else {
+        this.emit('data', ',');
+      }
+      this.emit('data', data);
+    }, 
+    function end () {
+      if (!this.start) {
+        this.emit('data', '[');
+      }
+      this.emit('data', ']');
+      this.emit('end');
+    }
+  );
+}
+
 var app = express();
+
+app.use(function (req, res, next) {
+  res.type('json');
+  next();
+});
 
 app.get('/pathway/dummy', function (req, res, next) {
   return res.json({
@@ -46,33 +79,34 @@ app.get('/pathway/dummy', function (req, res, next) {
 });
 
 app.get('/pathway', function (req, res, next) {
-  var t = through(function write (data) {
-    if (!this.start) {
-      this.emit('data', '[');
-      this.start = true;
-    }
-    else {
-      this.emit('data', ',');
-    }
-    this.emit('data', JSON.stringify(data.n));
-  }, function end () {
-    if (!this.start) {
-      this.emit('data', '[');
-    }
-    this.emit('data', ']');
-    this.emit('end');
-  });
-  res.type('json');
-  return db.queryStream("MATCH (n:Pathway) RETURN n").pipe(t).pipe(res);
+  return db.queryStream("MATCH (n:Pathway) RETURN n")
+    .pipe(stringify('n'))
+    .pipe(arrayify())
+    .pipe(res);
 });
 
 app.get('/pathway/:id', function (req, res, next) {
   var id = req.params.id;
+  return db.queryStream(f("START n=node(%s) RETURN n", id))
+    .pipe(stringify('n'))
+    .pipe(res);
+});
+
+app.get('/pathway/:id/requirement', function (req, res, next) {
+  var id = req.params.id;
+  var q = "START n=node(%s)" +
+    " MATCH n-[:contains]->(r:Requirement)-[:references]->(b:BadgeClass)" +
+    " RETURN r, b";
   var t = through(function write (data) {
-    this.emit('data', JSON.stringify(data.n));
+    var obj = data.r;
+    obj.name = data.b.name;
+    this.emit('data', obj);
   });
-  res.type('json');
-  return db.queryStream(f("START n=node(%s) RETURN n", id)).pipe(t).pipe(res);
+  return db.queryStream(f(q, id))
+    .pipe(t)
+    .pipe(stringify())
+    .pipe(arrayify())
+    .pipe(res);
 });
 
 app.all('*', function (req, res, next) {
