@@ -3,8 +3,10 @@ var config = require('./config');
 var request = require('request');
 var _ = require('underscore');
 var Neo4jStreamDeserializer = require('./neo4j-stream-deserializer');
+var util = require('util');
 
 var BASE = config('NEO4J_URL', 'http://localhost:7474');
+console.log(BASE);
 
 module.exports = {
   query: function run (query, params, cb) {
@@ -48,8 +50,9 @@ module.exports = {
   queryStream: function (query, params) {
     params = params || {};
 
+    var uri = url.resolve(BASE, '/db/data/cypher');
     var r = request({
-      uri: url.resolve(BASE, '/db/data/cypher'),
+      uri: uri,
       headers: {
         'X-Stream': true
       },
@@ -61,6 +64,9 @@ module.exports = {
       //qs: { includeStats: true }
     });
     var d = new Neo4jStreamDeserializer();
+    r.on('error', function (err) {
+      throw new Error(util.format('Unable to POST to %s: %s', uri, err.message));
+    });
     r.on('response', function (response) {
       if (response.statusCode !== 200) d.error(response.statusCode);
     });
