@@ -29,16 +29,19 @@ A `User` owns a `Pathway` which contains `Requirement`s that reference `BadgeCla
 **User**
 
 * Attributes: `email`
+* Relationships: `owns→`Pathway`
 * Constraints: `email` is unique
 
 **Pathway**
 
 * Attributes: `name`
+* Relationships: `contains`→`Requirement`
 * Constraints: not owned by multiple `User`s (pledging a pathway clones it)
 
 **Requirement**
 
 * Attributes: `x`, `y`
+* Relationships: `references`→`BadgeClass`
 * Constraints: not shared between `Pathway`s
 
 **BadgeClass**
