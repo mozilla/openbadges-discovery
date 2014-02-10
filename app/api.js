@@ -56,20 +56,6 @@ app.get('/pathway/dummy/requirement', function (req, res, next) {
     .pipe(res);
 });
 
-app.put('/pathway/dummy/requirement/:rid', function (req, res, next) {
-  var rid = req.params.rid;
-  var data = req.body;
-  var q = f("START n=node(%s)", rid);
-  (['x', 'y']).forEach(function (key) {
-    if (data.hasOwnProperty(key))
-      q += f(" SET n.%s = {%s}", key, key);
-  });
-  q += " RETURN n";
-  return db.queryStream(q, data)
-    .pipe(stringify('n'))
-    .pipe(res);
-});
-
 app.get('/pathway', function (req, res, next) {
   return db.queryStream("MATCH (n:Pathway) RETURN n")
     .pipe(stringify('n'))
@@ -105,8 +91,8 @@ app.put('/pathway/:id/requirement/:rid', function (req, res, next) {
   var rid = req.params.rid;
   var data = req.body;
   var q = f("START n=node(%s)", rid);
-  ['x', 'y'].forEach(function (key) {
-    if (data[key])
+  (['x', 'y']).forEach(function (key) {
+    if (data.hasOwnProperty(key))
       q += f(" SET n.%s = {%s}", key, key);
   });
   q += " RETURN n";
