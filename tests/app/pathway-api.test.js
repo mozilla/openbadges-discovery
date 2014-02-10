@@ -8,10 +8,12 @@ function makePathway(name, count, cb) {
   var q = "CREATE (p:Pathway {name: {name}})" +
     " FOREACH (i in range(1, {count})|" +
     " CREATE p-[:contains]->(:Requirement {x: i, y: i})-[:references]->(:BadgeClass {name: 'Badge ' + i}))" +
-    " RETURN p";
+    " WITH p" +
+    " MATCH p--(r)" +
+    " RETURN p, collect(DISTINCT r) as rs";
   db.query(q, {name: name, count: count}, function (err, results) {
-    cb(err, (results && results.length) ? results[0].p : null); 
-  }); 
+    cb(err, (results && results.length) ? results[0] : null);
+  });
 }
 
 describe('Pathway API', function () {
@@ -80,11 +82,11 @@ describe('Pathway API', function () {
 
   describe('GET /pathway/:id/requirement', function () {
     it('should return pathway requirements', function (done) {
-      makePathway('Foo', 5, function (err, p) {
+      makePathway('Foo', 5, function (err, result) {
         if (err) return done(err);
- 
+
         request(api)
-          .get('/pathway/' + p.id + '/requirement')
+          .get('/pathway/' + result.p.id + '/requirement')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(err, res) {
@@ -92,6 +94,32 @@ describe('Pathway API', function () {
             res.body.should.be.an.Array;
             res.body.length.should.equal(5);
             res.body[0].should.have.properties('id', 'x', 'y', 'name');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('PUT /pathway/:id/requirement/:id', function () {
+    it('should update pathway requirement', function (done) {
+      makePathway('Foo', 5, function (err, result) {
+        if (err) return done(err);
+        var p = result.p;
+        var r = result.rs[0];
+
+        request(api)
+          .put('/pathway/' + p.id + '/requirement/' + r.id)
+          .type('json')
+          .send({x: 10, y: 10})
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(err, res) {
+            if (err) return done(err);
+            res.body.should.be.an.Object;
+            res.body.should.have.properties('id', 'x', 'y');
+            res.body.id.should.equal(r.id);
+            res.body.x.should.equal(10);
+            res.body.y.should.equal(10);
             done();
           });
       });

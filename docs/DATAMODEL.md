@@ -29,7 +29,7 @@ A `User` owns a `Pathway` which contains `Requirement`s that reference `BadgeCla
 **User**
 
 * Attributes: `email`
-* Relationships: `owns→`Pathway`
+* Relationships: `owns`→`Pathway`
 * Constraints: `email` is unique
 
 **Pathway**

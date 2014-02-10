@@ -34,48 +34,40 @@ function arrayify () {
 
 var app = express();
 
+app.use(express.bodyParser());
 app.use(function (req, res, next) {
   res.type('json');
   next();
 });
 
-app.get('/pathway/dummy', function (req, res, next) {
-  return res.json({
-    rows: [
-      {
-        cells: [
-          {badge: false},
-          {badge: true},
-          {badge: true},
-          {badge: false}
-        ]
-      },
-      {
-        cells: [
-          {badge: true},
-          {badge: false},
-          {badge: false},
-          {badge: false}
-        ]
-      },
-      {
-        cells: [
-          {badge: false},
-          {badge: false},
-          {badge: true},
-          {badge: false}
-        ]
-      },
-      {
-        cells: [
-          {badge: false},
-          {badge: false},
-          {badge: false},
-          {badge: false}
-        ]
-      }
-    ]
+app.get('/pathway/dummy/requirement', function (req, res, next) {
+  var q = "MATCH (p:Pathway)-[:contains]->(r:Requirement)-[:references]->(b:BadgeClass)" +
+    " WHERE p.name = 'Demo Pathway'" + // name isn't unique, so this won't really work long term
+    " RETURN r, b";
+  var t = through(function write (data) {
+    var obj = data.r;
+    obj.name = data.b.name;
+    this.emit('data', obj);
   });
+  return db.queryStream(q)
+    .pipe(t)
+    .pipe(stringify())
+    .pipe(arrayify())
+    .pipe(res);
+});
+
+app.put('/pathway/dummy/requirement/:rid', function (req, res, next) {
+  var rid = req.params.rid;
+  var data = req.body;
+  var q = f("START n=node(%s)", rid);
+  (['x', 'y']).forEach(function (key) {
+    if (data.hasOwnProperty(key))
+      q += f(" SET n.%s = {%s}", key, key);
+  });
+  q += " RETURN n";
+  return db.queryStream(q, data)
+    .pipe(stringify('n'))
+    .pipe(res);
 });
 
 app.get('/pathway', function (req, res, next) {
@@ -106,6 +98,20 @@ app.get('/pathway/:id/requirement', function (req, res, next) {
     .pipe(t)
     .pipe(stringify())
     .pipe(arrayify())
+    .pipe(res);
+});
+
+app.put('/pathway/:id/requirement/:rid', function (req, res, next) {
+  var rid = req.params.rid;
+  var data = req.body;
+  var q = f("START n=node(%s)", rid);
+  ['x', 'y'].forEach(function (key) {
+    if (data[key])
+      q += f(" SET n.%s = {%s}", key, key);
+  });
+  q += " RETURN n";
+  return db.queryStream(q, data)
+    .pipe(stringify('n'))
     .pipe(res);
 });
 

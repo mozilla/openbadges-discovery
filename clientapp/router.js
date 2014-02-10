@@ -1,5 +1,5 @@
 var Backbone = require('backbone');
-var Pathway = require('./models/pathway');
+var Requirements = require('./models/pathway-requirements');
 var PathwayView = require('./views/pathway');
 var WelcomeView = require('./views/welcome');
 
@@ -24,14 +24,14 @@ module.exports = Backbone.Router.extend({
   pathway: function () {
     if (!me.loggedIn) return app.history.navigate('welcome', {trigger: true});
 
-    var pathway = new Pathway();
-    pathway.fetch({
-      success: function (model, xhr, opts) {
+    var requirements = new Requirements();
+    requirements.fetch({
+      success: function (collection, xhr, opts) {
         app.renderPage(new PathwayView({
-          model: model
+          collection: collection
         }));
       },
-      error: function (model, xhr, opts) {
+      error: function () {
         alert('Error fetching pathway');
         console.log('Error details', arguments);
       }
