@@ -21,7 +21,8 @@ DEV=1 node app
 
 Then navigate to http://localhost:3000.
 
-This app can also be [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku).
+This app can also be [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku) if you 
+set up a [neo4j add-on](https://addons.heroku.com/graphenedb) as appropriate.
 
 ## Configuration
 
@@ -57,7 +58,7 @@ See [js-config-store](https://github.com/andrewhayward/js-config-store#config-st
 
 ### Database Setup
 
-Currently some one-time database setup can be accomplished by running `bin/db-setup`. This will probably need
+Currently some one-time database setup, and data population happens by running `bin/db-setup`. This will probably need
 to be replaced eventually with a more robust migration tactic of some sort, despite the fact that neo4j is more
 or less schema-less.
 
