@@ -17,7 +17,7 @@ var app = express();
 
 require('express-monkey-patch')(app);
 
-var staticDir = path.join(__dirname, '/static');
+var staticDir = path.join(__dirname, '../static');
 var staticRoot = '/static';
 
 app.use(function (req, res, next) {
