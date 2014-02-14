@@ -1,0 +1,31 @@
+<section class="listing">
+  <div class="row listing">
+    {% for i in range(0, 8) %}
+    <div class="small-12 medium-4 large-3 columns">
+      <div class="achievement">
+        <div class="token">
+          <div>
+            <img src="/static/badge.png">
+          </div>
+          <a href="#">
+            <i class="fa fa-heart favorite"></i>
+          </a>
+        </div>
+        <div class="data">
+          <h5>A Very Long Badge Title</h5>
+          <span class="secondary radius label">#service</span>
+          <span class="secondary radius label">#barista</span>
+          <span class="secondary radius label">#coffeelover</span>
+          <div>
+            <img src="http://b.vimeocdn.com/ts/219/224/219224834_640.jpg" width=50>
+            Created by Starbucks
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="banner text-center">
+    <a href="#">View More</a>
+  </div>
+</section>

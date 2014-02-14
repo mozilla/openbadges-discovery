@@ -60,3 +60,46 @@
     max-height: 100%;
   }
 }
+
+body {
+  background-color: lightgray;
+}
+#pages {
+  background-color: white;
+  padding-bottom: 1em;
+}
+footer {
+  padding-bottom: 3em;
+}
+
+.banner {
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.favorite {
+  color: darkgray;
+  position: absolute;
+  top: 3px !important;
+  left: 3px !important;
+  bottom: initial !important;
+  right: initial !important;
+}
+
+.listing {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.achievement {
+  .token {
+    background-color: lightgray;
+    position: relative;
+    text-align: center;
+    @include one-to-one-aspect;
+
+    & > div {
+      @include vertically-centered-children;
+    }
+  }
+}
