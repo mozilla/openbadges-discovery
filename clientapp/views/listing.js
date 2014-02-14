@@ -6,7 +6,11 @@ module.exports = HumanView.extend({
   template: templates.listing,
   render: function () {
     this.renderAndBind({});
-    this.renderCollection(this.collection, AchievementView, this.$('.items')[0]);
+    if (this.collection.length) {
+      this.renderCollection(this.collection, AchievementView, this.$('.items')[0]);
+    }
+    var that = this;
+    this.collection.on('sync', this.render.bind(this));
     return this;
   }
 });

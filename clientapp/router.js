@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var Requirements = require('./models/pathway-requirements');
+var Achievements = require('./models/achievements');
 var PathwayView = require('./views/pathway');
 var WelcomeView = require('./views/welcome');
 var LandingView = require('./views/landing');
@@ -46,6 +47,13 @@ module.exports = Backbone.Router.extend({
   },
 
   landing: function () {
-    app.renderPage(new LandingView({model: me}));
+    var listing = new Achievements({
+      pageSize: 8 
+    });
+    listing.fetch({reset: true});
+    app.renderPage(new LandingView({
+      model: me,
+      collection: listing
+    }));
   }
 });
