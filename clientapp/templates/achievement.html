@@ -2,20 +2,24 @@
   <div class="achievement">
     <div class="token">
       <div>
-        <img src="/static/badge.png">
+        {% if type == 'badge' %}
+          <img src="/static/badge.png">
+        {% else %}
+          <img src="/static/pathway.png">
+        {% endif %}
       </div>
       <a href="#">
-        <i class="fa fa-heart favorite"></i>
+        <i class="fa fa-heart favorite-icon"></i>
       </a>
     </div>
     <div class="data">
-      <h5>A Very Long Badge Title</h5>
-      <span class="secondary radius label">#service</span>
-      <span class="secondary radius label">#barista</span>
-      <span class="secondary radius label">#coffeelover</span>
+      <h5>{{title}}</h5>
+      {% for tag in tags %}
+        <span class="secondary radius label">#{{tag}}</span>
+      {% endfor %}
       <div>
         <img src="/static/sbux.jpg" width=50>
-        Created by Starbucks
+        Created by {{creator}}
       </div>
     </div>
   </div>
