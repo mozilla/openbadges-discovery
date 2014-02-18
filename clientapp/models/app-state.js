@@ -8,20 +8,27 @@ module.exports = HumanModel.define({
   session: {
     csrf: ['string'],
     personaReady: ['boolean', true, false],
-    loggedInUser: ['object', false, undefined]
+    user: ['object', false]
   },
   derived: {
     loggedIn: {
-      deps: ['loggedInUser'],
+      deps: ['user'],
       fn: function () {
-        return !!this.loggedInUser;
+        return !!this.user;
+      }
+    },
+    loggedInUser: {
+      deps: ['user'],
+      fn: function () {
+        if (!this.user) return this.user;
+        return this.user.email;
       }
     }
   },
   startPersona: function () {
     var self = this;
     this.navigator.id.watch({
-      loggedInUser: self.loggedInUser && self.loggedInUser.email,
+      loggedInUser: self.loggedInUser,
       onlogin: function (assertion) {
         $.ajax({
           url: "/persona/verify",
@@ -32,7 +39,7 @@ module.exports = HumanModel.define({
           dataType: "json"
         }).done(function (data, status, xhr) {
           if (data && data.status === "okay") {
-            self.loggedInUser = new User(data.user);
+            self.user = data.user;
             self.trigger('login:success', data.email);
           }
           else {
@@ -45,7 +52,8 @@ module.exports = HumanModel.define({
           url: "/persona/logout",
           type: "POST"
         }).done(function (data, status, xhr) {
-          self.loggedInUser = null;
+          console.log('CHANGE');
+          self.user = null;
           self.trigger('logout');
         });
       },
@@ -54,5 +62,9 @@ module.exports = HumanModel.define({
         self.trigger('ready');
       }
     });
+  },
+  getUserModel: function () {
+    var model = new User(this.user);
+    return model;
   }
 });
