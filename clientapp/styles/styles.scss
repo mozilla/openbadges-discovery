@@ -2,13 +2,13 @@
 
 @mixin vertically-centered-children {
   /* http://css-tricks.com/centering-in-the-unknown/ */
+  font-size: 0;
 
   &:before {
     content: '';
     display: inline-block;
     height: 100%;
     vertical-align: middle;
-    margin-right: -0.25em;
   }
   & > * {
     display: inline-block;
@@ -77,16 +77,17 @@ footer {
   border-bottom: 1px solid gray;
 }
 
-.favorite-icon {
-  color: darkgray;
+.wishlist-button {
   position: absolute;
-  top: 3px !important;
-  left: 3px !important;
-  bottom: initial !important;
-  right: initial !important;
+  top: 0;
+  left: 0;
+  padding: 3px;
 
-  &.favorite {
-    color: red;
+  .favorite-icon {
+    color: darkgray;
+    &.favorite {
+      color: red;
+    }
   }
 }
 
@@ -103,6 +104,11 @@ footer {
     position: relative;
     text-align: center;
     @include one-to-one-aspect;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
 
     & > div {
       @include vertically-centered-children;
