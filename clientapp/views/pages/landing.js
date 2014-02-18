@@ -1,9 +1,9 @@
 var HumanView = require('human-view');
-var ListingView = require('./listing');
 var templates = require('templates');
+var ListingView = require('../includes/listing');
 
 module.exports = HumanView.extend({
-  template: templates.landing,
+  template: templates.pages.landing,
   events: {
     'click a': 'handleLink'
   },

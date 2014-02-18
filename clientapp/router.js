@@ -1,9 +1,8 @@
 var Backbone = require('backbone');
 var Requirements = require('./models/pathway-requirements');
 var Achievements = require('./models/achievements');
-var PathwayView = require('./views/pathway');
-var WelcomeView = require('./views/welcome');
-var LandingView = require('./views/landing');
+var PathwayView = require('./views/pages/pathway');
+var LandingView = require('./views/pages/landing');
 
 module.exports = Backbone.Router.extend({
 
@@ -14,19 +13,19 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '': 'index',
-    'welcome': 'welcome',
-    'pathway': 'pathway',
-    'landing': 'landing'
+    '': 'landing',
+    'pathway': 'pathway'
   },
 
-  index: function () {
-    if (me.loggedIn) app.history.navigate('pathway', {trigger: true, replace: true});
-    else app.history.navigate('welcome', {trigger: true, replace: true});
-  },
-
-  welcome: function () {
-    app.renderPage(new WelcomeView({model: me}));
+  landing: function () {
+    var listing = new Achievements({
+      pageSize: 8 
+    });
+    listing.fetch({reset: true});
+    app.renderPage(new LandingView({
+      model: me,
+      collection: listing
+    }));
   },
 
   pathway: function () {
@@ -45,15 +44,4 @@ module.exports = Backbone.Router.extend({
       }
     });
   },
-
-  landing: function () {
-    var listing = new Achievements({
-      pageSize: 8 
-    });
-    listing.fetch({reset: true});
-    app.renderPage(new LandingView({
-      model: me,
-      collection: listing
-    }));
-  }
 });

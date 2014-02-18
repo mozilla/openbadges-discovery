@@ -3,7 +3,7 @@ var templates = require('templates');
 var AchievementView = require('./achievement');
 
 module.exports = HumanView.extend({
-  template: templates.listing,
+  template: templates.includes.listing,
   render: function () {
     this.renderAndBind({});
     if (this.collection.length) {

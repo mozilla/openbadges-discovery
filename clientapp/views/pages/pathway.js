@@ -2,7 +2,7 @@ var HumanView = require('human-view');
 var templates = require('templates');
 
 module.exports = HumanView.extend({
-  template: templates.pathway,
+  template: templates.pages.pathway,
   events: {
     'dragstart .pathway-cell': 'start',
     'drop .pathway-cell': 'drop'
