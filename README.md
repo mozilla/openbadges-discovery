@@ -5,22 +5,38 @@ Discovery tool for Open Badges
 
 ## Quick Start
 
-```shell
+Assuming a neo4j database...
+
+```bash
 npm install
-COOKIE_SECRET=macadamianuts node app
+echo '{  
+  "url": "http://localhost:3000",
+  "cookie": {
+    "secret": "macadamianuts"
+  },
+  "neo4j_url": "http://localhost:7474"
+}' > config.json
+DEV=1 node app
 ```
 
 Then navigate to http://localhost:3000.
 
-This app can also be easily [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku).
+This app can also be [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku) if you 
+set up a [neo4j add-on](https://addons.heroku.com/graphenedb) as appropriate.
 
 ## Configuration
 
-Available parameters are:
+### Parameters
+
+Available app parameters are:
 
 * COOKIE_SECRET: **required** Should be a large, unguessable string.
+* URL: **required** The url (protocol, host, port) where your app lives. This is used as the Persona audience, and must match what you see in your browser's url bar exactly.
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
+* NEO4J_URL: *optional* The neo4j database url to use. Defaults to http://localhost:7474.
+
+### Alternatives
 
 Configuration parameters can be provided via commandline arguments, a `config.json` file, or environment variables.
 
@@ -39,6 +55,12 @@ are equivalent to using an environment parameter as shown in the quick start.
 See [js-config-store](https://github.com/andrewhayward/js-config-store#config-store) for more information.
 
 ## Developers
+
+### Database Setup
+
+Currently some one-time database setup, and data population happens by running `bin/db-setup`. This will probably need
+to be replaced eventually with a more robust migration tactic of some sort, despite the fact that neo4j is more
+or less schema-less.
 
 ### Precommit Hooks
 

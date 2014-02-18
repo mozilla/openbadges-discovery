@@ -1,8 +1,9 @@
 var config = require('clientconfig');
+var Backbone = require('backbone');
+var Router = require('./router');
 var AppState = require('./models/app-state');
-var Pathway = require('./models/pathway');
+var User = require('./models/user');
 var Layout = require('./views/layout');
-var PathwayView = require('./views/pathway');
 
 module.exports = {
   launch: function () {
@@ -15,65 +16,35 @@ module.exports = {
     });
 
     var self = window.app = this;
+
     var me = window.me = new AppState({
       csrf: config.csrf,
-      loggedInUser: config.loggedInUser
+      loggedInUser: config.user && new User(config.user)
     });
     me.startPersona();
     me.on('login:failure', function (reason) {
-      alert('Persona error - ' + reason);
+      alert('Login error - ' + reason);
     });
 
-    var pathway = new Pathway({
-      rows: [
-        {
-          cells: [
-            {badge: false},
-            {badge: true},
-            {badge: true},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: true},
-            {badge: false},
-            {badge: false},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: false},
-            {badge: false},
-            {badge: true},
-            {badge: false}
-          ]
-        },
-        {
-          cells: [
-            {badge: false},
-            {badge: false},
-            {badge: false},
-            {badge: false}
-          ]
-        }
-      ]
-    });
+    this.router = new Router({me: me});
+    this.history = Backbone.history;
 
     me.on('ready', function () {
-      var layout = new Layout({
+      var layout = app.layout = new Layout({
         model: me
       });
-      layout.render();
-      var view = new PathwayView({
-        model: pathway,
-        el: $('#pages', layout.$el)
-      });
-      view.render();
-      $('body').append(layout.el);
+      $('body').append(layout.render().el);
       $(document).foundation();
-    });
+      this.history.start({pushState: true, root: '/'});
+    }, this);
+  },
+
+  renderPage: function (view) {
+    if (app.currentPage)
+      app.currentPage.remove();
+
+    app.currentPage = view;
+    app.layout.$container.append(view.render().el);
   }
 };
 

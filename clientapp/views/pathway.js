@@ -8,7 +8,7 @@ module.exports = HumanView.extend({
     'drop .pathway-cell': 'drop'
   },
   render: function () {
-    this.renderAndBind({pathway: this.model});
+    this.renderAndBind({pathway: this.collection});
     this.$el.find('.pathway-badge').draggable({
       helper: "clone",
       revert: "invalid"
@@ -19,7 +19,7 @@ module.exports = HumanView.extend({
       },
       hoverClass: 'drop'
     });
-    this.model.once('move', this.render, this);
+    this.collection.once('move', this.render, this);
     return this;
   },
   start: function (e, ui) {
@@ -30,6 +30,6 @@ module.exports = HumanView.extend({
     var start = ui.helper.start;
     var stop = $(e.currentTarget).data('cell-coords');
     var that = this;
-    setTimeout(function () { that.model.move(start, stop); }, 0);
+    setTimeout(function () { that.collection.move(start, stop); }, 0);
   }
 });

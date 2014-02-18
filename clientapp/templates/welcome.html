@@ -1,0 +1,10 @@
+<div class="row">
+  {% if me.loggedInUser %}
+    <h1>Welcome, {{me.loggedInUser.email}}!</h1>
+    <p>
+      Edit <a href="/pathway">a pathway</a>. It's still just a dummy pathway though.
+    </p>
+  {% else %}
+    <h1>Welcome!</h1>
+  {% endif %}
+</div>

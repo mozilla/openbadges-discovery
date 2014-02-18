@@ -1,23 +1,27 @@
 var HumanModel = require('human-model');
+var User = require('./user');
 
 module.exports = HumanModel.define({
+  initialize: function (opts) {
+    this.navigator = opts.navigator || window.navigator;
+  },
   session: {
     csrf: ['string'],
     personaReady: ['boolean', true, false],
-    loggedInUser: ['string', false, undefined]
+    loggedInUser: ['object', false, undefined]
   },
   derived: {
-    username: {
+    loggedIn: {
       deps: ['loggedInUser'],
       fn: function () {
-        return this.loggedInUser || 'stranger!';
+        return !!this.loggedInUser;
       }
     }
   },
   startPersona: function () {
     var self = this;
-    navigator.id.watch({
-      loggedInUser: self.loggedInUser,
+    this.navigator.id.watch({
+      loggedInUser: self.loggedInUser && self.loggedInUser.email,
       onlogin: function (assertion) {
         $.ajax({
           url: "/persona/verify",
@@ -28,7 +32,7 @@ module.exports = HumanModel.define({
           dataType: "json"
         }).done(function (data, status, xhr) {
           if (data && data.status === "okay") {
-            self.loggedInUser = data.email;
+            self.loggedInUser = new User(data.user);
             self.trigger('login:success', data.email);
           }
           else {

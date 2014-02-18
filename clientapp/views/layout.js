@@ -3,15 +3,13 @@ var templates = require('templates');
 
 module.exports = HumanView.extend({
   template: templates.layout,
-  textBindings: {
-    username: '.username'
-  },
   events: {
     'click .login': 'login',
     'click .logout': 'logout'
   },
   render: function () {
-    this.renderAndBind();
+    this.renderAndBind({app: this.model});
+    this.$container = $('#pages', this.$el);
     return this;
   },
   login: function (e) {

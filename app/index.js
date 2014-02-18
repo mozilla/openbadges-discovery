@@ -1,11 +1,13 @@
 const express = require('express');
 const clientApp = require('../clientapp');
+const api = require('./api');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
+const User = require('./models/user');
 
 const DEV_MODE = config('DEV', false);
 const PORT = config('PORT', 3000);
@@ -32,8 +34,35 @@ app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 
+app.use('/api', api);
+
 persona(app, {
-  audience: PERSONA_AUDIENCE
+  audience: PERSONA_AUDIENCE,
+  verifyResponse: function (err, req, res, email) {
+    if (err) return res.json({
+      status: 'failure',
+      reason: err
+    });
+
+    User.getOrCreate({email: email}, function (err, user) {
+      if (err) {
+        console.log(err.message);
+        return res.json({
+          status: 'failure',
+          reason: 'Problem encountered getting user ' + email
+        });
+      }
+      req.session.user = user;
+      return res.json({
+        status: 'okay',
+        user: user
+      });
+    });
+  },
+  logoutResponse: function (err, req, res) {
+    req.session.user = null;
+    return res.json({status: 'okay'});
+  }
 });
 
 var cApp = clientApp(app, {
@@ -42,7 +71,7 @@ var cApp = clientApp(app, {
 var clientConfig = middleware.clientConfig(function (req, res) {
   return {
     csrf: req.session._csrf,
-    loggedInUser: req.session.email
+    user: req.session.user
   };
 });
 app.get('*', clientConfig, cApp.html());
