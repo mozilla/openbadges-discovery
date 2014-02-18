@@ -1,14 +1,12 @@
 @import "../../bower_components/foundation/scss/foundation";
 
 @mixin vertically-centered-children {
-  /* http://css-tricks.com/centering-in-the-unknown/ */
-  font-size: 0;
+  // http://css-tricks.com/centering-in-the-unknown/
 
-  &:before {
-    content: '';
-    display: inline-block;
+  &:before { content: ''; display: inline-block;
     height: 100%;
     vertical-align: middle;
+    margin-right: -0.25em;
   }
   & > * {
     display: inline-block;
@@ -16,7 +14,7 @@
 }
 
 @mixin one-to-one-aspect {
-  /* http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
+  // http://www.mademyday.de/css-height-equals-width-with-pure-css.html
 
   &:before {
     content: "";
@@ -30,7 +28,7 @@
     bottom: 0;
     right: 0;
   }
-  /* fix the height and width of clone while dragging */
+  // fix the height and width of clone while dragging
   & > .ui-draggable-dragging {
     top: 0;
     left: 0;
@@ -106,8 +104,9 @@ footer {
     @include one-to-one-aspect;
 
     img {
-      max-width: 100%;
-      max-height: 100%;
+      // 100% causes wrapping problems in FF due to the vertically-centered-children mixin's :before stuff
+      max-width: 90%;
+      max-height: 90%;
     }
 
     & > div {
