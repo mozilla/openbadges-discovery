@@ -10,6 +10,11 @@ module.exports = Backbone.Router.extend({
     opts.me.on('change:loggedIn', function () {
       app.history.loadUrl();
     });
+    console.log('HUZZAH');
+    this.listing = new Achievements({
+      pageSize: 8 
+    });
+    this.listing.fetch({reset: true});
   },
 
   routes: {
@@ -18,13 +23,9 @@ module.exports = Backbone.Router.extend({
   },
 
   landing: function () {
-    var listing = new Achievements({
-      pageSize: 8 
-    });
-    listing.fetch({reset: true});
     app.renderPage(new LandingView({
       model: me,
-      collection: listing
+      collection: this.listing
     }));
   },
 

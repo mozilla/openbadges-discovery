@@ -10,8 +10,6 @@ function fakeAchievement () {
     tags: ['service', 'barista', 'coffeelover', 'fake'],
     creator: 'Starbucks'
   };
-  if (me.loggedIn)
-    data.favorite = Math.random() < 0.2 ? true : false;
   return data;
 }
   
