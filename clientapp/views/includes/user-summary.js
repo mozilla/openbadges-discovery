@@ -6,9 +6,6 @@ module.exports = HumanView.extend({
   textBindings: {
     email: '.user-email'
   },
-  classBindings: {
-    loggedIn: ''
-  },
   render: function () {
     this.renderAndBind(this.model);  
     return this;

@@ -52,7 +52,6 @@ module.exports = HumanModel.define({
           url: "/persona/logout",
           type: "POST"
         }).done(function (data, status, xhr) {
-          console.log('CHANGE');
           self.user = null;
           self.trigger('logout');
         });
