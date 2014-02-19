@@ -26,7 +26,7 @@
     "underscore": "~1.5.2",
     "human-model": "~2.6.0",
     "human-view": "~1.6.0",
-    "bower": "~1.2.8",
+    "bower": "git://github.com/neoziro/bower.git#v1.2.8-patched",
     "node-sass": "~0.8.1",
     "express-persona": "~0.1.1",
     "clientconfig": "0.0.4",
