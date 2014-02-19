@@ -3,7 +3,9 @@
 @mixin vertically-centered-children {
   // http://css-tricks.com/centering-in-the-unknown/
 
-  &:before { content: ''; display: inline-block;
+  &:before { 
+    content: ''; 
+    display: inline-block;
     height: 100%;
     vertical-align: middle;
     margin-right: -0.25em;
