@@ -30,7 +30,7 @@
     "node-sass": "~0.8.1",
     "express-persona": "~0.1.1",
     "clientconfig": "0.0.4",
-    "backbone": "~1.1.0",
+    "backbone": "1.1.0",
     "request": "~2.33.0",
     "async": "~0.2.10",
     "JSONStream": "~0.7.1",
