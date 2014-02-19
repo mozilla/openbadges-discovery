@@ -17,10 +17,7 @@ module.exports = {
 
     var self = window.app = this;
 
-    var me = window.me = new AppState({
-      csrf: config.csrf,
-      loggedInUser: config.user && new User(config.user)
-    });
+    var me = window.me = new AppState(config);
     me.startPersona();
     me.on('login:failure', function (reason) {
       alert('Login error - ' + reason);
@@ -30,9 +27,7 @@ module.exports = {
     this.history = Backbone.history;
 
     me.on('ready', function () {
-      var layout = app.layout = new Layout({
-        model: me
-      });
+      var layout = app.layout = new Layout({model: me});
       $('body').append(layout.render().el);
       $(document).foundation();
       this.history.start({pushState: true, root: '/'});

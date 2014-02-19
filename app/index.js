@@ -17,7 +17,7 @@ var app = express();
 
 require('express-monkey-patch')(app);
 
-var staticDir = path.join(__dirname, '/static');
+var staticDir = path.join(__dirname, '../static');
 var staticRoot = '/static';
 
 app.use(function (req, res, next) {
@@ -33,6 +33,7 @@ app.use(middleware.session());
 app.use(middleware.csrf({ whitelist: [] }));
 
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
+app.use('/font-awesome', express.static(path.join(__dirname, '../bower_components/font-awesome')));
 
 app.use('/api', api);
 

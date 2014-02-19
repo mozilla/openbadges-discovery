@@ -1,7 +1,7 @@
 @import "../../bower_components/foundation/scss/foundation";
 
 @mixin vertically-centered-children {
-  /* http://css-tricks.com/centering-in-the-unknown/ */
+  // http://css-tricks.com/centering-in-the-unknown/
 
   &:before {
     content: '';
@@ -16,7 +16,7 @@
 }
 
 @mixin one-to-one-aspect {
-  /* http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
+  // http://www.mademyday.de/css-height-equals-width-with-pure-css.html
 
   &:before {
     content: "";
@@ -30,7 +30,7 @@
     bottom: 0;
     right: 0;
   }
-  /* fix the height and width of clone while dragging */
+  // fix the height and width of clone while dragging
   & > .ui-draggable-dragging {
     top: 0;
     left: 0;
@@ -58,5 +58,61 @@
   img {
     max-width: 100%;
     max-height: 100%;
+  }
+}
+
+body {
+  background-color: lightgray;
+}
+#pages {
+  background-color: white;
+  padding-bottom: 1em;
+}
+footer {
+  padding-bottom: 3em;
+}
+
+.banner {
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.wishlist-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 3px;
+
+  .favorite-icon {
+    color: darkgray;
+    &.favorite {
+      color: red;
+    }
+  }
+}
+
+.listing {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.achievement {
+  margin-bottom: 1em;
+
+  .token {
+    background-color: lightgray;
+    position: relative;
+    text-align: center;
+    @include one-to-one-aspect;
+
+    img {
+      // 100% causes wrapping problems in FF due to the vertically-centered-children mixin's :before stuff
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    & > div {
+      @include vertically-centered-children;
+    }
   }
 }

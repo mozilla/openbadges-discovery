@@ -1,0 +1,26 @@
+<div class="small-12 medium-4 large-3 columns">
+  <div class="achievement">
+    <div class="token">
+      <div>
+        {% if type == 'badge' %}
+          <img src="/static/badge.png">
+        {% else %}
+          <img src="/static/pathway.png">
+        {% endif %}
+        <a href="#" class="wishlist-button">
+          <i class="fa fa-heart favorite-icon"></i>
+        </a>
+      </div>
+    </div>
+    <div class="data">
+      <h5>{{title}}</h5>
+      {% for tag in tags %}
+        <span class="secondary radius label">#{{tag}}</span>
+      {% endfor %}
+      <div>
+        <img src="/static/sbux.jpg" width=50>
+        Created by {{creator}}
+      </div>
+    </div>
+  </div>
+</div>
