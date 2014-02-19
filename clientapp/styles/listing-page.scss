@@ -1,0 +1,25 @@
+.listing {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.achievement {
+  margin-bottom: 1em;
+
+  .token {
+    background-color: lightgray;
+    position: relative;
+    text-align: center;
+    @include one-to-one-aspect;
+
+    img {
+      // 100% causes wrapping problems in FF due to the vertically-centered-children mixin's :before stuff
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    & > div {
+      @include vertically-centered-children;
+    }
+  }
+}

@@ -22,6 +22,21 @@ module.exports = HumanModel.define({
       type: 'boolean',
       required: true,
       default: false
+    },
+    earned: {
+      type: 'boolean',
+      required: true,
+      default: false
+    }
+  },
+  derived: {
+    status: {
+      depends: ['favorite', 'earned'],
+      fn: function () {
+        if (this.earned) return 'owned';
+        else if (this.favorite) return 'wishlisted';
+        else return undefined;
+      }
     }
   }
 });
