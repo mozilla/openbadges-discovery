@@ -34,7 +34,8 @@
     "request": "~2.33.0",
     "async": "~0.2.10",
     "JSONStream": "~0.7.1",
-    "through": "~2.3.4"
+    "through": "~2.3.4",
+    "query-param-getter": "0.0.1"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

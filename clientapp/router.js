@@ -1,8 +1,11 @@
 var Backbone = require('backbone');
 var Requirements = require('./models/pathway-requirements');
+var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var PathwayView = require('./views/pages/pathway');
 var LandingView = require('./views/pages/landing');
+var BadgePage = require('./views/pages/badge');
+var query = require('query-param-getter');
 
 module.exports = Backbone.Router.extend({
 
@@ -18,7 +21,9 @@ module.exports = Backbone.Router.extend({
 
   routes: {
     '': 'landing',
-    'pathway': 'pathway'
+    'badges/:id': 'showBadge',
+    'pathway': 'pathway',
+    '*url': 'nope'
   },
 
   landing: function () {
@@ -26,6 +31,17 @@ module.exports = Backbone.Router.extend({
       model: me,
       collection: this.listing
     }));
+  },
+
+  showBadge: function (id) {
+    var badge = new Achievement({
+      type: 'badge',
+      title: 'A Very Long Badge Title ' + id,
+      creator: 'None',
+      favorite: !!query('fav'),
+      earned: !!query('earned')
+    });
+    app.renderPage(new BadgePage({model: badge}));
   },
 
   pathway: function () {
@@ -44,4 +60,8 @@ module.exports = Backbone.Router.extend({
       }
     });
   },
+
+  nope: function () {
+    alert('404! Try again.');
+  }
 });
