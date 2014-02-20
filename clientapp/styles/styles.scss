@@ -21,3 +21,26 @@ footer {
   border-bottom: 1px solid gray;
 }
 
+.user-controls {
+  .user-email {
+    display: none;
+  }
+  .logout-control {
+    display: none;
+  }
+  .login-control {
+    display: initial;
+  }
+
+  &.loggedIn {
+    .user-email {
+      display: initial;
+    }
+    .logout-control {
+      display: initial;
+    }
+    .login-control {
+      display: none;
+    }
+  }
+}

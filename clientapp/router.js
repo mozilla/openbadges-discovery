@@ -10,7 +10,7 @@ var query = require('query-param-getter');
 module.exports = Backbone.Router.extend({
 
   initialize: function (opts) {
-    opts.me.on('change:loggedIn', function () {
+    opts.me.currentUser.on('change:loggedIn', function () {
       app.history.loadUrl();
     });
     this.listing = new Achievements({

@@ -3,10 +3,10 @@
     <p>
       Stumptown fugiat street art 8-bit Cosby sweater mumblecore. Intelligentsia slow-carb Austin, lo-fi Pitchfork blog freegan est iPhone.
     </p>
-    {% if loggedIn %}
+    {% if currentUser.loggedIn %}
       <a href="#" class="button">Take the Quiz</a>
     {% else %}
-      <a href="#">Sign Up Now</a>
+      <a href="#" class="login">Sign Up Now</a>
       <a href="#" class="button login">Log In</a>
     {% endif %}
   </div>

@@ -3,14 +3,15 @@
 var should = require('should');
 var AppState = require('../../clientapp/models/app-state');
 
-describe('app-state', function () {
-  it('should init without user', function () {
+describe('app-state clientside model', function () {
+  it('should init', function () {
     var state = new AppState({
-      navigator: {} 
+      navigator: {}
     });
     state.should.be.ok;
     state.personaReady.should.equal(false);
-    state.loggedIn.should.equal(false);
+    state.currentUser.should.be.an.Object;
+    state.currentUser.loggedIn.should.equal(false);
   });
 
   it('should init with user data', function () {
@@ -23,31 +24,15 @@ describe('app-state', function () {
     });
     state.should.be.ok;
     state.personaReady.should.equal(false);
-    state.loggedIn.should.equal(true);
+    state.currentUser.should.be.an.Object;
+    state.currentUser.loggedIn.should.equal(true);
+    state.currentUser.email.should.equal('hi@example.org');
   });
 
-  describe('.loggedInUser', function () {
-    it('should be undefined when user is undefined', function () {
-      var state = new AppState({
-        navigator: {} 
-      });
-      should.strictEqual(state.loggedInUser, undefined, 'loggedInUser should be undefined');
+  it('should not allow setting of currentUser directly', function () {
+    var state = new AppState({
+      navigator: {}
     });
-
-    it('should be null when user is null', function () {
-      var state = new AppState({
-        user: null,
-        navigator: {} 
-      });
-      should.strictEqual(state.loggedInUser, null, 'loggedInUser should be null');
-    });
- 
-    it('should be email when user defined', function () {
-      var state = new AppState({
-        user: {email: 'hi@example.org', id: 10},
-        navigator: {} 
-      });
-      state.loggedInUser.should.equal('hi@example.org');
-    });
+    (function () {state.currentUser = {};}).should.throw();
   });
 });
