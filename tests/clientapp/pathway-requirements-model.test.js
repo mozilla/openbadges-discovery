@@ -1,7 +1,7 @@
 var should = require('should');
 var Requirements = require('../../clientapp/models/pathway-requirements');
 
-describe('pathway-requirements', function () {
+describe('pathway-requirements clientside model', function () {
   it('should init', function () {
     var reqs = new Requirements();
     reqs.should.be.ok;

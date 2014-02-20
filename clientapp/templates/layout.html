@@ -8,8 +8,16 @@
         <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
       </ul>
       <section class="top-bar-section">
-        <ul class="right">
-          <li class="user-info-container"></li>
+        <ul class="right user-controls">
+          <li class="user-email">
+            <a href="#">{{ currentUser.email }}</a>
+          </li>
+          <li class="logout-control">
+            <a href="#" class="logout">Log out</a>
+          </li>
+          <li class="login-control">
+            <a href="#" class="login">Log in</a>
+          </li>
         </ul>
       </section>
     </nav>
