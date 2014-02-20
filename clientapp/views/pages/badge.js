@@ -24,6 +24,9 @@ module.exports = HumanView.extend({
     if (me.currentUser.loggedIn) {
       this.model.favorite = !this.model.favorite;
     }
+    else {
+      navigator.id.request();
+    }
     evt.preventDefault();
     evt.stopPropagation();
   }
