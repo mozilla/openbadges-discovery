@@ -17,7 +17,5 @@ module.exports = HumanView.extend({
   handleLink: function (e) {
     var url = $(e.currentTarget).attr('href');
     //app.history.navigate(url, {trigger:true});
-    console.log('Links disabled');
-    e.preventDefault();
   }
 });

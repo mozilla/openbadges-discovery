@@ -23,7 +23,7 @@ module.exports = Backbone.Router.extend({
 
   routes: {
     '': 'landing',
-    'badges/:id': 'showBadge',
+    'badge/:id': 'showBadge',
     'pathway': 'pathway',
     '*url': 'nope'
   },
@@ -64,6 +64,7 @@ module.exports = Backbone.Router.extend({
   },
 
   nope: function () {
+    if (app.currentPage) app.currentPage.remove();
     alert('404! Try again.');
   },
 

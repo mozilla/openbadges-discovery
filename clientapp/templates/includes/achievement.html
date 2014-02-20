@@ -2,15 +2,13 @@
   <div class="achievement">
     <div class="token">
       <div>
+        <a class="item-link">
         {% if type == 'badge' %}
-          <a data-badge-id="{{ id }}" href="#">
-            <img src="/static/badge.png">
-          </a>
+          <img src="/static/badge.png">
         {% else %}
-          <a data-pathway-id="" href="#">
-            <img src="/static/pathway.png">
-          </a>
+          <img src="/static/pathway.png">
         {% endif %}
+        </a>
         <a href="#" class="wishlist-button">
           <i class="fa fa-heart favorite-icon"></i>
         </a>
