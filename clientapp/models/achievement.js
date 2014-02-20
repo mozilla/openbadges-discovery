@@ -2,6 +2,9 @@ var HumanModel = require('human-model');
 
 module.exports = HumanModel.define({
   props: {
+    id: {
+      type: 'number'
+    },
     type: {
       values: ['badge', 'pathway'],
       required: true

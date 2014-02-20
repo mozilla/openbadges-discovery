@@ -2,9 +2,11 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Achievement = require('./achievement');
 
+var id = 1;
 function fakeAchievement () {
   var type = Math.random() < 0.5 ? 'Badge' : 'Pathway';
   var data = {
+    id: id++,
     type: type.toLowerCase(),
     title: 'A Very Long ' + type + ' Title',
     tags: ['service', 'barista', 'coffeelover', 'fake'],

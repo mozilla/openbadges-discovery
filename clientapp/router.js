@@ -7,6 +7,8 @@ var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var query = require('query-param-getter');
 
+var cache;
+
 module.exports = Backbone.Router.extend({
 
   initialize: function (opts) {
@@ -34,7 +36,7 @@ module.exports = Backbone.Router.extend({
   },
 
   showBadge: function (id) {
-    var badge = new Achievement({
+    var badge = cache || new Achievement({
       type: 'badge',
       title: 'A Very Long Badge Title ' + id,
       creator: 'None',
@@ -63,5 +65,10 @@ module.exports = Backbone.Router.extend({
 
   nope: function () {
     alert('404! Try again.');
+  },
+
+  navigateTo: function (url, data) {
+    cache = data || undefined;
+    this.navigate(url, {trigger: true});
   }
 });
