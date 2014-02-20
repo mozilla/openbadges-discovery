@@ -34,11 +34,18 @@ module.exports = HumanModel.define({
   },
   derived: {
     status: {
-      depends: ['favorite', 'earned'],
+      deps: ['favorite', 'earned'],
       fn: function () {
         if (this.earned) return 'owned';
         else if (this.favorite) return 'wishlisted';
         else return undefined;
+      }
+    },
+    userFavorite: {
+      cache: false,
+      deps: ['favorite'],
+      fn: function () {
+        return me.currentUser.loggedIn ? this.favorite : false; 
       }
     }
   }
