@@ -6,8 +6,15 @@ module.exports = HumanView.extend({
   classBindings: {
     'userFavorite': '.favorite-icon' 
   },
+  textBindings: {
+    'status': '.status span'
+  },
   render: function () {
     this.renderAndBind(this.model);
+    this.listenToAndRun(this.model, 'change:status', function (model) {
+      var hide = !this.model.status;
+      this.$('.status').toggleClass('hide', hide);
+    });
     return this;
   },
   events: {
