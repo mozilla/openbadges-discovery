@@ -22,7 +22,7 @@
       // I don't know why this is necessary but it solves a squirrely Chrome bug where the .item-link would
       // have 0 width and images would be offset to the right.
       // See: https://github.com/mozilla/openbadges-discovery/issues/95
-      width: 100%;
+      width: 90%;
     }
 
     & > div {

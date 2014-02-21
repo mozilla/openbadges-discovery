@@ -4,9 +4,9 @@
   <div class="row pathway-row">
     {% for cell in row %}
     {% set cellIndex = loop.index0 %}
-    <div class="small-3 columns pathway-cell" data-cell-coords="{{cellIndex}},{{rowIndex}}">
+    <div class="small-3 columns pathway-cell js-pathway-cell" data-cell-coords="{{cellIndex}},{{rowIndex}}">
       {% if cell %}
-      <div class="pathway-badge">
+      <div class="pathway-badge js-pathway-badge">
         <img src="/static/badge.png" draggable="false"/>
       </div>
       {% endif %}

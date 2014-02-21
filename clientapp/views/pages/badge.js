@@ -4,10 +4,10 @@ var templates = require('templates');
 module.exports = HumanView.extend({
   template: templates.pages.badge,
   classBindings: {
-    'userFavorite': '.favorite-icon' 
+    'userFavorite': '.js-favorite-icon' 
   },
   textBindings: {
-    'status': '.status span'
+    'status': '.js-status'
   },
   render: function () {
     this.renderAndBind(this.model);
@@ -18,7 +18,7 @@ module.exports = HumanView.extend({
     return this;
   },
   events: {
-    'click .wishlist-button': 'toggleWishlist'
+    'click .js-toggle-wishlist': 'toggleWishlist'
   },
   toggleWishlist: function (evt) {
     if (me.currentUser.loggedIn) {
