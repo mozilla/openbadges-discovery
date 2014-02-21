@@ -5,7 +5,7 @@ var util = require('util');
 module.exports = HumanView.extend({
   template: templates.includes.achievement,
   classBindings: {
-    userFavorite: '.favorite-icon'
+    userFavorite: '.js-favorite-icon'
   },
   render: function (opts) {
     var container = opts.containerEl;
@@ -13,8 +13,8 @@ module.exports = HumanView.extend({
     this.$el.appendTo(container);
   },
   events: {
-    'click .item-link': 'navToItem',
-    'click .wishlist-button': 'toggleWishlist'
+    'click .js-view-item': 'navToItem',
+    'click .js-toggle-wishlist': 'toggleWishlist'
   },
   navToItem: function (evt) {
     var item = this.model;

@@ -4,17 +4,17 @@ var templates = require('templates');
 module.exports = HumanView.extend({
   template: templates.layout,
   events: {
-    'click .login': 'login',
-    'click .logout': 'logout'
+    'click .js-login': 'login',
+    'click .js-logout': 'logout'
   },
   render: function () {
     this.renderAndBind(this.model);
     this.registerBindings(this.model.currentUser, {
       classBindings: {
-        'loggedIn': '.user-controls'
+        'loggedIn': '.js-user-controls'
       },
       textBindings: {
-        'email': '.user-email a'
+        'email': '.js-user-email'
       }
     });
     this.$container = $('#pages', this.$el);

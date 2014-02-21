@@ -7,14 +7,14 @@ module.exports = HumanView.extend({
   render: function () {
     this.renderAndBind({});
     if (this.collection.length) {
-      this.renderCollection(this.collection, AchievementView, this.$('.items')[0]);
+      this.renderCollection(this.collection, AchievementView, this.$('.js-items')[0]);
     }
     var that = this;
     this.collection.on('sync', this.render.bind(this));
     return this;
   },
   events: {
-    'click .view-more': 'viewMore'
+    'click .js-view-more': 'viewMore'
   },
   viewMore: function (evt) {
     this.collection.addPage();
