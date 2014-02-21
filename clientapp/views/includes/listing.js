@@ -12,5 +12,13 @@ module.exports = HumanView.extend({
     var that = this;
     this.collection.on('sync', this.render.bind(this));
     return this;
+  },
+  events: {
+    'click .view-more': 'viewMore'
+  },
+  viewMore: function (evt) {
+    this.collection.addPage();
+    evt.preventDefault();
+    evt.stopPropagation();
   }
 });

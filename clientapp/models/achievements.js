@@ -14,7 +14,7 @@ function fakeAchievement () {
   };
   return data;
 }
-  
+
 module.exports = Backbone.Collection.extend({
   model: Achievement,
   initialize: function (opts) {
@@ -26,5 +26,8 @@ module.exports = Backbone.Collection.extend({
     setTimeout(function () {
       options.success(_.times(pageSize, fakeAchievement));
     }, 0);
+  },
+  addPage: function () {
+    this.fetch({remove: false});
   }
 });
