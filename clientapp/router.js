@@ -5,6 +5,7 @@ var Achievements = require('./models/achievements');
 var PathwayView = require('./views/pages/pathway');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
+var PathwayPage = require('./views/pages/pathway');
 var query = require('query-param-getter');
 
 var cache;
@@ -24,6 +25,7 @@ module.exports = Backbone.Router.extend({
   routes: {
     '': 'landing',
     'badge/:id': 'showBadge',
+    'pathway/:id': 'showPathway',
     'pathway': 'pathway',
     '*url': 'nope'
   },
@@ -44,6 +46,16 @@ module.exports = Backbone.Router.extend({
       earned: !!query('earned')
     });
     app.renderPage(new BadgePage({model: badge}));
+  },
+
+  showPathway: function (id) {
+    var pathway = cache || new Achievement({
+      type: 'pathway',
+      title: 'A Very Long Pathway Title ' + id,
+      creator: 'None',
+      favorite: !!query('fav')
+    });
+    app.renderPage(new PathwayPage({model: pathway}));
   },
 
   pathway: function () {
