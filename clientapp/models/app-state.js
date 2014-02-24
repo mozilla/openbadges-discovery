@@ -33,7 +33,7 @@ module.exports = HumanModel.define({
           dataType: "json"
         }).done(function (data, status, xhr) {
           if (data && data.status === "okay") {
-            self.currentUser.login(data.user);
+            self.currentUser.setLoggedIn(data.user);
             self.trigger('login:success', data.email);
           }
           else {
@@ -46,7 +46,7 @@ module.exports = HumanModel.define({
           url: "/persona/logout",
           type: "POST"
         }).done(function (data, status, xhr) {
-          self.currentUser.logout();
+          self.currentUser.setLoggedOut();
           self.trigger('logout');
         });
       },
@@ -55,5 +55,11 @@ module.exports = HumanModel.define({
         self.trigger('ready');
       }
     });
+  },
+  startLogin: function () {
+    navigator.id.request();
+  },
+  logout: function () {
+    navigator.id.logout();
   }
 });

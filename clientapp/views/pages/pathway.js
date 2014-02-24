@@ -11,11 +11,11 @@ module.exports = HumanView.extend({
     'click .js-pledge-button': 'pledge'
   },
   pledge: function (evt) {
-    if (window.app.state.currentUser.loggedIn) {
+    if (window.app.currentUser.loggedIn) {
       console.log('Not yet implemented.'); 
     }
     else {
-      navigator.id.request();
+      window.app.startLogin();
     }
     evt.preventDefault();
     evt.stopPropagation();

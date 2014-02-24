@@ -2,7 +2,7 @@ var HumanModel = require('human-model');
 
 module.exports = HumanModel.define({
   initialize: function (opts) {
-    if (opts === null) this.logout();
+    if (opts === null) this.setLoggedOut();
   },
   url: '/api/user',
   props: {
@@ -24,11 +24,11 @@ module.exports = HumanModel.define({
       }
     }
   },
-  login: function (data) {
+  setLoggedIn: function (data) {
     this.clear();
     this.set(data);
   },
-  logout: function () {
+  setLoggedOut: function () {
     this.clear();
     this.email = null;
   }

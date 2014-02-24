@@ -33,7 +33,7 @@ describe('user clientside model', function () {
 
   it('should log out', function () {
     var user = new User({email: 'hi@example.org', id: 123});
-    user.logout();
+    user.setLoggedOut();
     should.strictEqual(user.email, null);
     should.strictEqual(user.loggedInUser, null);
     user.loggedIn.should.equal(false);
@@ -41,7 +41,7 @@ describe('user clientside model', function () {
 
   it('should log in', function () {
     var user = new User(null);
-    user.login({email: 'hi@mockmyid.com', id: 123});
+    user.setLoggedIn({email: 'hi@mockmyid.com', id: 123});
     user.email.should.equal('hi@mockmyid.com');
     user.loggedInUser.should.equal('hi@mockmyid.com');
     user.loggedIn.should.equal(true);
