@@ -15,19 +15,19 @@ module.exports = {
       options.headers['x-csrf-token'] = config.csrf;
     });
 
-    var self = window.app = this;
+    window.app = this;
 
-    var me = window.me = new AppState(config);
-    me.startPersona();
-    me.on('login:failure', function (reason) {
+    window.app.state = new AppState(config);
+    window.app.state.startPersona();
+    window.app.state.on('login:failure', function (reason) {
       alert('Login error - ' + reason);
     });
 
-    this.router = new Router({me: me});
+    this.router = new Router();
     this.history = Backbone.history;
 
-    me.on('ready', function () {
-      var layout = app.layout = new Layout({model: me});
+    window.app.state.on('ready', function () {
+      var layout = app.layout = new Layout({model: window.app.state});
       $('body').append(layout.render().el);
       $(document).foundation();
       this.history.start({pushState: true, root: '/'});

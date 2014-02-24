@@ -21,7 +21,7 @@ module.exports = HumanView.extend({
     'click .js-toggle-wishlist': 'toggleWishlist'
   },
   toggleWishlist: function (evt) {
-    if (me.currentUser.loggedIn) {
+    if (window.app.state.currentUser.loggedIn) {
       this.model.favorite = !this.model.favorite;
     }
     else {

@@ -13,7 +13,7 @@ var cache;
 module.exports = Backbone.Router.extend({
 
   initialize: function (opts) {
-    opts.me.currentUser.on('change:loggedIn', function () {
+    window.app.state.currentUser.on('change:loggedIn', function () {
       app.history.loadUrl();
     });
     this.listing = new Achievements({
@@ -32,7 +32,7 @@ module.exports = Backbone.Router.extend({
 
   landing: function () {
     app.renderPage(new LandingView({
-      model: me,
+      model: window.app.state,
       collection: this.listing
     }));
   },
@@ -59,7 +59,7 @@ module.exports = Backbone.Router.extend({
   },
 
   pathway: function () {
-    if (!me.loggedIn) return app.history.navigate('welcome', {trigger: true});
+    if (!window.app.state.loggedIn) return app.history.navigate('welcome', {trigger: true});
 
     var requirements = new Requirements();
     requirements.fetch({

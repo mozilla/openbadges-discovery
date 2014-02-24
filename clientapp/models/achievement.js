@@ -45,7 +45,7 @@ module.exports = HumanModel.define({
       cache: false,
       deps: ['favorite'],
       fn: function () {
-        return me.currentUser.loggedIn ? this.favorite : false; 
+        return window.app.state.currentUser.loggedIn ? this.favorite : false; 
       }
     }
   }
