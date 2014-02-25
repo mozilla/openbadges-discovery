@@ -1,14 +1,14 @@
-.pathway-cell {
+.cell {
   border: 1px dashed #aaa;
   padding: 0;
   @include one-to-one-aspect;
 }
 
-.pathway-cell.drop {
+.cell.drop {
   background-color: rgba(255, 255, 0, 0.2);
 }
 
-.pathway-badge {
+.requirement {
   text-align: center;
   @include vertically-centered-children;
 

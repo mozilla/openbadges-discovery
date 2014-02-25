@@ -1,0 +1,10 @@
+<div class="grid">
+  {% for row in range(0, height) %}
+  <div class="row">
+    {% for column in range(0, width) %}
+    <div class="small-{{12/width}} columns cell" data-coord="{{column}},{{row}}">
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>

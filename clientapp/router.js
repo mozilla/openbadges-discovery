@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
+var Requirements = require('./models/requirements');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
@@ -46,13 +47,19 @@ module.exports = Backbone.Router.extend({
   },
 
   showPathway: function (id) {
+    id = parseInt(id);
     var pathway = cache || new Achievement({
+      id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
       creator: 'None',
       favorite: !!query('fav')
     });
-    app.renderPage(new PathwayPage({model: pathway}));
+    var requirements = new Requirements(null, {
+      parentId: pathway.id
+    });
+    requirements.fetch();
+    app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
   },
 
   nope: function () {
