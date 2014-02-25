@@ -28,6 +28,9 @@ module.exports = HumanView.extend({
       this.model.favorite = !this.model.favorite;
     }
     else {
+      window.app.once('login', function (result) {
+        if (result === 'success') this.model.favorite = true;
+      }.bind(this));
       window.app.startLogin();
     }
     evt.preventDefault();
