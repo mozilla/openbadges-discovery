@@ -1,8 +1,6 @@
 var Backbone = require('backbone');
-var Requirements = require('./models/pathway-requirements');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
-var PathwayView = require('./views/pages/pathway');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
@@ -26,7 +24,6 @@ module.exports = Backbone.Router.extend({
     '': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
-    'pathway': 'pathway',
     '*url': 'nope'
   },
 
@@ -56,23 +53,6 @@ module.exports = Backbone.Router.extend({
       favorite: !!query('fav')
     });
     app.renderPage(new PathwayPage({model: pathway}));
-  },
-
-  pathway: function () {
-    if (!window.app.loggedIn) return app.history.navigate('welcome', {trigger: true});
-
-    var requirements = new Requirements();
-    requirements.fetch({
-      success: function (collection, xhr, opts) {
-        app.renderPage(new PathwayView({
-          collection: collection
-        }));
-      },
-      error: function () {
-        alert('Error fetching pathway');
-        console.log('Error details', arguments);
-      }
-    });
   },
 
   nope: function () {
