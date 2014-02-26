@@ -5,6 +5,10 @@ module.exports = HumanModel.define({
     id: ['number'],
     x: ['number'],
     y: ['number'],
-    name: ['string']
+    name: ['string'],
+    core: {
+      type: 'boolean',
+      default: false
+    }
   }
 });

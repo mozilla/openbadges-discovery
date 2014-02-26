@@ -8,7 +8,8 @@ function fakeRequirement (i) {
     id: id++,
     x: Math.floor(Math.random()*3),
     y: i, 
-    name: 'Requirement ' + id
+    name: 'Requirement ' + id,
+    core: (Math.random()*2 < 1)
   };
   return data;
 }
