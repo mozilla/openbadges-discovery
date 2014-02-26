@@ -9,7 +9,6 @@ module.exports = HumanView.extend({
     if (this.collection.length) {
       this.renderCollection(this.collection, AchievementView, this.$('.js-items')[0]);
     }
-    var that = this;
     this.collection.on('sync', this.render.bind(this));
     return this;
   },

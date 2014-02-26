@@ -1,10 +1,10 @@
 var Backbone = require('backbone');
-var Requirements = require('./models/pathway-requirements');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
-var PathwayView = require('./views/pages/pathway');
+var Requirements = require('./models/requirements');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
+var PathwayPage = require('./views/pages/pathway');
 var query = require('query-param-getter');
 
 var cache;
@@ -12,7 +12,7 @@ var cache;
 module.exports = Backbone.Router.extend({
 
   initialize: function (opts) {
-    opts.me.currentUser.on('change:loggedIn', function () {
+    window.app.currentUser.on('change:loggedIn', function () {
       app.history.loadUrl();
     });
     this.listing = new Achievements({
@@ -24,13 +24,13 @@ module.exports = Backbone.Router.extend({
   routes: {
     '': 'landing',
     'badge/:id': 'showBadge',
-    'pathway': 'pathway',
+    'pathway/:id': 'showPathway',
     '*url': 'nope'
   },
 
   landing: function () {
     app.renderPage(new LandingView({
-      model: me,
+      model: window.app,
       collection: this.listing
     }));
   },
@@ -46,21 +46,20 @@ module.exports = Backbone.Router.extend({
     app.renderPage(new BadgePage({model: badge}));
   },
 
-  pathway: function () {
-    if (!me.loggedIn) return app.history.navigate('welcome', {trigger: true});
-
-    var requirements = new Requirements();
-    requirements.fetch({
-      success: function (collection, xhr, opts) {
-        app.renderPage(new PathwayView({
-          collection: collection
-        }));
-      },
-      error: function () {
-        alert('Error fetching pathway');
-        console.log('Error details', arguments);
-      }
+  showPathway: function (id) {
+    id = parseInt(id);
+    var pathway = cache || new Achievement({
+      id: id,
+      type: 'pathway',
+      title: 'A Very Long Pathway Title ' + id,
+      creator: 'None',
+      favorite: !!query('fav')
     });
+    var requirements = new Requirements(null, {
+      parentId: pathway.id
+    });
+    requirements.fetch();
+    app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
   },
 
   nope: function () {

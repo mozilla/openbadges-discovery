@@ -21,11 +21,11 @@ module.exports = HumanView.extend({
     return this;
   },
   login: function (e) {
-    navigator.id.request();
+    this.model.startLogin();
     e.preventDefault();
   },
   logout: function (e) {
-    navigator.id.logout();
+    this.model.logout();
     e.preventDefault();
   }
 });

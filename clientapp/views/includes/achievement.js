@@ -24,11 +24,14 @@ module.exports = HumanView.extend({
     evt.stopPropagation();
   },
   toggleWishlist: function (evt) {
-    if (me.currentUser.loggedIn) {
+    if (window.app.currentUser.loggedIn) {
       this.model.favorite = !this.model.favorite;
     }
     else {
-      navigator.id.request();
+      window.app.once('login', function (result) {
+        if (result === 'success') this.model.favorite = true;
+      }.bind(this));
+      window.app.startLogin();
     }
     evt.preventDefault();
     evt.stopPropagation();

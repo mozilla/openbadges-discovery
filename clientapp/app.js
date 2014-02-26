@@ -5,42 +5,39 @@ var AppState = require('./models/app-state');
 var User = require('./models/user');
 var Layout = require('./views/layout');
 
-module.exports = {
-  launch: function () {
+function launch () {
+  console.log("Initial config:", config);
 
-    console.log("Initial config:", config);
+  $.ajaxPrefilter(function (options, originalOptions, xhr) {
+    options.headers = options.headers || {};
+    options.headers['x-csrf-token'] = config.csrf;
+  });
 
-    $.ajaxPrefilter(function (options, originalOptions, xhr) {
-      options.headers = options.headers || {};
-      options.headers['x-csrf-token'] = config.csrf;
-    });
+  window.app = new AppState(config);
+  window.app.startPersona();
+  window.app.on('login:failure', function (reason) {
+    alert('Login error - ' + reason);
+  });
 
-    var self = window.app = this;
+  window.app.router = new Router();
+  window.app.history = Backbone.history;
 
-    var me = window.me = new AppState(config);
-    me.startPersona();
-    me.on('login:failure', function (reason) {
-      alert('Login error - ' + reason);
-    });
+  window.app.renderPage = renderPage;
 
-    this.router = new Router({me: me});
-    this.history = Backbone.history;
+  window.app.on('ready', function () {
+    var layout = this.layout = new Layout({model: this});
+    $('body').append(layout.render().el);
+    $(document).foundation();
+    this.history.start({pushState: true, root: '/'});
+  }, window.app);
+}
 
-    me.on('ready', function () {
-      var layout = app.layout = new Layout({model: me});
-      $('body').append(layout.render().el);
-      $(document).foundation();
-      this.history.start({pushState: true, root: '/'});
-    }, this);
-  },
+function renderPage (view) {
+  if (window.app.currentPage)
+    window.app.currentPage.remove();
 
-  renderPage: function (view) {
-    if (app.currentPage)
-      app.currentPage.remove();
+  window.app.currentPage = view;
+  window.app.layout.$container.append(view.render().el);
+}
 
-    app.currentPage = view;
-    app.layout.$container.append(view.render().el);
-  }
-};
-
-module.exports.launch();
+launch();

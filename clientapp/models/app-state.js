@@ -19,41 +19,59 @@ module.exports = HumanModel.define({
       setOnce: true
     }
   },
-  startPersona: function () {
+  _verify: function (data, status, xhr) {
+    if (data && data.status === "okay") {
+      this.currentUser.setLoggedIn(data.user);
+      this.trigger('login:success', data.email);
+      this.trigger('login', 'success', data.email);
+    }
+    else {
+      this.trigger('login:failure', data.reason);
+      this.trigger('login', 'failure', data.reason);
+    }
+  },
+  _oncancel: function () {
+    this.trigger('login:cancelled');
+    this.trigger('login', 'cancelled');
+  },
+  _onlogin: function (assertion) {
+    $.ajax({
+      url: "/persona/verify",
+      type: "POST",
+      data: {
+        assertion: assertion
+      },
+      dataType: "json"
+    }).done(this._verify.bind(this));
+  },
+  _onlogout: function () {
     var self = this;
-    this.navigator.id.watch({
-      loggedInUser: self.currentUser.loggedInUser,
-      onlogin: function (assertion) {
-        $.ajax({
-          url: "/persona/verify",
-          type: "POST",
-          data: {
-            assertion: assertion
-          },
-          dataType: "json"
-        }).done(function (data, status, xhr) {
-          if (data && data.status === "okay") {
-            self.currentUser.login(data.user);
-            self.trigger('login:success', data.email);
-          }
-          else {
-            self.trigger('login:failure', data.reason);
-          }
-        });
-      },
-      onlogout: function () {
-        $.ajax({
-          url: "/persona/logout",
-          type: "POST"
-        }).done(function (data, status, xhr) {
-          self.currentUser.logout();
-          self.trigger('logout');
-        });
-      },
-      onready: function () {
-        self.personaReady = true;
-        self.trigger('ready');
-      }
+    $.ajax({
+      url: "/persona/logout",
+      type: "POST"
+    }).done(function (data, status, xhr) {
+      self.currentUser.setLoggedOut();
+      self.trigger('logout');
     });
+  },
+  _onready: function () {
+    this.personaReady = true;
+    this.trigger('ready');
+  },
+  startPersona: function () {
+    this.navigator.id.watch({
+      loggedInUser: this.currentUser.loggedInUser,
+      onlogin: this._onlogin.bind(this),
+      onlogout: this._onlogout.bind(this),
+      onready: this._onready.bind(this)
+    });
+  },
+  startLogin: function () {
+    this.navigator.id.request({
+      oncancel: this._oncancel.bind(this)
+    });
+  },
+  logout: function () {
+    this.navigator.id.logout();
   }
 });

@@ -4,7 +4,7 @@ var templates = require('templates');
 module.exports = HumanView.extend({
   template: templates.pages.badge,
   classBindings: {
-    'userFavorite': '.js-favorite-icon' 
+    'userFavorite': '.js-favorite-icon'
   },
   textBindings: {
     'status': '.js-status'
@@ -21,11 +21,14 @@ module.exports = HumanView.extend({
     'click .js-toggle-wishlist': 'toggleWishlist'
   },
   toggleWishlist: function (evt) {
-    if (me.currentUser.loggedIn) {
+    if (window.app.currentUser.loggedIn) {
       this.model.favorite = !this.model.favorite;
     }
     else {
-      navigator.id.request();
+      window.app.once('login', function (result) {
+        if (result === 'success') this.model.favorite = true;
+      }.bind(this));
+      window.app.startLogin();
     }
     evt.preventDefault();
     evt.stopPropagation();
