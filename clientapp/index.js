@@ -11,6 +11,10 @@ var fs = require('fs');
 module.exports = function (app, config) {
   config = config || {};
 
+  function log () {
+    if (!config.quiet) console.log.apply(console, arguments);
+  }
+
   var opts = _.extend({
     main: path.join(__dirname, 'app.js'),
     modulesDir: path.join(__dirname, './modules'),
@@ -34,7 +38,7 @@ module.exports = function (app, config) {
       path.join(__dirname, 'build/styles.css')
     ],
     beforeBuildCSS: function () {
-      console.log("Compiling SCSS...");
+      log("Compiling SCSS...");
       /* We assume each stylesheet listed above gets built from a similarly named
          SCSS counterpart in clientapp/styles */
       opts.stylesheets.forEach(function (cssFile) {
@@ -45,7 +49,7 @@ module.exports = function (app, config) {
       });
     },
     beforeBuildJS: function () {
-      console.log("Precompiling templates...");
+      log("Precompiling templates...");
       var templates = nunjucks.precompile(path.join(__dirname, '/templates'), {
         include: [/.*\.html/]
       });
@@ -54,7 +58,7 @@ module.exports = function (app, config) {
     server: app
   }, config);
 
-  console.log("Development mode:", !!opts.developmentMode);
+  log("Development mode:", !!opts.developmentMode);
 
   return new Moonboots(opts);
 };
