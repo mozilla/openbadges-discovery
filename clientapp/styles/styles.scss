@@ -31,7 +31,7 @@ footer {
   border-top: 1px solid lightgray;
 }
 
-.user-controls {
+.user-panel {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -39,29 +39,5 @@ footer {
   .fa-user {
     background: white;
     padding: 4px 8px;
-  }
-}
-
-.user-controls {
-  .user-email {
-    display: none;
-  }
-  .logout-control {
-    display: none;
-  }
-  .login-control {
-    display: initial;
-  }
-
-  &.loggedIn {
-    .user-email {
-      display: initial;
-    }
-    .logout-control {
-      display: initial;
-    }
-    .login-control {
-      display: none;
-    }
   }
 }

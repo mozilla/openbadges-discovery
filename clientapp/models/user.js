@@ -22,6 +22,18 @@ module.exports = HumanModel.define({
       fn: function () {
         return this.email;
       }
+    },
+    hideLoggedIn: {
+      deps: ['loggedIn'],
+      fn: function () {
+        return this.loggedIn ? 'hide' : '';
+      }
+    },
+    hideLoggedOut: {
+      deps: ['loggedIn'],
+      fn: function () {
+        return !this.loggedIn ? 'hide' : '';
+      }
     }
   },
   setLoggedIn: function (data) {

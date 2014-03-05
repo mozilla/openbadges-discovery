@@ -12,7 +12,8 @@ module.exports = HumanView.extend({
     this.renderAndBind(this.model);
     this.registerBindings(this.model.currentUser, {
       classBindings: {
-        'loggedIn': '.js-user-controls'
+        'hideLoggedIn': '.js-login-item',
+        'hideLoggedOut': '.js-logout-item, .js-user-panel'
       },
       textBindings: {
         'email': '.js-user-email'
