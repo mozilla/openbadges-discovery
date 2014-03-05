@@ -1,26 +1,28 @@
 <section>
   <header>
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <li class="name">
-          <h1><a href="#">Pathways</a></h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
-      </ul>
-      <section class="top-bar-section">
-        <ul class="right user-controls js-user-controls">
-          <li class="user-email">
-            <a class="js-user-email" href="#">{{ currentUser.email }}</a>
-          </li>
-          <li class="logout-control">
-            <a href="#" class="js-logout">Sign out</a>
-          </li>
-          <li class="login-control">
-            <a href="#" class="js-login">Sign in</a>
-          </li>
-        </ul>
-      </section>
-    </nav>
+    <div class="row">
+      <div class="small-3 columns">
+        <nav>
+          <a href="#" class="button dropdown" data-dropdown="nav">
+            <i class="fa fa-bars"></i>
+          </a>
+          <ul id="nav" data-dropdown-content class="f-dropdown js-user-controls user-controls">
+            <li><a href="#" class="js-view-latest"><i class="fa fa-clock-o"></i> Latest</a></li>
+            <li class="logout-control"><a href="#" class="js-logout">Sign out</a></li>
+            <li class="login-control"><a href="#" class="js-login">Sign in</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="small-6 columns text-center">
+        <h1 class="logo">Discovery Logo</h1>
+      </div>
+      <div class="small-3 columns text-right user-controls js-user-controls user-email">
+        <span>
+          <i class="fa fa-user fa-2x"></i>
+          <a class="js-user-email show-for-large-up" href="#">{{ currentUser.email }}</a>
+        </span>
+      </div>
+    </div>
   </header>
   <section id="pages">
   </section>

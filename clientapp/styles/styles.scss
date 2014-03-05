@@ -12,6 +12,11 @@ body {
 #pages {
   background-color: white;
 }
+header {
+  .columns {
+    line-height: 72px;
+  }
+}
 footer {
   padding-bottom: 3em;
 }
@@ -19,6 +24,22 @@ footer {
 .banner {
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
+}
+
+.logout-control a,
+.login-control a {
+  border-top: 1px solid lightgray;
+}
+
+.user-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .fa-user {
+    background: white;
+    padding: 4px 8px;
+  }
 }
 
 .user-controls {
