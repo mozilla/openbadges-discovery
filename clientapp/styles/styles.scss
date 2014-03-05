@@ -12,6 +12,11 @@ body {
 #pages {
   background-color: white;
 }
+header {
+  .columns {
+    line-height: 72px;
+  }
+}
 footer {
   padding-bottom: 3em;
 }
@@ -21,26 +26,18 @@ footer {
   border-bottom: 1px solid gray;
 }
 
-.user-controls {
-  .user-email {
-    display: none;
-  }
-  .logout-control {
-    display: none;
-  }
-  .login-control {
-    display: initial;
-  }
+.logout-control a,
+.login-control a {
+  border-top: 1px solid lightgray;
+}
 
-  &.loggedIn {
-    .user-email {
-      display: initial;
-    }
-    .logout-control {
-      display: initial;
-    }
-    .login-control {
-      display: none;
-    }
+.user-panel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .fa-user {
+    background: white;
+    padding: 4px 8px;
   }
 }
