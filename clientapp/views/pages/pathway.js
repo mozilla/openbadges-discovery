@@ -6,8 +6,10 @@ module.exports = HumanView.extend({
   template: templates.pages.pathway,
   render: function () {
     this.renderAndBind(this.model);
+    console.log(this.$('.pathway-grid-container').width());
     this.renderSubview(new Grid({
-      collection: this.collection
+      collection: this.collection,
+      width: 600
     }), '.pathway-grid-container');
     return this;
   },

@@ -27,7 +27,9 @@ module.exports = function (app, config) {
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.mouse.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.draggable.js'),
       path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.droppable.js'),
-      path.join(__dirname, '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js')
+      //path.join(__dirname, '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js'),
+      //path.join(__dirname, '../bower_components/easeljs/lib/easeljs-0.7.1.min.js')
+      path.join(__dirname, '../bower_components/easeljs/build/output/easeljs-NEXT.combined.js')
     ],
     stylesheets: [
       path.join(__dirname, 'build/normalize.css'),
