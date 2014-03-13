@@ -13,17 +13,23 @@ body {
   background-color: white;
 }
 header {
+  background-color: white;
+  padding-bottom: 0.2em;
+
   .columns {
     line-height: 72px;
   }
+}
+nav {
+  margin-top: 0.2em;
+  padding-top: 0.8em;
 }
 footer {
   padding-bottom: 3em;
 }
 
 .banner {
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
+  background-color: lightgray;
 }
 
 .logout-control a,
