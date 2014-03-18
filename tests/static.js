@@ -16,9 +16,9 @@ modules.forEach(function (moduleFileName) {
     b.require(modulesDir + '/' + moduleFileName, {expose: path.basename(moduleFileName, '.js')});
   }
 });
-b.bundle({}, function (err, js) {
-  if (err) throw err;
-  app.get('/modules.js', function (req, res, next) {
+app.get('/modules.js', function (req, res, next) {
+  b.bundle({debug: true}, function (err, js) {
+    if (err) throw err;
     res.type('application/javascript');
     res.send(js);
   });
