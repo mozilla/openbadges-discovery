@@ -172,7 +172,7 @@ function Editor (opts) {
       });
     }
 
-    for (var row = 0; row <= maxRow; row++) {
+    for (var row = 0; row <= maxRow + 2; row++) {
       for (var col = 0; col < self.columns; col++) {
         var m = new makeMarker(col, row, self);
         self.stage.addChild(m);
