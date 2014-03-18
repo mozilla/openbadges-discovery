@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor</title>
+  <link href="/bower_components/foundation/css/normalize.css" type="text/css" rel="stylesheet">
+  <link href="/bower_components/foundation/css/foundation.min.css" type="text/css" rel="stylesheet">
+  <style>
+    canvas {
+      border: 1px dotted gray;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <div class="small-12 columns">
+      <fieldset>
+        <legend>Options:</legend>
+        <div class="row">
+          <div class="medium-6 columns">
+            <div class="row">
+              <div class="small-3 columns">
+                <label class="right inline">Resize:</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="radio" name="resize" id="resizeRedraw" value="redraw" checked/>
+                <label for="resizeRedraw" class="inline">Redraw</label>
+                <input type="radio" name="resize" id="resizeScale" value="scale" /><label for="resizeScale" class="inline">CSS scale</label>
+              </div>
+            </div>
+          </div>
+          <div class="medium-6 columns">
+            <div class="row">
+              <div class="small-3 columns">
+                <label class="right inline">Columns:</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="text" value="3" name="num-columns" id="num-columns" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="small-12 columns">
+      <canvas id="canvas" width=1000></canvas>
+    </div>
+  </div>
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/easeljs/lib/easeljs-0.7.1.min.js"></script>
+  <script src="/modules.js"></script>
+  <script>
+  var Editor = require('editor');
+
+  var editor = new Editor({
+    columns: 3,
+    canvas: document.getElementById('canvas'),
+    mode: 'edit'
+  });
+
+  editor.render([
+    { x: 0, y: 0, name: 'hi there'},
+    { x: 1, y: 0, name: 'hi there'},
+    { x: 2, y: 1, name: 'hi there'}
+  ]);
+
+  $(window).bind('resize', function () {
+    if ($('[name="resize"]:checked').val() === 'redraw') {
+      $('#canvas').attr('width', $('body').width());
+      editor.resize();
+    }
+  });
+  $('[name="resize"]').change(function () {
+    $('#canvas').attr('width', $('body').width());
+    editor.resize();
+  });
+  $('#num-columns').keyup(function () {
+    var n = parseInt($(this).val());
+    if (n) {
+      editor.columns = n;
+      editor.redraw();
+    }
+  });
+
+  </script>
+</body>
+</html>

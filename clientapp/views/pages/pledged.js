@@ -11,7 +11,6 @@ module.exports = HumanView.extend({
     });
     this.renderSubview(new Editor({
       collection: this.collection,
-      width: 600,
       mode: 'edit'
     }), '.pathway-editor-container');
     return this;

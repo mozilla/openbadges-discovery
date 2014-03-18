@@ -3,5 +3,6 @@
     "describe",
     "it"
   ],
-  "expr": "true"
+  "expr": "true",
+  "esnext": true
 }

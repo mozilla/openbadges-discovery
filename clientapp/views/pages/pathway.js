@@ -12,7 +12,6 @@ module.exports = HumanView.extend({
     console.log(this.$('.pathway-editor-container').width());
     this.renderSubview(new Editor({
       collection: this.collection,
-      width: 600,
       mode: 'view'
     }), '.pathway-editor-container');
     return this;
