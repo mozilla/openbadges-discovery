@@ -1,14 +1,18 @@
 var HumanView = require('human-view');
 var templates = require('templates');
-var Grid = require('../includes/grid');
+var Editor = require('../includes/editor');
 
 module.exports = HumanView.extend({
   template: templates.pages.pathway,
   render: function () {
-    this.renderAndBind(this.model);
-    this.renderSubview(new Grid({
-      collection: this.collection
-    }), '.pathway-grid-container');
+    this.renderAndBind({
+      pathway: this.model,
+      user: window.app.currentUser
+    });
+    this.renderSubview(new Editor({
+      collection: this.collection,
+      mode: 'view'
+    }), '.pathway-editor-container');
     return this;
   },
   events: {
@@ -16,7 +20,10 @@ module.exports = HumanView.extend({
   },
   pledge: function (evt) {
     if (window.app.currentUser.loggedIn) {
-      console.log('Not yet implemented.');
+      window.app.router.navigateTo('/pledged/' + this.model.id, {
+        pathway: this.model,
+        requirements: this.collection
+      });
     }
     else {
       window.app.startLogin();

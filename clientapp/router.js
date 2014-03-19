@@ -5,6 +5,7 @@ var Requirements = require('./models/requirements');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
+var PledgedPage = require('./views/pages/pledged');
 var query = require('query-param-getter');
 
 var cache;
@@ -25,6 +26,7 @@ module.exports = Backbone.Router.extend({
     '': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
+    'pledged/:id': 'showEditor',
     '*url': 'nope'
   },
 
@@ -60,6 +62,29 @@ module.exports = Backbone.Router.extend({
     });
     requirements.fetch();
     app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
+  },
+
+  showEditor: function (id) {
+    id = parseInt(id);
+    cache = cache || {};
+    var pathway = cache.pathway || new Achievement({
+      id: id,
+      type: 'pathway',
+      title: 'A Very Long Pathway Title ' + id,
+      creator: 'None',
+      favorite: !!query('fav')
+    });
+    var requirements;
+    if (cache.requirements) {
+      requirements = cache.requirements;
+    }
+    else {
+      requirements = new Requirements(null, {
+        parentId: pathway.id
+      });
+      requirements.fetch();
+    }
+    app.renderPage(new PledgedPage({model: pathway, collection: requirements}));
   },
 
   nope: function () {

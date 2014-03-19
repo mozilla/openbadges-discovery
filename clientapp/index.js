@@ -22,12 +22,7 @@ module.exports = function (app, config) {
       path.join(__dirname, '../bower_components/foundation/js/vendor/fastclick.js'),
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.js'),
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.dropdown.js'),
-      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.core.js'),
-      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.widget.js'),
-      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.mouse.js'),
-      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.draggable.js'),
-      path.join(__dirname, '../bower_components/jquery-ui/ui/jquery.ui.droppable.js'),
-      path.join(__dirname, '../bower_components/jquery-ui-touch-punch-improved/jquery.ui.touch-punch-improved.js')
+      path.join(__dirname, '../bower_components/easeljs/lib/easeljs-0.7.1.min.js')
     ],
     stylesheets: [
       path.join(__dirname, 'build/normalize.css'),
