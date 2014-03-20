@@ -42,48 +42,55 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="medium-6 columns">
+            <div class="row">
+              <div class="small-3 columns">
+                <label class="right inline">Add:</label>
+              </div>
+              <div class="small-9 columns">
+                <div class="row collapse">
+                  <div class="small-1 columns">
+                    <span class="prefix">x:</span>
+                  </div>
+                  <div class="small-2 columns">
+                    <input type="text" value="0" name="add-x" id="add-x" />
+                  </div>
+                  <div class="small-1 small-offset-1 columns">
+                    <span class="prefix">y:</span>
+                  </div>
+                  <div class="small-2 columns">
+                    <input type="text" value="0" name="add-y" id="add-y" />
+                  </div>
+                  <div class="small-4 small-offset-1 columns">
+                    <button id="add">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="medium-6 columns">
+            <div class="row">
+              <div class="small-3 columns">
+                <label class="right inline">Remove:</label>
+              </div>
+              <div class="small-4 columns">
+                <input type="text" placeholder="ID" name="remove-id" id="remove-id" />
+              </div>
+              <div class="small-5 columns">
+                <button id="remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </fieldset>
     </div>
-    <div class="small-12 columns">
+    <div class="small-12 columns" id="canvas-container">
       <canvas id="canvas" width=1000></canvas>
     </div>
   </div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
   <script src="/bower_components/easeljs/lib/easeljs-0.7.1.min.js"></script>
-  <script src="/modules.js"></script>
-  <script>
-  var Editor = require('editor');
-
-  var editor = new Editor({
-    columns: 3,
-    canvas: document.getElementById('canvas'),
-    mode: 'edit'
-  });
-
-  editor.render([
-    { x: 0, y: 0, name: 'hi there'},
-    { x: 1, y: 0, name: 'hi there'},
-    { x: 2, y: 1, name: 'hi there'}
-  ]);
-
-  $(window).bind('resize', function () {
-    if ($('[name="resize"]:checked').val() === 'redraw') {
-      $('#canvas').attr('width', $('body').width());
-      editor.resize();
-    }
-  });
-  $('[name="resize"]').change(function () {
-    $('#canvas').attr('width', $('body').width());
-    editor.resize();
-  });
-  $('#num-columns').keyup(function () {
-    var n = parseInt($(this).val());
-    if (n) {
-      editor.columns = n;
-      editor.redraw();
-    }
-  });
-
-  </script>
+  <script src="/editor.js"></script>
 </body>
 </html>
