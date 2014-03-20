@@ -102,7 +102,8 @@ function makePathwayItem(item) {
 
 module.exports = Backbone.View.extend({
   initialize: function (opts) {
-    if (!opts) throw new Error('need opts TODO specify which');
+    if (!(opts && opts.canvas && opts.columns && opts.requirements)) 
+      throw new Error('You must specify canvas, columns, and requirements options');
 
     Object.defineProperty(this, "columnCount", {
       get: function () { return world.columnCount; },
