@@ -13,10 +13,10 @@ window.reqs.add = function (item) {
   this.trigger('add', item);
 };
 window.reqs.remove = function (id) {
-  var idx = _.findWhere(reqs, {id: id}); 
-  if (idx) {
-    var items = this.splice(idx, 1);
-    this.trigger('remove', items[0]);
+  var item = _.findWhere(reqs, {id: id}); 
+  if (item) {
+    this.splice(reqs.indexOf(item), 1);
+    this.trigger('remove', item);
   }
 };
 
@@ -63,5 +63,6 @@ $('#add').click(function () {
 
 $('#remove').click(function () {
   var id = parseInt($('#remove-id').val());
+  console.log('removing', id);
   if (id) reqs.remove(id);
 });

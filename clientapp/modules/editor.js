@@ -48,6 +48,7 @@ var world = new World();
 function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
+  console.log('naming', container.id, item.id);
   container.name = item.id;
   var rect = new createjs.Shape();
   var img = new createjs.Bitmap('/static/badge.png');
@@ -128,8 +129,10 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.requirements, "add", this.addBadge);
 
     this.listenTo(this.requirements, "remove", function (req) {
+      console.log(arguments);
       if (req.id) {
         var item = this.stage.getChildByName(req.id);
+        console.log('removing', req.id, item.name);
         this.stage.removeChild(item);
         this.refresh();
       }
