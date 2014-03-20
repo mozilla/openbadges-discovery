@@ -17,6 +17,7 @@ module.exports = HumanView.extend({
       mode: this.mode,
       requirements: this.collection
     });
+    this.editor.render();
     return this;
   },
   remove: function () {

@@ -48,7 +48,6 @@ var world = new World();
 function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
-  console.log('naming', container.id, item.id);
   container.name = item.id;
   var rect = new createjs.Shape();
   var img = new createjs.Bitmap('/static/badge.png');
@@ -129,10 +128,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.requirements, "add", this.addBadge);
 
     this.listenTo(this.requirements, "remove", function (req) {
-      console.log(arguments);
       if (req.id) {
         var item = this.stage.getChildByName(req.id);
-        console.log('removing', req.id, item.name);
         this.stage.removeChild(item);
         this.refresh();
       }
@@ -158,6 +155,20 @@ module.exports = Backbone.View.extend({
     this.layout();
   },
   addBadge: function (model) {
+    if (model.y === undefined) {
+      var row = 0;
+      while (model.y === undefined) {
+        var xs = _.pluck(this.requirements.where({y: row}), 'x');
+        var empties = _.difference(_.range(world.columnCount), xs);
+        if (empties.length) {
+          model.x = empties.shift();
+          model.y = row;
+        }
+        else {
+          row++;
+        }
+      }
+    }
     this.maxRow = Math.max(this.maxRow, model.y);
     var item = makePathwayItem(model);
     item.on('ready', function () {

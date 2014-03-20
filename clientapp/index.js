@@ -22,6 +22,8 @@ module.exports = function (app, config) {
       path.join(__dirname, '../bower_components/foundation/js/vendor/fastclick.js'),
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.js'),
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.dropdown.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.tab.js'),
+      path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.accordion.js'),
       path.join(__dirname, '../bower_components/easeljs/lib/easeljs-0.7.1.min.js')
     ],
     stylesheets: [

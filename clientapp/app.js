@@ -38,6 +38,7 @@ function renderPage (view) {
 
   window.app.currentPage = view;
   window.app.layout.$container.append(view.render().el);
+  $(document).foundation();
 }
 
 launch();
