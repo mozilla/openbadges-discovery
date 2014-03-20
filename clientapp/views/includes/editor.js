@@ -14,12 +14,9 @@ module.exports = HumanView.extend({
     this.editor = new Editor({
       columns: 3,
       canvas: this.el,
-      mode: this.mode
+      mode: this.mode,
+      requirements: this.collection
     });
-    this.editor.render(this.collection.models);
-    this.collection.on('sync', function () {
-      this.editor.render(this.collection.models);
-    }.bind(this));
     return this;
   },
   remove: function () {

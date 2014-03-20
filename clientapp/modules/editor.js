@@ -1,204 +1,201 @@
-function makeMarker (col, row, grid) {
-  var r = 15;
-  var sides = 6;
-  var angle = 30;
-  var shape = new createjs.Shape();
-  shape.graphics.beginFill("#CCC").drawPolyStar(0, 0, r, sides, 0, angle);
-  shape.resize = function () {
-    var coords = grid.gridToPixel(col, row);
-    shape.x = coords.cx;
-    shape.y = coords.cy;
-    shape.setBounds(-coords.w/2, -coords.w/2, coords.w, coords.w);
-  };
-  shape.resize();
-  return shape;
-}
+var _ = require('underscore');
+var Backbone = require('backbone');
+Backbone.$ = window.$; // WHHHHHHYYYYYYYY?!
 
-function makeTile (model, grid) {
-  var width = grid.canvas.width / grid.columns;
-  var height = width;
+function World () { 
 
-  var container = new createjs.Container();
-  container.setBounds(0, 0, width, height);
+  Object.defineProperty(this, "columnWidth", {
+    get: function () { return this.canvasWidth / this.columnCount; },
+    set: function () { throw new Error('Cannot set columnWidth directly'); }
+  });
 
-  var rect = new createjs.Shape();
-  var margin = 10;
-  var corners = 10;
-  var rw = width - (2 * margin);
-  var rh = height - (2 * margin);
-  rect.graphics.beginFill("#EEE").drawRoundRect(margin, margin, rw, rh, corners);
-  rect.setBounds(0, 0, rw, rh);
-  container.addChild(rect);
-
-  var img = new createjs.Bitmap('/static/badge.png');
-
-  function scaleToMax (img, w, h) {
-    var imgBounds = img.getBounds();
-    var width = Math.min(imgBounds.width, w);
-    var height = Math.min(imgBounds.height, h);
-    var scale = Math.min(width / imgBounds.width, height / imgBounds.height);
-    img.scaleX = img.scaleY = scale;
-  }
-
-  var fontSize = 24;
-  var t = new createjs.Text(model.name, fontSize + "px 'Helvetica Neue', Helvetica, Arial, sans-serif");
-
-  img.image.onload = function drawBadge () {
-    var rBounds = rect.getBounds();
-    scaleToMax(img, rBounds.width, rBounds.height - (fontSize * 2));
-    imgBounds = img.getTransformedBounds();
-    img.x = margin + (rBounds.width / 2) - (imgBounds.width / 2);
-    img.y = margin + (rBounds.height / 2) - (imgBounds.height / 2) - (fontSize / 2);
-    container.addChild(img);
-
-    t.x = margin + (rBounds.width / 2) - (t.getBounds().width /2);
-    t.y = img.y + imgBounds.height;
-    container.addChild(t);
-
-    container.dispatchEvent('ready');
-  };
-
-  container.resize = function () {
-    var width = grid.canvas.width / grid.columns;
-    var height = width;
-    container.setBounds(0, 0, width, height);
-    var rw = width - (2 * margin);
-    var rh = height - (2 * margin);
-    rect.graphics.clear().beginFill("#EEE").drawRoundRect(margin, margin, rw, rh, corners);
-    rect.setBounds(0, 0, rw, rh);
-    var rBounds = rect.getBounds();
-    scaleToMax(img, rBounds.width, rBounds.height - (fontSize * 2));
-    imgBounds = img.getTransformedBounds();
-    img.x = margin + (rBounds.width / 2) - (imgBounds.width / 2);
-    img.y = margin + (rBounds.height / 2) - (imgBounds.height / 2) - (fontSize / 2);
-    t.x = margin + (rBounds.width / 2) - (t.getBounds().width /2);
-    t.y = img.y + imgBounds.height;
-    var coords = grid.gridToPixel(model.x, model.y);
-    container.x = coords.x;
-    container.y = coords.y;
-  };
-
-  var coords = grid.gridToPixel(model.x, model.y);
-  container.x = coords.x;
-  container.y = coords.y;
-  return container;
-}
-
-function Editor (opts) {
-  opts = opts || {};
-
-  var self = this;
-
-  self.canvas = opts.canvas;
-  self.stage = new createjs.Stage(self.canvas);
-  createjs.Touch.enable(self.stage, true, true);
-  self.columns = opts.columns;
-
-  self.allowRearrange = false;
-
-  self.rearrange = function (toggle) {
-    if (typeof toggle !== 'undefined') self.allowRearrange = !!toggle;
-    else self.allowRearrange = true;
-  };
-
-  if (opts.mode === 'edit') self.rearrange();
-
-  self.remove = function () {
-    createjs.Touch.disable(self.stage);
-  };
-
-  self.gridToPixel = function (gx, gy) {
+  this.gridToPixel = function gridToPixel (gx, gy) {
     if (typeof gx === 'object') {
       var obj = gx;
       gx = obj.x;
       gy = obj.y;
     }
-    var colW = this.canvas.width / this.columns;
-    var x = gx * colW;
-    var y = gy * colW;
+    var x = gx * this.columnWidth;
+    var y = gy * this.columnWidth;
     return {
       x: x,
       y: y,
-      w: colW,
-      cx: x + (colW / 2),
-      cy: y + (colW / 2),
-      bounds: [x, y, colW, colW]
+      w: this.columnWidth,
+      cx: x + (this.columnWidth / 2),
+      cy: y + (this.columnWidth / 2),
+      bounds: [x, y, this.columnWidth, this.columnWidth]
     };
   };
 
-  self.pixelToGrid = function (x, y) {
+  this.pixelToGrid = function pixelToGrid (x, y) {
     if (typeof x === 'object') {
       var obj = x;
       x = obj.x;
       y = obj.y;
     }
-    var colW = this.canvas.width / this.columns;
-    var col = Math.floor(x / colW);
-    var row = Math.floor(y / colW);
+    var col = Math.floor(x / this.columnWidth);
+    var row = Math.floor(y / this.columnWidth);
     return {
       x: col,
       y: row
     };
   };
 
-  self.redraw = function () {
-    self.render(self.models);
+  return this;
+}
+var world = new World();
+
+function makePathwayItem(item) {
+  var container = new createjs.Container();
+  container.model = item;
+  console.log('naming', container.id, item.id);
+  container.name = item.id;
+  var rect = new createjs.Shape();
+  var img = new createjs.Bitmap('/static/badge.png');
+  var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
+  container.addChild(rect, img, title);
+
+  img.image.onload = function () {
+    container.layout();
+    container.dispatchEvent('ready'); 
   };
 
-  self.render = function (models) {
-    self.models = models;
-    self.stage.removeAllChildren();
+  function scaleToMax (img, w, h) {
+    var imgBounds = img.getBounds();
+    if (imgBounds) {
+      var width = Math.min(imgBounds.width, w);
+      var height = Math.min(imgBounds.height, h);
+      var scale = Math.min(width / imgBounds.width, height / imgBounds.height);
+      img.scaleX = img.scaleY = scale;
+    }
+    return img.getTransformedBounds();
+  }
 
-    var maxRow = 0;
-    if (models.length) {
-      models.forEach(function (model) {
-        maxRow = Math.max(maxRow, model.y);
-        var tile = makeTile(model, self);
-        tile.on('ready', function () {
-          self.stage.addChild(tile);
-          self.stage.update();
-        });
+  container.layout = function () {
+    var width = world.columnWidth;
+    var height = width;
+    container.setBounds(0, 0, width, height);
 
-        tile.on('pressmove', function (evt) {
-          if (self.allowRearrange) {
-            var tile = this;
-            var coords = self.gridToPixel(self.pixelToGrid(self.stage.globalToLocal(evt.stageX, evt.stageY)));
-            tile.x = coords.x;
-            tile.y = coords.y;
-            self.stage.update();
-            evt.nativeEvent.preventDefault();
-          }
-        });
-      });
+    var margin = 10;
+    var corners = 10;
+    var rw = width - (2 * margin);
+    var rh = height - (2 * margin);
+    rect.graphics.clear().beginFill("#EEE")
+      .drawRoundRect(margin, margin, rw, rh, corners);
+    rect.setBounds(0, 0, rw, rh);
+
+    var imgBounds = scaleToMax(img, rw, rh - (24 * 2));
+    if (imgBounds) {
+      img.x = margin + (rw / 2) - (imgBounds.width / 2);
+      img.y = margin + (rh / 2) - (imgBounds.height / 2) - (24 / 2);
+
+      title.x = margin + (rw / 2) - (title.getBounds().width /2);
+      title.y = img.y + imgBounds.height;
     }
 
-    for (var row = 0; row <= maxRow + 2; row++) {
-      for (var col = 0; col < self.columns; col++) {
-        var m = new makeMarker(col, row, self);
-        self.stage.addChild(m);
-      }
-    }
-
-    self.stage.update();
+    var coords = world.gridToPixel(item.x, item.y);
+    container.x = coords.x;
+    container.y = coords.y;
   };
 
-  self.resize = function () {
-    for (var idx = 0; idx < self.stage.getNumChildren(); idx++) {
-      var child = self.stage.getChildAt(idx);
-      if (child.resize) child.resize();
-    }
-    self.stage.update();
-  };
-
-  self.stage.on('tickstart', function () {
-    self.sizeCanvasToStageHeight();
-  });
-
-  self.sizeCanvasToStageHeight = function () {
-    self.stage.canvas.height = self.stage.getTransformedBounds().height;
-  };
-
-  return self;
+  return container;
 }
 
-module.exports = Editor;
+module.exports = Backbone.View.extend({
+  initialize: function (opts) {
+    if (!(opts && opts.canvas && opts.columns && opts.requirements)) 
+      throw new Error('You must specify canvas, columns, and requirements options');
+
+    Object.defineProperty(this, "columnCount", {
+      get: function () { return world.columnCount; },
+      set: function (val) { world.columnCount = val; }
+    });
+    world.canvasWidth = opts.canvas.width;
+    world.columnCount = opts.columns;
+
+    _.extend(this, opts);
+
+    this.stage = new createjs.Stage(this.canvas);
+    createjs.Touch.enable(this.stage, true, true);
+
+    var gridLayer = this.gridLayer = new createjs.Container();
+    this.stage.addChild(this.gridLayer);
+
+    this.maxRow = 0;
+    this.requirements.forEach(function (req) {
+      this.addBadge(req);
+    }.bind(this));
+
+    this.listenTo(this.requirements, "add", this.addBadge);
+
+    this.listenTo(this.requirements, "remove", function (req) {
+      console.log(arguments);
+      if (req.id) {
+        var item = this.stage.getChildByName(req.id);
+        console.log('removing', req.id, item.name);
+        this.stage.removeChild(item);
+        this.refresh();
+      }
+    });
+
+    var editor = this;
+    gridLayer.layout = function () {
+      this.removeAllChildren();
+      for (var row = 0; row <= editor.maxRow + 2; row++) {
+        for (var col = 0; col < world.columnCount; col++) {
+          var coords = world.gridToPixel(col, row);
+          var hex = new createjs.Shape();
+          hex.graphics.beginFill("#CCC")
+            .drawPolyStar(0, 0, 15, 6, 0, 30);
+          hex.x = coords.cx;
+          hex.y = coords.cy;
+          hex.setBounds(-coords.w/2, -coords.w/2, coords.w, coords.w);
+          this.addChild(hex);
+        }
+      } 
+    };
+
+    this.layout();
+  },
+  addBadge: function (model) {
+    this.maxRow = Math.max(this.maxRow, model.y);
+    var item = makePathwayItem(model);
+    item.on('ready', function () {
+      this.stage.addChild(item); 
+      this.refresh();
+    }, this);
+    if (this.rearrangeable()) {
+      item.on('pressmove', function (evt) {
+        var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
+        item.model.x = coords.x;
+        item.model.y = coords.y;
+        evt.nativeEvent.preventDefault();
+        this.refresh();
+      }, this);
+    }
+  },
+  rearrangeable: function () {
+    return this.mode && (this.mode === 'edit');
+  },
+  layout: function () {
+    world.canvasWidth = this.stage.canvas.width;
+    this.stage.children.forEach(function (child) {
+      if (child.layout) child.layout();
+    });
+  },
+  render: function () {
+    this.stage.canvas.height = this.stage.getTransformedBounds().height;
+    this.stage.update();
+    return this;
+  },
+  refresh: function () {
+    this.layout();
+    this.render();
+  },
+  remove: function () {
+    createjs.Touch.disable(this.stage);
+    this.$el.remove();
+    this.stopListening();
+    return this;
+  }
+});
