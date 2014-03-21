@@ -9,7 +9,6 @@ module.exports = HumanView.extend({
     if (this.collection.length) {
       this.renderCollection(this.collection, ItemView, this.$('.js-items')[0]);
     }
-    this.collection.on('sync', this.render.bind(this));
     return this;
   },
   events: {
