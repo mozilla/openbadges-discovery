@@ -26,7 +26,7 @@ module.exports = HumanView.extend({
     });
     addPanel.on('add', function (models) {
       this.collection.add(models.map(function (model) {
-        return Requirement.fromAchievement(model);
+        return Requirement.fromAchievement(model, {newFlag: true});
       }));
       this.moveToTop('#editorPanel');
     }, this);

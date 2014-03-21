@@ -49,6 +49,7 @@ function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
   container.name = item.id;
+  container.setBounds(0, 0, world.columnWidth, world.columnWidth);
   var rect = new createjs.Shape();
   var img = new createjs.Bitmap('/static/badge.png');
   var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
@@ -79,7 +80,8 @@ function makePathwayItem(item) {
     var corners = 10;
     var rw = width - (2 * margin);
     var rh = height - (2 * margin);
-    rect.graphics.clear().beginFill("#EEE")
+    var fill = "#EEE";
+    rect.graphics.clear().beginFill(fill)
       .drawRoundRect(margin, margin, rw, rh, corners);
     rect.setBounds(0, 0, rw, rh);
 
@@ -171,10 +173,27 @@ module.exports = Backbone.View.extend({
     }
     this.maxRow = Math.max(this.maxRow, model.y);
     var item = makePathwayItem(model);
+
+    if (model.newFlag) {
+      var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
+      console.log(item.getBounds());
+      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
+      newFlag.y = 15;
+      newFlag.name = 'newFlag';
+      item.addChild(newFlag);
+
+      item.on('mousedown', function () {
+        item.model.newFlag = false;
+        item.removeChild(item.getChildByName('newFlag'));
+        this.refresh();
+      }, this);
+    }
+
     item.on('ready', function () {
       this.stage.addChild(item); 
       this.refresh();
     }, this);
+
     if (this.rearrangeable()) {
       item.on('pressmove', function (evt) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
