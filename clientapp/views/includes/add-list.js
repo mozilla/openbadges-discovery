@@ -19,14 +19,20 @@ module.exports = HumanView.extend({
     evt.preventDefault();
     evt.stopPropagation();
   },
-  getSelected: function () {
+  getSelected: function (opts) {
     var ids = [];
     this.$('input[type="checkbox"]:checked').each(function (i, el) {
       ids.push($(el).data('id'));
     });
     var collection = this.collection;
+
+    if (opts && opts.deselect) this.deselectAll();
+
     return ids.map(function (id) {
       return collection.get(id);
     });
+  },
+  deselectAll: function () {
+    this.$('input[type="checkbox"]:checked').attr('checked', false);
   }
 });

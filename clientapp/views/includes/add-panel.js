@@ -22,11 +22,16 @@ module.exports = HumanView.extend({
     'click .js-cancel-add': 'cancel'
   },
   add: function (evt) {
-    var selected = [].concat(this.backpackList.getSelected(), this.wishlistList.getSelected());
+    var selected = [].concat(
+      this.backpackList.getSelected({deselect: true}),
+      this.wishlistList.getSelected({deselect: true})
+    );
     this.trigger('add', selected);
     evt.preventDefault();
   },
   cancel: function (evt) {
+    this.backpackList.deselectAll();
+    this.wishlistList.deselectAll();
     this.trigger('cancel');
     evt.preventDefault();
   }

@@ -176,7 +176,6 @@ module.exports = Backbone.View.extend({
 
     if (model.newFlag) {
       var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
-      console.log(item.getBounds());
       newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
       newFlag.y = 15;
       newFlag.name = 'newFlag';
