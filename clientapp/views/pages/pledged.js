@@ -15,10 +15,12 @@ module.exports = HumanView.extend({
       pathway: this.model,
       user: window.app.currentUser
     });
+
     this.renderSubview(new Editor({
       collection: this.collection,
       mode: 'edit'
     }), '.pathway-editor-container');
+
     var addPanel = new AddPanel({
       sources: this.addSources
     });
@@ -26,8 +28,28 @@ module.exports = HumanView.extend({
       this.collection.add(models.map(function (model) {
         return Requirement.fromAchievement(model);
       }));
+      this.moveToTop('#editorPanel');
+    }, this);
+    addPanel.on('cancel', function () {
+      this.moveToTop('#editorPanel');
     }, this);
     this.renderSubview(addPanel, '.add-panel-container');
+
+    this.$('.js-stack').each(function () {
+      $(this).children().slice(1).addClass('bottom');
+    });
+
     return this;
+  },
+  events: {
+    'click [data-stack]': 'handleStackButton'
+  },
+  handleStackButton: function (evt) {
+    this.moveToTop('#' + $(evt.target).data('stack'));
+    evt.preventDefault();
+  },
+  moveToTop: function (sel) {
+    $(sel).removeClass('bottom');
+    $(sel).siblings().addClass('bottom');
   }
 });
