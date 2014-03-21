@@ -42,6 +42,7 @@ module.exports = Backbone.Router.extend({
       type: 'badge',
       title: 'A Very Long Badge Title ' + id,
       creator: 'None',
+      tags: ['service', 'barista', 'coffeelover', 'fake'],
       favorite: !!query('fav'),
       earned: !!query('earned')
     });
