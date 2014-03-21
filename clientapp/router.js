@@ -86,10 +86,12 @@ module.exports = Backbone.Router.extend({
       requirements.fetch();
     }
     var backpack = new Achievements({
-      pageSize: 4
+      pageSize: 4,
+      source: Achievements.BACKPACK
     });
     var wishlist = new Achievements({
-      pageSize: 4
+      pageSize: 4,
+      source: Achievements.WISHLIST
     });
     backpack.fetch();
     wishlist.fetch();
