@@ -1,12 +1,15 @@
 var HumanModel = require('human-model');
 
+var BADGE = 'badge';
+var PATHWAY = 'pathway';
+
 module.exports = HumanModel.define({
   props: {
     id: {
       type: 'number'
     },
     type: {
-      values: ['badge', 'pathway'],
+      values: [BADGE, PATHWAY],
       required: true
     },
     title: {
@@ -50,3 +53,6 @@ module.exports = HumanModel.define({
     }
   }
 });
+
+module.exports.BADGE = BADGE;
+module.exports.PATHWAY = PATHWAY;
