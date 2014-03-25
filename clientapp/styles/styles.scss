@@ -48,3 +48,16 @@ footer {
     padding: 4px 8px;
   }
 }
+
+.edit-mode.cursor-grab {
+  cursor: move;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.edit-mode.cursor-grabbing {
+  cursor: move;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
