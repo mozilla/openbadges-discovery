@@ -9,3 +9,11 @@
     margin-top: 1em;
   }
 }
+
+.content.active {
+  float: none;
+}
+
+.stack > .bottom {
+  display: none;
+}

@@ -9,8 +9,8 @@
   <section class="pathway-data banner">
     <div class="row text-center">
       <div class="small-12 large-8 small-centered columns">
-        <h1 class="foo">{{pathway.title}}</h1>
-        <p class="foo">
+        <h1>{{pathway.title}}</h1>
+        <p>
           Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub.
         </p>
         <i class="fa fa-chevron-down fa-2x"></i>
@@ -19,7 +19,13 @@
   </section>
   <section class="pathway-editor banner">
     <div class="row text-center">
-      <div class="pathway-editor-container small-12 medium-8 large-8 small-centered columns">
+      <a href="#" class="button" data-stack="addPanel">Add</a>
+      <div class="js-stack stack">
+        <div id="editorPanel" class="small-12 medium-8 medium-centered columns">
+          <div class="pathway-editor-container"></div>
+        </div>
+        <div id="addPanel" class="small-12 columns">
+          <div class="add-panel-container"></div>
       </div>
     </div>
   </section>

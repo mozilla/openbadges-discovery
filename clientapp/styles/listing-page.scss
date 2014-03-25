@@ -25,7 +25,7 @@
       width: 90%;
     }
 
-    & > div {
+    & > * {
       @include vertically-centered-children;
     }
   }

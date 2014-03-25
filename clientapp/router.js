@@ -17,7 +17,7 @@ module.exports = Backbone.Router.extend({
       app.history.loadUrl();
     });
     this.listing = new Achievements({
-      pageSize: 8 
+      pageSize: 8
     });
     this.listing.fetch({reset: true});
   },
@@ -85,7 +85,25 @@ module.exports = Backbone.Router.extend({
       });
       requirements.fetch();
     }
-    app.renderPage(new PledgedPage({model: pathway, collection: requirements}));
+    var backpack = new Achievements({
+      pageSize: 4,
+      source: Achievements.BACKPACK
+    });
+    var wishlist = new Achievements({
+      pageSize: 4,
+      source: Achievements.WISHLIST,
+      type: Achievement.BADGE
+    });
+    backpack.fetch();
+    wishlist.fetch();
+    app.renderPage(new PledgedPage({
+      model: pathway,
+      collection: requirements,
+      addSources: {
+        backpack: backpack,
+        wishlist: wishlist
+      }
+    }));
   },
 
   nope: function () {

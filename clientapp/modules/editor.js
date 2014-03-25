@@ -48,8 +48,8 @@ var world = new World();
 function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
-  console.log('naming', container.id, item.id);
   container.name = item.id;
+  container.setBounds(0, 0, world.columnWidth, world.columnWidth);
   var rect = new createjs.Shape();
   var img = new createjs.Bitmap('/static/badge.png');
   var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
@@ -80,7 +80,8 @@ function makePathwayItem(item) {
     var corners = 10;
     var rw = width - (2 * margin);
     var rh = height - (2 * margin);
-    rect.graphics.clear().beginFill("#EEE")
+    var fill = "#EEE";
+    rect.graphics.clear().beginFill(fill)
       .drawRoundRect(margin, margin, rw, rh, corners);
     rect.setBounds(0, 0, rw, rh);
 
@@ -129,10 +130,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.requirements, "add", this.addBadge);
 
     this.listenTo(this.requirements, "remove", function (req) {
-      console.log(arguments);
       if (req.id) {
         var item = this.stage.getChildByName(req.id);
-        console.log('removing', req.id, item.name);
         this.stage.removeChild(item);
         this.refresh();
       }
@@ -158,12 +157,42 @@ module.exports = Backbone.View.extend({
     this.layout();
   },
   addBadge: function (model) {
+    if (model.y === undefined) {
+      var row = 0;
+      while (model.y === undefined) {
+        var xs = _.pluck(this.requirements.where({y: row}), 'x');
+        var empties = _.difference(_.range(world.columnCount), xs);
+        if (empties.length) {
+          model.x = empties.shift();
+          model.y = row;
+        }
+        else {
+          row++;
+        }
+      }
+    }
     this.maxRow = Math.max(this.maxRow, model.y);
     var item = makePathwayItem(model);
+
+    if (model.newFlag) {
+      var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
+      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
+      newFlag.y = 15;
+      newFlag.name = 'newFlag';
+      item.addChild(newFlag);
+
+      item.on('mousedown', function () {
+        item.model.newFlag = false;
+        item.removeChild(item.getChildByName('newFlag'));
+        this.refresh();
+      }, this);
+    }
+
     item.on('ready', function () {
       this.stage.addChild(item); 
       this.refresh();
     }, this);
+
     if (this.rearrangeable()) {
       item.on('pressmove', function (evt) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));

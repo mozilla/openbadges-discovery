@@ -1,0 +1,11 @@
+.add-selector {
+  overflow: hidden;
+  margin: 0;
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 3px;
+  }
+}
