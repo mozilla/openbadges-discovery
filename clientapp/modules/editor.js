@@ -80,7 +80,7 @@ function makePathwayItem(item) {
     var corners = 10;
     var rw = width - (2 * margin);
     var rh = height - (2 * margin);
-    var fill = "#EEE";
+    var fill = item.core ? "#ECC" : "#EEE";
     rect.graphics.clear().beginFill(fill)
       .drawRoundRect(margin, margin, rw, rh, corners);
     rect.setBounds(0, 0, rw, rh);
