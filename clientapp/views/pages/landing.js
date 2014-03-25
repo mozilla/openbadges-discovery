@@ -5,7 +5,7 @@ var ListingView = require('../includes/listing');
 module.exports = HumanView.extend({
   template: templates.pages.landing,
   events: {
-    'click a': 'handleLink'
+    'click .js-quiz': 'startQuiz'
   },
   render: function () {
     this.renderAndBind(this.model);
@@ -14,8 +14,7 @@ module.exports = HumanView.extend({
     }), '.content');
     return this;
   },
-  handleLink: function (e) {
-    var url = $(e.currentTarget).attr('href');
-    //app.history.navigate(url, {trigger:true});
+  startQuiz: function (e) {
+    alert("Quiz not yet implemented");
   }
 });

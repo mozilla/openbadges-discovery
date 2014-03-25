@@ -80,7 +80,7 @@ function makePathwayItem(item) {
     var corners = 10;
     var rw = width - (2 * margin);
     var rh = height - (2 * margin);
-    var fill = "#EEE";
+    var fill = item.core ? "#ECC" : "#EEE";
     rect.graphics.clear().beginFill(fill)
       .drawRoundRect(margin, margin, rw, rh, corners);
     rect.setBounds(0, 0, rw, rh);
@@ -118,6 +118,11 @@ module.exports = Backbone.View.extend({
 
     this.stage = new createjs.Stage(this.canvas);
     createjs.Touch.enable(this.stage, true, true);
+    if (this.mode === 'edit') {
+      var pollRate = 20;
+      this.stage.enableMouseOver(pollRate);
+      $(this.stage.canvas).addClass('edit-mode');
+    }
 
     var gridLayer = this.gridLayer = new createjs.Container();
     this.stage.addChild(this.gridLayer);
@@ -194,6 +199,20 @@ module.exports = Backbone.View.extend({
     }, this);
 
     if (this.rearrangeable()) {
+      var canvas = this.stage.canvas;
+      item.on('rollover', function () {
+        $(canvas).addClass('cursor-grab');
+      });
+      item.on('mousedown', function () {
+        $(canvas).addClass('cursor-grabbing');
+      });
+      item.on('pressup', function () {
+        $(canvas).removeClass('cursor-grabbing');
+      });
+      item.on('rollout', function () {
+        $(canvas).removeClass('cursor-grab');
+      });
+
       item.on('pressmove', function (evt) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
         item.model.x = coords.x;
