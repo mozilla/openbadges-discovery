@@ -1,4 +1,3 @@
-var nunjucks = require('nunjucks');
 var templates = require('../build/precompiled.js');
 var path = require('path');
 
@@ -15,5 +14,5 @@ Object.keys(window.nunjucksPrecompiled).forEach(function (name) {
     if (!obj[step]) obj[step] = {};
     obj = obj[step];
   });
-  obj[methodName] = nunjucks.render.bind(nunjucks, name);
+  obj[methodName] = window.nunjucks.render.bind(nunjucks, name);
 });
