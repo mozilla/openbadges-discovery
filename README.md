@@ -5,7 +5,7 @@ Discovery tool for Open Badges
 
 ## Quick Start
 
-Assuming a neo4j database...
+Assuming a [neo4j database](docs/neo4j-installation.md)...
 
 ```bash
 npm install
