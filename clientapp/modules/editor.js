@@ -48,12 +48,20 @@ var world = new World();
 function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
-  container.name = item.id;
+  container.name = item.cid;
   container.setBounds(0, 0, world.columnWidth, world.columnWidth);
   var rect = new createjs.Shape();
   var img = new createjs.Bitmap('/static/badge.png');
   var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
   container.addChild(rect, img, title);
+
+  var deleteButton = new createjs.Shape();
+  deleteButton.graphics.beginFill('white').drawRoundRect(0, 0, 40, 40, 5)
+    .beginStroke('black').moveTo(10, 10).lineTo(30, 30)
+    .moveTo(10, 30).lineTo(30, 10);
+  deleteButton.on('click', function () {
+    container.dispatchEvent('delete');
+  });
 
   img.image.onload = function () {
     container.layout();
@@ -94,6 +102,16 @@ function makePathwayItem(item) {
       title.y = img.y + imgBounds.height;
     }
 
+    if (!item.core) {
+      var idx = container.getChildIndex(deleteButton);
+      if (world.deletable) {
+        if (idx === -1) container.addChild(deleteButton);
+      }
+      else {
+        if (idx !== -1) container.removeChildAt(idx);
+      }
+    }
+
     var coords = world.gridToPixel(item.x, item.y);
     container.x = coords.x;
     container.y = coords.y;
@@ -107,9 +125,17 @@ module.exports = Backbone.View.extend({
     if (!(opts && opts.canvas && opts.columns && opts.requirements)) 
       throw new Error('You must specify canvas, columns, and requirements options');
 
-    Object.defineProperty(this, "columnCount", {
-      get: function () { return world.columnCount; },
-      set: function (val) { world.columnCount = val; }
+    Object.defineProperties(this, {
+      "columnCount": {
+        get: function () { return world.columnCount; },
+        set: function (val) { world.columnCount = val; }
+      },
+      "mode": {
+        get: function () { return world.mode; },
+        set: function (val) {
+          world.mode = val;
+        }
+      }
     });
     world.canvasWidth = opts.canvas.width;
     world.columnCount = opts.columns;
@@ -118,7 +144,7 @@ module.exports = Backbone.View.extend({
 
     this.stage = new createjs.Stage(this.canvas);
     createjs.Touch.enable(this.stage, true, true);
-    if (this.mode === 'edit') {
+    if (this.isRearrangeable()) {
       var pollRate = 20;
       this.stage.enableMouseOver(pollRate);
       $(this.stage.canvas).addClass('edit-mode');
@@ -135,8 +161,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.requirements, "add", this.addBadge);
 
     this.listenTo(this.requirements, "remove", function (req) {
-      if (req.id) {
-        var item = this.stage.getChildByName(req.id);
+      if (req.cid) {
+        var item = this.stage.getChildByName(req.cid);
         this.stage.removeChild(item);
         this.refresh();
       }
@@ -198,32 +224,38 @@ module.exports = Backbone.View.extend({
       this.refresh();
     }, this);
 
-    if (this.rearrangeable()) {
-      var canvas = this.stage.canvas;
-      item.on('rollover', function () {
-        $(canvas).addClass('cursor-grab');
-      });
-      item.on('mousedown', function () {
-        $(canvas).addClass('cursor-grabbing');
-      });
-      item.on('pressup', function () {
-        $(canvas).removeClass('cursor-grabbing');
-      });
-      item.on('rollout', function () {
-        $(canvas).removeClass('cursor-grab');
-      });
+    item.on('delete', function (evt) {
+      this.trigger('delete', evt.target.model);
+    }, this);
 
-      item.on('pressmove', function (evt) {
+    item.on('rollover', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grab');
+    }, this);
+    item.on('mousedown', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grabbing');
+    }, this);
+    item.on('pressup', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grabbing');
+    }, this);
+    item.on('rollout', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grab');
+    }, this);
+
+    item.on('pressmove', function (evt) {
+      if (this.isRearrangeable()) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
         item.model.x = coords.x;
         item.model.y = coords.y;
         evt.nativeEvent.preventDefault();
         this.refresh();
-      }, this);
-    }
+      }
+    }, this);
   },
-  rearrangeable: function () {
-    return this.mode && (this.mode === 'edit');
+  isRearrangeable: function () {
+    return world.mode && (world.mode === 'edit');
+  },
+  isDeletable: function () {
+    return world.deletable;
   },
   layout: function () {
     world.canvasWidth = this.stage.canvas.width;
@@ -245,5 +277,8 @@ module.exports = Backbone.View.extend({
     this.$el.remove();
     this.stopListening();
     return this;
+  },
+  enableDelete: function (flag) {
+    world.deletable = flag;
   }
 });

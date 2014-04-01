@@ -16,10 +16,11 @@ module.exports = HumanView.extend({
       user: window.app.currentUser
     });
 
-    this.renderSubview(new Editor({
+    this.editor = new Editor({
       collection: this.collection,
       mode: 'edit'
-    }), '.pathway-editor-container');
+    });
+    this.renderSubview(this.editor, '.pathway-editor-container');
 
     var addPanel = new AddPanel({
       sources: this.addSources

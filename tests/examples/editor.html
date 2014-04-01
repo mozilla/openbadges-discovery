@@ -17,7 +17,7 @@
   <div class="row">
     <div class="small-12 columns">
       <fieldset>
-        <legend>Options:</legend>
+        <legend>Editor Options:</legend>
         <div class="row">
           <div class="medium-6 columns">
             <div class="row">
@@ -42,6 +42,26 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="medium-6 columns">
+            <div class="row">
+              <div class="small-3 columns">
+                <label class="right inline">Modes:</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="checkbox" name="enableEdit" id="enableEdit" checked/>
+                <label for="enableEdit" class="inline">Rearrangeable</label>
+                <input type="checkbox" name="enableDelete" id="enableDelete"/>
+                <label for="enableDelete" class="inline">Deletable</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="small-12 columns">
+      <fieldset>
+        <legend>Collection Options:</legend>
         <div class="row">
           <div class="medium-6 columns">
             <div class="row">
@@ -84,6 +104,9 @@
           </div>
         </div>
       </fieldset>
+    </div>
+    <div class="small-12 columns">
+      <p class="text-right"><small><em>NB: Open your console to see event information.</em></small></p>
     </div>
     <div class="small-12 columns" id="canvas-container">
       <canvas id="canvas" width=1000></canvas>
