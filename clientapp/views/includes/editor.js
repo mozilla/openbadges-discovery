@@ -3,11 +3,23 @@ var templates = require('templates');
 var RequirementView = require('./requirement');
 var _ = require('underscore');
 var Editor = require('editor');
+var UndoManager = require('backbone-undo');
 
 module.exports = HumanView.extend({
   template: templates.includes.editor,
   initialize: function (opts) {
     this.mode = opts.mode;
+    var undoManager = this.undoManager = new UndoManager();
+    undoManager.changeUndoType("remove", {
+      "undo": function (collection, before, after, options) {
+        if ("index" in options) {
+          options.at = options.index;
+        }
+        collection.add(before.attributes, options);
+      }
+    });
+    undoManager.register(this.collection);
+    undoManager.startTracking();
   },
   render: function () {
     this.renderAndBind({showControls: this.mode === "edit"});
@@ -34,6 +46,7 @@ module.exports = HumanView.extend({
   events: {
     'click [data-toggle]': 'toggle',
     'click .js-delete': 'deleteMode',
+    'click .js-undo': 'undo'
   },
   deleteMode: function (evt) {
     var state = $(evt.target).attr('data-toggle');
@@ -45,5 +58,10 @@ module.exports = HumanView.extend({
     var btn = $(evt.target);
     var state = btn.attr('data-toggle');
     btn.attr('data-toggle', state === 'on' ? 'off' : 'on');
+  },
+  undo: function (evt) {
+    this.undoManager.undo();
+    this.editor.refresh();
+    evt.preventDefault();
   }
 });
