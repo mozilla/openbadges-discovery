@@ -12,6 +12,9 @@ module.exports = function (app, config) {
   config = config || {};
 
   var opts = _.extend({
+    browserify: {
+      transforms: [ "browserify-shim" ]
+    },
     main: path.join(__dirname, 'app.js'),
     modulesDir: path.join(__dirname, './modules'),
     developmentMode: false,
