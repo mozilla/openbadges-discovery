@@ -1,15 +1,33 @@
+
+.pathway-cover-image {
+  background: url("../static/pathway/pathway-header-desktop.svg") no-repeat;
+  background-size: cover;
+  min-height: 375px;
+  height: auto;
+}
 .pathway-page {
   .pathway-cover-image,
   .pathway-editor {
-    background-color: #999;
+    background-color: #f4f4f2;
+    .pathway-background {
+      background: url("../static/pathway/pathway-background-desktop.svg") no-repeat;
+      background-size: cover;
+      padding: 60px 80px;
+    }
   }
 
 	.pathway-title-edit{
 		padding-top: 1em;
 	}
-  .pledge-button {
-    margin-top: 1em;
+
+  .pathway-info-container {
+    padding: 30px 0;
+    background-color: white;
   }
+
+  .pledge-button { margin-top: 1em; }
+
+  .badge-image { margin: 65px auto; }
 }
 
 .content.active {
