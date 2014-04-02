@@ -35,7 +35,8 @@
     "async": "~0.2.10",
     "JSONStream": "~0.7.1",
     "through": "~2.3.4",
-    "query-param-getter": "0.0.1"
+    "query-param-getter": "0.0.1",
+    "openbadges-directory-client": "git://github.com/jpcamara/openbadges-directory-client.git"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
