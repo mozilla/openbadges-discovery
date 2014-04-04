@@ -36,7 +36,8 @@
     "JSONStream": "~0.7.1",
     "through": "~2.3.4",
     "query-param-getter": "0.0.1",
-    "openbadges-directory-client": "git://github.com/jpcamara/openbadges-directory-client.git"
+    "openbadges-directory-client": "git://github.com/jpcamara/openbadges-directory-client.git",
+    "restler": "~3.2.0"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

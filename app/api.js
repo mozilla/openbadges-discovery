@@ -3,6 +3,7 @@ const http = require('http');
 const db = require('./lib/db');
 const f = require('util').format;
 const through = require('through');
+const config = require('./lib/config');
 
 function stringify (key) {
   return through(function write (data) {
@@ -101,12 +102,23 @@ app.put('/pathway/:id/requirement/:rid', function (req, res, next) {
     .pipe(res);
 });
 
+app.get('/badges', function (req, res, next) {
+  var DirectoryClient = require('openbadges-directory-client').Client;
+  var client = new DirectoryClient({
+    endpoint: config('DIRECTORY_URL', 'http://localhost:9000'),
+    apiKey: config('DIRECTORY_KEY')
+  });
+  return client.recent({}, function (err, data) {
+    if (err) { return res.send(400, err); }
+    return res.send(data);
+  });
+});
+
 app.all('*', function (req, res, next) {
   return res.send(404); 
 });
 
 if (!module.parent) {
-  const config = require('./lib/config');
   const PORT = config('PORT', 3001);
   app.listen(PORT, function(err) {
     if (err) {

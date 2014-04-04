@@ -35,6 +35,8 @@ Available app parameters are:
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
 * NEO4J_URL: *optional* The neo4j database url to use. Defaults to http://localhost:7474.
+* DIRECTORY_URL: *optional* The directory api endpoint to use. Defaults to http://localhost:9000.
+* DIRECTORY_KEY: **required** The API key for the directory api calls.
 
 ### Alternatives
 

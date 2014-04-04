@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
+var BadgeClasses = require('./models/badge-classes');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
@@ -27,6 +28,7 @@ module.exports = Backbone.Router.extend({
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
+    'badge-classes': 'badgeClasses',
     '*url': 'nope'
   },
 
@@ -104,6 +106,13 @@ module.exports = Backbone.Router.extend({
         wishlist: wishlist
       }
     }));
+  },
+
+  badgeClasses: function () {
+    var badges = new BadgeClasses();
+    badges.fetch().then(function () {
+      console.log(badges);
+    });
   },
 
   nope: function () {
