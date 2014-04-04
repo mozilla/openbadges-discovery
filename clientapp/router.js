@@ -2,11 +2,12 @@ var Backbone = require('backbone');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
-var BadgeClasses = require('./models/badge-classes');
+var Search = require('./models/search');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
 var PledgedPage = require('./views/pages/pledged');
+var SearchPage = require('./views/pages/search');
 var query = require('query-param-getter');
 
 var cache;
@@ -28,7 +29,7 @@ module.exports = Backbone.Router.extend({
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
-    'badge-classes': 'badgeClasses',
+    'recent': 'recent',
     '*url': 'nope'
   },
 
@@ -108,10 +109,12 @@ module.exports = Backbone.Router.extend({
     }));
   },
 
-  badgeClasses: function () {
-    var badges = new BadgeClasses();
-    badges.fetch().then(function () {
-      console.log(badges);
+  recent: function () {
+    var search = new Search();
+    search.fetch().then(function () {
+      app.renderPage(new SearchPage({
+        model: search
+      }));
     });
   },
 

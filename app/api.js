@@ -102,7 +102,7 @@ app.put('/pathway/:id/requirement/:rid', function (req, res, next) {
     .pipe(res);
 });
 
-app.get('/badges', function (req, res, next) {
+app.get('/search', function (req, res, next) {
   var DirectoryClient = require('openbadges-directory-client').Client;
   var client = new DirectoryClient({
     endpoint: config('DIRECTORY_URL', 'http://localhost:9000'),
@@ -110,7 +110,10 @@ app.get('/badges', function (req, res, next) {
   });
   return client.recent({}, function (err, data) {
     if (err) { return res.send(400, err); }
-    return res.send(data);
+    return res.send({
+      pathways: [],
+      badges: data
+    });
   });
 });
 

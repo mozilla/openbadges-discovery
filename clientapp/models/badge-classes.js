@@ -3,8 +3,5 @@ var BadgeClass = require('./badge-class'),
 
 module.exports = Backbone.Collection.extend({
   model: BadgeClass,
-  url: '/api/badges',
-  parse: function (response) {
-    return response.data;
-  }
+  url: '/api/badges'
 });
