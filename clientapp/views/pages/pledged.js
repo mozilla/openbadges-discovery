@@ -16,10 +16,11 @@ module.exports = HumanView.extend({
       user: window.app.currentUser
     });
 
-    this.renderSubview(new Editor({
+    this.editor = new Editor({
       collection: this.collection,
       mode: 'edit'
-    }), '.pathway-editor-container');
+    });
+    this.renderSubview(this.editor, '.pathway-editor-container');
 
     var addPanel = new AddPanel({
       sources: this.addSources
@@ -42,7 +43,7 @@ module.exports = HumanView.extend({
     return this;
   },
   events: {
-    'click [data-stack]': 'handleStackButton'
+    'click [data-stack]': 'handleStackButton',
   },
   handleStackButton: function (evt) {
     this.moveToTop('#' + $(evt.target).data('stack'));

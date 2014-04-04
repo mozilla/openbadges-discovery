@@ -17,6 +17,7 @@
   "dependencies": {
     "foundation": "~5.0.3",
     "font-awesome": "~4.0.3",
-    "easeljs": "*"
+    "easeljs": "*",
+    "Backbone.Undo": "~0.2.0"
   }
 }
