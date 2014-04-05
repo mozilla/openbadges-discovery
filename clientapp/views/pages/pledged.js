@@ -3,6 +3,7 @@ var templates = require('templates');
 var Editor = require('../includes/editor');
 var AddPanel = require('../includes/add-panel');
 var Requirement = require('../../models/requirement');
+var EditInPlaceView = require('../includes/editinplace');
 
 module.exports = HumanView.extend({
   template: templates.pages.pledged,
@@ -39,6 +40,21 @@ module.exports = HumanView.extend({
     this.$('.js-stack').each(function () {
       $(this).children().slice(1).addClass('bottom');
     });
+
+    var editTitleInPlaceView = new EditInPlaceView({
+      model: this.model,
+      attribute: 'title'
+    });
+
+    this.renderSubview(editTitleInPlaceView, '.pathway-title');
+
+    var editDescInPlaceView = new EditInPlaceView({
+      model: this.model,
+      attribute: 'description'
+    });
+
+    this.renderSubview(editDescInPlaceView, '.pathway-description');
+
 
     return this;
   },

@@ -55,7 +55,7 @@ module.exports = Backbone.Router.extend({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
-      description: '1 Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub.',
+      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub.',
       creator: 'None',
       favorite: !!query('fav')
     });
@@ -73,7 +73,7 @@ module.exports = Backbone.Router.extend({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
-      description: '1 Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub.',
+      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub.',
       creator: 'None',
       favorite: !!query('fav')
     });
