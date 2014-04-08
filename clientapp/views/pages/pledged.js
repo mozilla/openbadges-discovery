@@ -3,7 +3,7 @@ var templates = require('templates');
 var Editor = require('../includes/editor');
 var AddPanel = require('../includes/add-panel');
 var Requirement = require('../../models/requirement');
-var EditInPlaceView = require('../includes/editinplace');
+var PathwayEditView = require('../includes/pathway-edit');
 
 module.exports = HumanView.extend({
   template: templates.pages.pledged,
@@ -41,19 +41,29 @@ module.exports = HumanView.extend({
       $(this).children().slice(1).addClass('bottom');
     });
 
-    var editTitleInPlaceView = new EditInPlaceView({
-      model: this.model,
-      attribute: 'title'
+    var pathwayEditView = new PathwayEditView({
+      model: this.model
     });
 
-    this.renderSubview(editTitleInPlaceView, '.pathway-title');
+    pathwayEditView.on('edit', function(pathway) {
 
-    var editDescInPlaceView = new EditInPlaceView({
-      model: this.model,
-      attribute: 'description'
     });
 
-    this.renderSubview(editDescInPlaceView, '.pathway-description');
+    this.renderSubview(pathwayEditView, '.pathway-title');
+
+    // var pathwayTitleView = new PathwayTitleView({
+    //   model: this.model,
+    //   attribute: 'title'
+    // });
+
+    // this.renderSubview(pathwayTitleView, '.pathway-title');
+
+    // var pathwayDescView = new PathwayDescView({
+    //   model: this.model,
+    //   attribute: 'description'
+    // });
+
+    // this.renderSubview(pathwayDescView, '.pathway-title');
 
 
     return this;

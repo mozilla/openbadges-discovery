@@ -27,7 +27,7 @@ var EditInPlaceForm = Backbone.View.extend({
 });
 
 module.exports = Backbone.View.extend({
-	tagName: "h1",
+	tagName: "p",
 
 	attribute: "text",
 
