@@ -6,6 +6,7 @@ var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
 var PledgedPage = require('./views/pages/pledged');
+var DashboardPage = require('./views/pages/dashboard');
 var query = require('query-param-getter');
 
 var cache;
@@ -27,6 +28,7 @@ module.exports = Backbone.Router.extend({
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
+    'dashboard': 'showDashboard',
     '*url': 'nope'
   },
 
@@ -105,6 +107,28 @@ module.exports = Backbone.Router.extend({
       }
     }));
   },
+
+  showDashboard: function () {
+      var backpack = new Achievements({
+          pageSize: 4,
+          source: Achievements.BACKPACK
+      });
+      var wishlist = new Achievements({
+          pageSize: 4,
+          source: Achievements.WISHLIST,
+          type: Achievement.BADGE
+      });
+      backpack.fetch();
+      wishlist.fetch();
+      app.renderPage(new DashboardPage({
+        model: window.app,
+        collection: this.listing,
+        addSources: {
+              backpack: backpack,
+              wishlist: wishlist
+          }
+    }));
+},
 
   nope: function () {
     if (app.currentPage) app.currentPage.remove();
