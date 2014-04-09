@@ -38,13 +38,19 @@ module.exports = function Backpack (url) {
           delete openBadgeStreams[gId];
           checkAllDone();
         });
+        badgeStream.on('error', function (err) {
+          allBadgeStream.emit('error', err);
+        });
       });
       groupStream.on('end', function () {
         moreGroups = false;
         checkAllDone();
       });
+      groupStream.on('error', function (err) {
+        allBadgeStream.emit('error', err);
+      });
     }, function error (err) {
-      throw new Error("TODO: handle errors");
+      allBadgeStream.emit('error', err);
     });
 
     return allBadgeStream;
