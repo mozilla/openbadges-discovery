@@ -5,6 +5,7 @@ module.exports = HumanView.extend({
 	template: templates.includes.pathwayTitle,
 	initialize: function (opts) {
 		this.pathway = opts.model;
+		this.listenToAndRun(this.pathway, 'change', this.render);
 	},
 	render: function() {
 		this.renderAndBind({
@@ -12,12 +13,4 @@ module.exports = HumanView.extend({
 		});
 		return this;
 	},
-	edit: function (evt) {
-		alert("edit");
-		this.trigger('edit', pathway);
-		evt.preventDefault();
-	},
-	events: {
-		'click .js-edit-pathway-title': 'edit'
-	}
 });

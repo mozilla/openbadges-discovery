@@ -3,7 +3,9 @@ var templates = require('templates');
 var Editor = require('../includes/editor');
 var AddPanel = require('../includes/add-panel');
 var Requirement = require('../../models/requirement');
+var PathwayTitleView = require('../includes/pathway-title');
 var PathwayEditView = require('../includes/pathway-edit');
+
 
 module.exports = HumanView.extend({
   template: templates.pages.pledged,
@@ -37,34 +39,29 @@ module.exports = HumanView.extend({
     }, this);
     this.renderSubview(addPanel, '.add-panel-container');
 
-    this.$('.js-stack').each(function () {
-      $(this).children().slice(1).addClass('bottom');
+    var pathwayTitleView = new PathwayTitleView({
+      model: this.model
     });
+
+
+    this.renderSubview(pathwayTitleView, '.pathway-title');
 
     var pathwayEditView = new PathwayEditView({
       model: this.model
     });
+    pathwayEditView.on('saved', function (pathway) {
+      this.model = pathway;
+      this.moveToTop('#pathwayTitle');
+    }, this);
+    pathwayEditView.on('cancel', function () {
+      pathwayEditView.reset();
+      this.moveToTop('#pathwayTitle');
+    }, this);
+    this.renderSubview(pathwayEditView, '.pathway-edit');
 
-    pathwayEditView.on('edit', function(pathway) {
-
+    this.$('.js-stack').each(function () {
+      $(this).children().slice(1).addClass('bottom');
     });
-
-    this.renderSubview(pathwayEditView, '.pathway-title');
-
-    // var pathwayTitleView = new PathwayTitleView({
-    //   model: this.model,
-    //   attribute: 'title'
-    // });
-
-    // this.renderSubview(pathwayTitleView, '.pathway-title');
-
-    // var pathwayDescView = new PathwayDescView({
-    //   model: this.model,
-    //   attribute: 'description'
-    // });
-
-    // this.renderSubview(pathwayDescView, '.pathway-title');
-
 
     return this;
   },
