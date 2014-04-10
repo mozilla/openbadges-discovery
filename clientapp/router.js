@@ -51,7 +51,7 @@ module.exports = Backbone.Router.extend({
 
   showPathway: function (id) {
     id = parseInt(id);
-    var pathway = cache || new Achievement({
+    var pathway = cache.pathway || new Achievement({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
