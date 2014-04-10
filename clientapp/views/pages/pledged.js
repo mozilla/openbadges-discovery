@@ -49,8 +49,7 @@ module.exports = HumanView.extend({
     var pathwayEditView = new PathwayEditView({
       model: this.model
     });
-    pathwayEditView.on('saved', function (pathway) {
-      this.model = pathway;
+    pathwayEditView.on('saved', function () {
       this.moveToTop('#pathwayTitle');
     }, this);
     pathwayEditView.on('cancel', function () {
