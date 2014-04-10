@@ -7,7 +7,6 @@ var Requirement = require('../../models/requirement');
 var Achievement = require('../../models/achievement');
 
 
-console.log('or do they come in here?');
 module.exports = HumanView.extend({
   template: templates.pages.dashboard,
   initialize: function (opts) {
@@ -19,7 +18,6 @@ module.exports = HumanView.extend({
       pathway: this.model,
       user: window.app.currentUser
     });
-    console.log('where is the appendChild?');
 
     var dashTitle = new DashTitle({
       sources: this.addSources

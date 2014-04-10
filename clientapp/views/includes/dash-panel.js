@@ -18,7 +18,6 @@ module.exports = HumanView.extend({
     this.renderSubview(this.backpackList, '.js-backpack-items');
     this.renderSubview(this.wishlistList, '.js-wishlist-items');
     this.renderSubview(this.pathwayList, '.js-pathway-items');
-    console.log('backpack ', this.backpack.models.length);
     return this;
   }
 

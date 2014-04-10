@@ -1,5 +1,27 @@
 <div>
   <h1>{{ currentUser.email }}</h1>
-  <p>Icons for pathways ({{pathways.models.length}}), wishlist ({{wishlist.models.length}}), backpack ({{backpack.models.length}})</p>
+  <div class="row text-center">
+	  <div class="small-4 columns">
+	  	<span class="fa-stack fa-lg">
+	  		<i class="fa fa-circle fa-stack-2x"></i>
+	  		<i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
+	  	</span>
+	  	<p>{{pathways.models.length}} pathways<br>created</p>
+	  </div>
+	  <div class="small-4 columns">
+	  	<span class="fa-stack fa-lg">
+	  		<i class="fa fa-circle fa-stack-2x"></i>
+	  		<i class="fa fa-heart fa-stack-1x fa-inverse"></i>
+	  	</span>
+	  	<p>{{wishlist.models.length}} badges<br>favorited</p>
+	  </div>
+	  <div class="small-4 columns">
+	  	<span class="fa-stack fa-lg">
+	  		<i class="fa fa-circle fa-stack-2x"></i>
+	  		<i class="fa fa-certificate fa-stack-1x fa-inverse"></i>
+	  	</span>
+	  	<p>{{backpack.models.length}} badges<br>earned</p>
+	  </div>
+	</div>
   <i class="fa fa-chevron-down fa-2x"></i>
 </div>
