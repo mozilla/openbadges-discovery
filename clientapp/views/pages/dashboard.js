@@ -8,25 +8,25 @@ var Achievement = require('../../models/achievement') ;
 
 console.log('or do they come in here?');
 module.exports = HumanView.extend({
-    template: templates.pages.dashboard,
-    initialize: function (opts) {
-        opts = opts || {};
-        this.addSources = opts.addSources;
-    },
-    render: function () {
-        this.renderAndBind({
-            pathway: this.model,
-            user: window.app.currentUser
-        });
-        console.log('where is the appendChild?');
+  template: templates.pages.dashboard,
+  initialize: function (opts) {
+    opts = opts || {};
+    this.addSources = opts.addSources;
+  },
+  render: function () {
+    this.renderAndBind({
+      pathway: this.model,
+      user: window.app.currentUser
+    });
+    console.log('where is the appendChild?');
 
 
-        var dashPanel = new DashPanel({
-            sources: this.addSources
-        });
-        this.renderSubview(dashPanel, '.dash-panel-container');
+    var dashPanel = new DashPanel({
+      sources: this.addSources
+    });
+    this.renderSubview(dashPanel, '.dash-panel-container');
 
-        return this;
+    return this;
 
-    }
+  }
 });
