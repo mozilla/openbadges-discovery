@@ -1,6 +1,5 @@
 var HumanView = require('human-view');
 var templates = require('templates');
-var AddPanel = require('../includes/add-panel');
 var DashPanel = require('../includes/dash-panel');
 var Requirement = require('../../models/requirement');
 var Achievement = require('../../models/achievement') ;

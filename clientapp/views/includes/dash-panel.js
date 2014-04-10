@@ -1,7 +1,7 @@
 var HumanView = require('human-view');
 var templates = require('templates');
-var ItemList = require('./add-list');
 var Achievements = require('../../models/achievements');
+var ListingView = require('./listing');
 
 module.exports = HumanView.extend({
   template: templates.includes.dashPanel,
@@ -12,9 +12,9 @@ module.exports = HumanView.extend({
   },
   render: function () {
     this.renderAndBind();
-    this.backpackList = new ItemList({collection: this.backpack});
-    this.wishlistList = new ItemList({collection: this.wishlist});
-    this.pathwayList = new ItemList({collection: this.pathways});
+    this.backpackList = new ListingView({collection: this.backpack});
+    this.wishlistList = new ListingView({collection: this.wishlist});
+    this.pathwayList = new ListingView({collection: this.pathways});
     this.renderSubview(this.backpackList, '.js-backpack-items');
     this.renderSubview(this.wishlistList, '.js-wishlist-items');
     this.renderSubview(this.pathwayList, '.js-pathway-items');
