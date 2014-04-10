@@ -6,7 +6,7 @@ var path = require('path');
 var fs = require('fs');
 
 var opts = require('minimist')(process.argv.slice(2), {
-  boolean: ['html', 'js'],
+  boolean: ['html', 'js', '!'],
   default: {
     'html': true,
     'js': true
@@ -57,14 +57,14 @@ srcDirs.forEach(function (dir) {
         var contents = fs.readFileSync(filePath, {encoding: 'utf-8'});
         var beautiful = beautify[type](contents, config);
         if (beautiful.trim() !== contents.trim()) {
-          if (VERBOSE) console.log(file, 'can be beautified');
+          if (VERBOSE) console.log(path.relative(process.cwd(), filePath), 'can be beautified');
           ugly++;
           if (EDIT) {
             fs.writeFileSync(filePath, beautiful);
           }
         }
         else {
-          if (VERBOSE) console.log(file, 'is beautiful');
+          if (VERBOSE) console.log(path.relative(process.cwd(), filePath), 'is beautiful');
         }
       }
     });
