@@ -8,7 +8,8 @@ var fs = require('fs');
 var opts = require('minimist')(process.argv.slice(2), {
   alias: {
     'help': 'h',
-    'verbose': 'v'
+    'verbose': 'v',
+    'warn': 'w'
   }
 });
 
@@ -18,12 +19,14 @@ if (opts.help) {
   console.log("Options:");
   console.log("  -h, --help     Output usage information");
   console.log("  -v, --verbose  Enable verbose output");
+  console.log("  -w, --warn     Print warnings but return success");
   console.log("  -!             Edit files in place");
   process.exit(0);
 }
 
 const EDIT = opts['!'];
 const VERBOSE = opts.verbose;
+const WARN = opts.warn;
 
 var config = JSON.parse(fs.readFileSync(path.join(__dirname, '../.jsbeautifyrc')));
 if (VERBOSE) console.log(".jsbeautifyrc config:\n%s\n", JSON.stringify(config, null, '  '));
@@ -55,7 +58,6 @@ srcDirs.forEach(function (dir) {
 });
 
 console.log("%s%d files %s beautified.", VERBOSE ? "\n" : "", ugly, EDIT ? "were" : "can be");
-if (!EDIT) console.log("Run `%s -!` to beautify then `git add` the changes.", path.relative(process.cwd(), process.argv[1]));
-else console.log("Don't forget to `git add` the changes!");
+if (!EDIT) console.log("Run `%s -!` to beautify files in place.", path.relative(process.cwd(), process.argv[1]));
 
-process.exit(ugly);
+process.exit(WARN ? 0 : ugly);

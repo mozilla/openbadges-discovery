@@ -13,7 +13,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec tests/**/*.test.js",
     "postinstall": "./node_modules/.bin/bower install",
-    "validate": "bin/beautify"
+    "validate": "./bin/beautify --warn"
   },
   "dependencies": {
     "express": "~3.4.0",
