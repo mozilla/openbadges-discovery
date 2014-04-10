@@ -61,8 +61,6 @@ srcDirs.forEach(function (dir) {
           ugly++;
           if (EDIT) {
             fs.writeFileSync(filePath, beautiful);
-            fs.writeFileSync('a.txt', contents);
-            fs.writeFileSync('b.txt', beautiful);
           }
         }
         else {
