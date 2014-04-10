@@ -17,7 +17,7 @@ module.exports = HumanModel.define({
       required: true
     },
     description: {
-      type: 'text',
+      type: 'string',
       required: false
     },
     tags: {
