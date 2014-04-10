@@ -51,10 +51,11 @@ module.exports = Backbone.Router.extend({
 
   showPathway: function (id) {
     id = parseInt(id);
-    var pathway = cache || new Achievement({
+    var pathway = cache.pathway || new Achievement({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
+      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Hi.',
       creator: 'None',
       favorite: !!query('fav')
     });
@@ -72,6 +73,7 @@ module.exports = Backbone.Router.extend({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
+      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Another.',
       creator: 'None',
       favorite: !!query('fav')
     });
