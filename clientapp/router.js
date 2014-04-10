@@ -120,6 +120,10 @@ module.exports = Backbone.Router.extend({
           source: Achievements.WISHLIST,
           type: Achievement.BADGE
       });
+      var pathways = new Achievements({
+              pageSize: 4,
+              source: Achievements.PATHWAY
+      });
       backpack.fetch();
       wishlist.fetch();
       app.renderPage(new DashboardPage({
@@ -127,7 +131,8 @@ module.exports = Backbone.Router.extend({
         collection: this.listing,
         addSources: {
               backpack: backpack,
-              wishlist: wishlist
+              wishlist: wishlist,
+              pathways: pathways
           }
     }));
 },

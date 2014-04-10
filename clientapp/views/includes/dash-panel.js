@@ -8,31 +8,18 @@ module.exports = HumanView.extend({
     initialize: function (opts) {
         this.backpack = opts.sources.backpack;
         this.wishlist = opts.sources.wishlist;
+        this.pathways = opts.sources.pathways;
     },
     render: function () {
         this.renderAndBind();
         this.backpackList = new ItemList({collection: this.backpack});
         this.wishlistList = new ItemList({collection: this.wishlist});
+        this.pathwayList = new ItemList({collection: this.pathways});
         this.renderSubview(this.backpackList, '.js-backpack-items');
         this.renderSubview(this.wishlistList, '.js-wishlist-items');
+        this.renderSubview(this.pathwayList, '.js-pathway-items');
+        console.log('pathways ', this.pathways);
         return this;
-    }//,
-//    events: {
-//        'click .js-add-items': 'add',
-//        'click .js-cancel-add': 'cancel'
-//    },
-//    add: function (evt) {
-//        var selected = [].concat(
-//            this.backpackList.getSelected({deselect: true}),
-//            this.wishlistList.getSelected({deselect: true})
-//        );
-//        this.trigger('add', selected);
-//        evt.preventDefault();
-//    },
-//    cancel: function (evt) {
-//        this.backpackList.deselectAll();
-//        this.wishlistList.deselectAll();
-//        this.trigger('cancel');
-//        evt.preventDefault();
-//    }
+    }
+
 });
