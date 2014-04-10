@@ -1,9 +1,10 @@
 var HumanView = require('human-view');
 var templates = require('templates');
 var AddPanel = require('../includes/add-panel');
+var DashTitle = require('../includes/dash-title');
 var DashPanel = require('../includes/dash-panel');
 var Requirement = require('../../models/requirement');
-var Achievement = require('../../models/achievement') ;
+var Achievement = require('../../models/achievement');
 
 
 console.log('or do they come in here?');
@@ -20,6 +21,10 @@ module.exports = HumanView.extend({
     });
     console.log('where is the appendChild?');
 
+    var dashTitle = new DashTitle({
+      sources: this.addSources
+    });
+    this.renderSubview(dashTitle, '.dash-title');
 
     var dashPanel = new DashPanel({
       sources: this.addSources
