@@ -3,6 +3,9 @@ var templates = require('templates');
 var Editor = require('../includes/editor');
 var AddPanel = require('../includes/add-panel');
 var Requirement = require('../../models/requirement');
+var PathwayTitleView = require('../includes/pathway-title');
+var PathwayEditView = require('../includes/pathway-edit');
+
 
 module.exports = HumanView.extend({
   template: templates.pages.pledged,
@@ -35,6 +38,25 @@ module.exports = HumanView.extend({
       this.moveToTop('#editorPanel');
     }, this);
     this.renderSubview(addPanel, '.add-panel-container');
+
+    var pathwayTitleView = new PathwayTitleView({
+      model: this.model
+    });
+
+
+    this.renderSubview(pathwayTitleView, '.pathway-title');
+
+    var pathwayEditView = new PathwayEditView({
+      model: this.model
+    });
+    pathwayEditView.on('saved', function () {
+      this.moveToTop('#pathwayTitle');
+    }, this);
+    pathwayEditView.on('cancel', function () {
+      pathwayEditView.reset();
+      this.moveToTop('#pathwayTitle');
+    }, this);
+    this.renderSubview(pathwayEditView, '.pathway-edit');
 
     this.$('.js-stack').each(function () {
       $(this).children().slice(1).addClass('bottom');

@@ -9,6 +9,7 @@ module.exports = HumanView.extend({
       pathway: this.model,
       user: window.app.currentUser
     });
+    console.log(this.model);
     this.renderSubview(new Editor({
       collection: this.collection,
       mode: 'view'

@@ -28,8 +28,9 @@ module.exports = {
   },
 
   deleteAll: function (cb) {
+    var uri = url.resolve(BASE, '/db/data/transaction/commit');
     return request({
-      uri: url.resolve(BASE, '/db/data/transaction/commit'),
+      uri: uri,
       method: 'POST',
       json: {
         statements: [
@@ -39,6 +40,9 @@ module.exports = {
       },
       //qs: { includeStats: true }
     }, function (err, response, body) {
+      if (err && err.code && err.code === 'ECONNREFUSED')
+        err = new Error("Unable to connect to " + uri + " (Is the Neo4j server running?)");
+
       if (err) return cb(err);
       if (body && body.errors.length) return cb(new Error('Delete statements returned errors'));
       if (response.statusCode !== 200) return cb(new Error('Status code ' + response.statusCode));
@@ -64,7 +68,10 @@ module.exports = {
     });
     var d = new Neo4jStreamDeserializer();
     r.on('error', function (err) {
-      throw new Error(util.format('Unable to POST to %s: %s', uri, err.message));
+      if (err.code && err.code === 'ECONNREFUSED')
+        throw new Error("Unable to connect to " + uri + " (Is the Neo4j server running?)");
+      else
+        throw new Error(util.format('Unable to POST to %s: %s', uri, err.message));
     });
     r.on('response', function (response) {
       if (response.statusCode !== 200) d.error(response.statusCode);
