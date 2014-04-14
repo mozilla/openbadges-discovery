@@ -16,6 +16,10 @@ module.exports = HumanModel.define({
       type: 'string',
       required: true
     },
+    description: {
+      type: 'string',
+      required: false
+    },
     tags: {
       type: 'array',
       required: false
