@@ -2,6 +2,7 @@
 .pathway-cover-image {
   background: url("../static/pathway/pathway-header-desktop.svg") no-repeat;
   background-size: cover;
+  background-position: center;
   min-height: 375px;
   height: auto;
 }
@@ -12,7 +13,6 @@
     .pathway-background {
       background: url("../static/pathway/pathway-background-desktop.svg") no-repeat;
       background-size: cover;
-      padding: 60px 80px;
     }
   }
 
