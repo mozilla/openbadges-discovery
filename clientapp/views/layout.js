@@ -38,7 +38,6 @@ module.exports = HumanView.extend({
     Foundation.libs.dropdown.close(dropdown);
   },
   dashboard: function (evt) {
-      //console.log ("In layout, directing to dashboard")
       window.app.router.navigateTo('dashboard');
   }
 });
