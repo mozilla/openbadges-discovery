@@ -11,7 +11,7 @@ module.exports = HumanView.extend({
   template: templates.pages.dashboard,
   initialize: function (opts) {
     opts = opts || {};
-    this.addSources = opts.addSources;
+    this.sources = opts.sources;
   },
   render: function () {
     this.renderAndBind({
@@ -20,12 +20,12 @@ module.exports = HumanView.extend({
     });
 
     var dashTitle = new DashTitle({
-      sources: this.addSources
+      sources: this.sources
     });
     this.renderSubview(dashTitle, '.dash-title');
 
     var dashPanel = new DashPanel({
-      sources: this.addSources
+      sources: this.sources
     });
     this.renderSubview(dashPanel, '.dash-panel-container');
 

@@ -129,7 +129,7 @@ module.exports = Backbone.Router.extend({
       app.renderPage(new DashboardPage({
         model: window.app,
         collection: this.listing,
-        addSources: {
+        sources: {
               backpack: backpack,
               wishlist: wishlist,
               pathways: pathways
