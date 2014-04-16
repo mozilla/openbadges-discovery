@@ -2,7 +2,6 @@
   .pathway-cover-image{
     background-image: url("/static/pathway/pathway-header-desktop.svg");
   }
-
   .page-body-pathway {
     background-image: url("/static/pathway/pathway-background-desktop.svg");
   }
@@ -18,11 +17,9 @@
     margin-top: 1em;
   }
 }
-
 .content.active {
   float: none;
 }
-
 .stack > .bottom {
   display: none;
 }
