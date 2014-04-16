@@ -37,16 +37,19 @@ header {
     line-height: 72px;
   }
 }
+.main-icon {
+  width: 155px;
+  height: 155px;
+  margin-top: 73px;
+}
 nav {
   padding-top: 0.9em;
-  background-color: $green;
+  position: absolute;
+  text-align: center;
 }
 .page-header {
-  background-size: cover;
-  padding-top: 2em;
-  padding-bottom: 2em;
   background-position: center;
-  min-height: 375px;
+  height: 300px;
 }
 .page-body-rounded {
   padding-bottom: 2em;
