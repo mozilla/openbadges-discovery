@@ -1,9 +1,17 @@
 .badge-page {
-  padding-top: 2em;
   padding-bottom: 2em;
-
   .badge {
     display: inline-block;
     position: relative;
+    background-image: url("/static/badgeBackground.svg");
+    padding: 2.5em;
+    background-size: cover;
+    border-radius: 50%;
+    width: 280px;
+    height: 280px;
+  }
+
+  .badge-header {
+  	background-image: url("/static/badgesHeaderDesktop.svg");
   }
 }
