@@ -6,7 +6,8 @@ module.exports = HumanView.extend({
   events: {
     'click .js-login': 'login',
     'click .js-logout': 'logout',
-    'click .js-view-latest': 'landing'
+    'click .js-view-latest': 'landing',
+    'click .js-user-panel': 'dashboard'
   },
   render: function () {
     this.renderAndBind(this.model);
@@ -35,5 +36,9 @@ module.exports = HumanView.extend({
     // TODO: generalize the following to all(?) dropdown buttons
     var dropdown = $(evt.currentTarget).closest('.f-dropdown');
     Foundation.libs.dropdown.close(dropdown);
+  },
+  dashboard: function (evt) {
+      //console.log ("In layout, directing to dashboard")
+      window.app.router.navigateTo('dashboard');
   }
 });
