@@ -8,9 +8,9 @@ module.exports = HumanView.extend({
     this.backpack = opts.sources.backpack;
     this.wishlist = opts.sources.wishlist;
     this.pathways = opts.sources.pathways;
-    this.listenToAndRun(this.backpack, 'add', this.render);
-    this.listenToAndRun(this.wishlist, 'add', this.render);
-    this.listenToAndRun(this.pathways, 'add', this.render);
+    this.listenTo(this.backpack, 'add', this.render);
+    this.listenTo(this.wishlist, 'add', this.render);
+    this.listenTo(this.pathways, 'add', this.render);
   },
   render: function() {
     this.renderAndBind({
