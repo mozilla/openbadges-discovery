@@ -7,6 +7,22 @@
 @import "listing-page";
 @import "add-list";
 
+/*** PATHWAY COLORS ***/
+$green: #7ad69c;
+$blue: #0fa1d6;
+$text-dark: #4d4f53;
+$text-light: #ffffff;
+$pathway-background-color: #f4f4f2;
+
+/*** WIDTHS ***/
+$one-wide: 13.6%;
+$two-wide: 30.9%;
+$three-wide: 50%;
+$four-wide: 65.5%;
+$five-wide: 82.7%;
+$six-wide: 100%;
+
+
 body {
   background-color: lightgray;
 }
@@ -22,15 +38,24 @@ header {
   }
 }
 nav {
-  margin-top: 0.2em;
-  padding-top: 0.8em;
+  padding-top: 0.9em;
+  background-color: $green;
 }
+
 footer {
   padding-bottom: 3em;
 }
 
+.white-button {
+  background-color: white;
+  border-color: white;
+  color: $text-dark;
+  .f-dropdown { color: $text-dark; }
+  &:hover { background-color: $blue; }
+}
+
 .banner {
-  background-color: lightgray;
+  background-color: $pathway-background-color;
 }
 
 .logout-control a,
@@ -44,8 +69,10 @@ footer {
   text-overflow: ellipsis;
 
   .fa-user {
-    background: white;
-    padding: 4px 8px;
+    border-radius: 100px;
+    border: 1px solid white;
+    padding: 8px 12px;
+    margin-right:  15px;
   }
 }
 
