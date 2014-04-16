@@ -8,10 +8,11 @@
 @import "add-list";
 
 body {
-  background-color: lightgray;
+  background-color: #f4f4f2;
+  font-family: Helvetica, sans-serif;
 }
 #pages {
-  background-color: white;
+  //background-color: white;
 }
 header {
   background-color: white;
@@ -24,6 +25,21 @@ header {
 nav {
   margin-top: 0.2em;
   padding-top: 0.8em;
+  position: absolute;
+  z-index: 10;
+}
+.page-header {
+  background-size: cover;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  background-position: center;
+}
+.page-body-rounded {
+  padding-bottom: 2em;
+  background-color: #fff;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.05);
 }
 footer {
   padding-bottom: 3em;
