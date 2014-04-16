@@ -29,6 +29,7 @@ body {
 #pages {
   //background-color: white;
 }
+
 header {
   background-color: white;
   padding-bottom: 0.2em;
@@ -42,10 +43,10 @@ header {
   height: 155px;
   margin-top: 73px;
 }
-nav {
+.nav-header {
   padding-top: 0.9em;
   position: absolute;
-  text-align: center;
+  width: 100%;
 }
 .page-header {
   background-position: center;
@@ -105,4 +106,12 @@ footer {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
   cursor: grabbing;
+}
+.button-blue{
+  background: url(/static/button-blue.svg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: none;
+  border-radius: 10px;
+  line-height: 0.2;
 }
