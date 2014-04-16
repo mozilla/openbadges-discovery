@@ -3,7 +3,7 @@
   .badge {
     display: inline-block;
     position: relative;
-    background-image: url("/static/badgeBackground.svg");
+    background-image: url("/static/badges/badge-background.svg");
     padding: 2.5em;
     background-size: cover;
     border-radius: 50%;
@@ -12,6 +12,6 @@
   }
 
   .badge-header {
-	background-image: url("/static/badgesHeaderDesktop.svg");
+	background-image: url("/static/badges/badges-header-desktop.svg");
   }
 }
