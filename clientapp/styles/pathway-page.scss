@@ -2,18 +2,13 @@
   .pathway-cover-image{
     background-image: url("/static/pathway/pathway-header-desktop.svg");
   }
-  .pathway{
-    display: inline-block;
-    position: relative;
-    background-image: url("/static/pathway/pathway-background.svg");
-    padding: 2.5em;
-    background-size: cover;
-    border-radius: 50%;
-    width: 280px;
-    height: 280px;
-  }
-  .pathway-editor {
 
+  .page-body-pathway {
+    background-image: url("/static/pathway/pathway-background-desktop.svg");
+  }
+  .pathway-title{
+    background: white;
+    padding-top: 10px;
   }
 
 	.pathway-title-edit{
