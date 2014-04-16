@@ -190,3 +190,21 @@ span.label.radius {
 =======
 >>>>>>> fixing navbar
 }
+
+.button-grey{
+  background: url(/static/button-grey.svg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: none;
+  border-radius: 10px;
+  line-height: 0.2;
+}
+
+.button-orange{
+  background: url(/static/button-orange.svg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: none;
+  border-radius: 10px;
+  line-height: 0.2;
+}
