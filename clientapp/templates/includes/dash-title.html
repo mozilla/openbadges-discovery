@@ -1,27 +1,18 @@
-<div>
-  <h1>{{ currentUser.email }}</h1>
-  <div class="row text-center">
-	  <div class="small-4 columns">
-	  	<span class="fa-stack fa-lg">
-	  		<i class="fa fa-circle fa-stack-2x"></i>
-	  		<i class="fa fa-code-fork fa-stack-1x fa-inverse"></i>
-	  	</span>
-	  	<p>{{pathways.models.length}} pathways<br>created</p>
+<div class="row text-center">
+  <div class="medium-12 text-center">
+    <h2 style="color:white">{{ currentUser.email }}</h2>
+  </div>
+	  <div class="medium-2 medium-offset-3 columns">
+          <img src="/static/dashboard/icoDashboardPathway.svg">
+          <p>{{pathways.models.length}} pathways</p>
 	  </div>
-	  <div class="small-4 columns">
-	  	<span class="fa-stack fa-lg">
-	  		<i class="fa fa-circle fa-stack-2x"></i>
-	  		<i class="fa fa-heart fa-stack-1x fa-inverse"></i>
-	  	</span>
-	  	<p>{{wishlist.models.length}} badges<br>favorited</p>
+      <div class="medium-2 columns">
+          <img src="static/dashboard/icoDashboardBadge.svg">
+          <p>{{backpack.models.length}} badges</p>
+      </div>
+	  <div class="medium-2 columns">
+	  	<img src="/static/dashboard/icoDashboardFavorited.svg">
+	  	<p>{{wishlist.models.length}} favorited</p>
 	  </div>
-	  <div class="small-4 columns">
-	  	<span class="fa-stack fa-lg">
-	  		<i class="fa fa-circle fa-stack-2x"></i>
-	  		<i class="fa fa-certificate fa-stack-1x fa-inverse"></i>
-	  	</span>
-	  	<p>{{backpack.models.length}} badges<br>earned</p>
-	  </div>
-	</div>
-  <i class="fa fa-chevron-down fa-2x"></i>
+      <div class="medium-3"></div>
 </div>
