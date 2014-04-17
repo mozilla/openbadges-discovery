@@ -6,6 +6,8 @@
 @import "pathway-page";
 @import "listing-page";
 @import "add-list";
+@import "dashboard-page";
+@import "landing-page";
 
 /*** COLORS ***/
 $green: #7ad69c;
@@ -42,6 +44,14 @@ header {
   width: 155px;
   height: 155px;
   margin-top: 73px;
+}
+
+.dashboard-icon{
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .nav-header {
   padding-top: 0.9em;
