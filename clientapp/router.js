@@ -2,12 +2,11 @@ var Backbone = require('backbone');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
-var Search = require('./models/search');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
 var PledgedPage = require('./views/pages/pledged');
-var SearchPage = require('./views/pages/search');
+var DashboardPage = require('./views/pages/dashboard');
 var query = require('query-param-getter');
 
 var cache;
@@ -29,7 +28,7 @@ module.exports = Backbone.Router.extend({
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
-    'recent': 'recent',
+    'dashboard': 'showDashboard',
     '*url': 'nope'
   },
 
@@ -111,14 +110,32 @@ module.exports = Backbone.Router.extend({
     }));
   },
 
-  recent: function () {
-    var search = new Search();
-    search.fetch().then(function () {
-      app.renderPage(new SearchPage({
-        model: search
-      }));
-    });
-  },
+  showDashboard: function () {
+      var backpack = new Achievements({
+          pageSize: 4,
+          source: Achievements.BACKPACK
+      });
+      var wishlist = new Achievements({
+          pageSize: 4,
+          source: Achievements.WISHLIST,
+          type: Achievement.BADGE
+      });
+      var pathways = new Achievements({
+              pageSize: 4,
+              source: Achievements.PATHWAY
+      });
+      backpack.fetch();
+      wishlist.fetch();
+      app.renderPage(new DashboardPage({
+        model: window.app,
+        collection: this.listing,
+        sources: {
+              backpack: backpack,
+              wishlist: wishlist,
+              pathways: pathways
+          }
+    }));
+},
 
   nope: function () {
     if (app.currentPage) app.currentPage.remove();
