@@ -4,36 +4,12 @@ var Achievement = require('./achievement');
 
 var BACKPACK = 'backpack';
 var WISHLIST = 'wishlist';
-var PATHWAYS = 'pathways';
-
-function randomType () {
-  return Math.random() < 0.5 ? Achievement.BADGE : Achievement.PATHWAY;
-}
-
-var id = 1;
-var type= null;
-function fakeAchievement (opts) {
-  if (opts.src === BACKPACK) {
-       type = Achievement.BADGE;
-  }
-  else if (opts.src === PATHWAYS){
-       type = Achievement.PATHWAY;
-  }
-  else{
-       type = randomType() ;
-  }
-  var data = {
-    id: id++,
-    type: type.toLowerCase(),
-    title: 'A Very Long ' + type + ' Title',
-    tags: ['service', 'barista', 'coffeelover', 'fake'],
-    creator: 'Starbucks'
-  };
-  return data;
-}
 
 module.exports = Backbone.Collection.extend({
   model: Achievement,
+  url: function () {
+    return '/api/achievement';
+  },
   initialize: function (opts) {
     opts = opts || {};
     this.pageSize = opts.pageSize || 8;
@@ -41,20 +17,18 @@ module.exports = Backbone.Collection.extend({
     this.type = opts.type;
   },
   sync: function (method, collection, options) {
-    var pageSize = this.pageSize;
-    var opts = {
-      src: this.source,
-      type: this.type
-    };
-    setTimeout(function () {
-      options.success(_.times(pageSize, fakeAchievement.bind(null, opts)));
-    }, 0);
+    options.data = _.extend({ pageSize: collection.pageSize }, options.data);
+    return Backbone.sync(method, collection, options);
   },
   addPage: function () {
-    this.fetch({remove: false});
+    var data = {};
+    if (this.length) data.after = this.last().order;
+    this.fetch({
+      remove: false,
+      data: data
+    });
   }
 });
 
 module.exports.BACKPACK = BACKPACK;
 module.exports.WISHLIST = WISHLIST;
-module.exports.PATHWAYS = PATHWAYS;

@@ -22,8 +22,10 @@ module.exports = HumanView.extend({
     evt.preventDefault();
   },
   save: function (evt) {
-    this.pathway.title = $('#pathway-form-title').val();
-    this.pathway.description = $('#pathway-form-description').val();
+    this.pathway.set({
+      title: $('#pathway-form-title').val(),
+      description: $('#pathway-form-description').val()
+    });
     this.trigger('saved');
     evt.preventDefault();
   },

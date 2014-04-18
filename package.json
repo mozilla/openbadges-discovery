@@ -38,7 +38,8 @@
     "through": "~2.3.4",
     "query-param-getter": "0.0.1",
     "browserify-shim": "~3.3.2",
-    "displayer-api-client": "~0.1.2"
+    "displayer-api-client": "~0.1.2",
+    "nedb": "~0.10.5"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

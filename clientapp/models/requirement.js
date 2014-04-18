@@ -2,8 +2,9 @@ var HumanModel = require('human-model');
 var _ = require('underscore');
 
 module.exports = HumanModel.define({
+  idAttribute: '_id',
   props: {
-    id: ['number'],
+    _id: ['string'],
     x: ['number'],
     y: ['number'],
     name: ['string'],
