@@ -13,7 +13,9 @@ module.exports = HumanView.extend({
     this.listenToAndRun(this.backpack, 'add', this.render);
     this.listenToAndRun(this.wishlist, 'add', this.render);
     this.listenToAndRun(this.pathways, 'add', this.render);
-    console.log('this many badges: ', this.pathways.models.length);
+      console.log('about them pathways: ', this.pathways);
+      console.log('about them wishlist badges: ', this.wishlist);
+      console.log('about them badges: ', this.backpack);
   },
   render: function () {
     this.renderAndBind({

@@ -121,8 +121,9 @@ module.exports = Backbone.Router.extend({
           type: Achievement.BADGE
       });
       var pathways = new Achievements({
-              pageSize: 4,
-              source: Achievements.PATHWAY
+          pageSize: 4,
+          source: Achievements.PATHWAYS //,
+//          type: Achievement.PATHWAY
       });
       backpack.fetch();
       wishlist.fetch();
