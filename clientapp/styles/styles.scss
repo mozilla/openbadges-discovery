@@ -117,29 +117,53 @@ footer {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
-.button-blue{
-  background: url(/static/button-blue.svg) no-repeat;
+.button-base{
   background-size: cover;
   background-position: center;
   background-color: none;
   border-radius: 10px;
   line-height: 0.2;
+  border: 2px solid #fff;
+}
+.button-blue{
+  background: url(/static/button-blue.svg) no-repeat;
+  @extend .button-base
 }
 
 .button-grey{
   background: url(/static/button-grey.svg) no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-color: none;
-  border-radius: 10px;
-  line-height: 0.2;
+  @extend .button-base
 }
 
 .button-orange{
   background: url(/static/button-orange.svg) no-repeat;
+  @extend .button-base
+}
+
+// Styling Achievements
+.token {
+  border-radius: 2em;
+  background-image: url(/static/badge-background.svg);
   background-size: cover;
-  background-position: center;
-  background-color: none;
-  border-radius: 10px;
-  line-height: 0.2;
+}
+
+.wishlist-button{
+  margin: 15px;
+  .favorite-icon{
+    color: #d4d4d2;
+  }
+}
+
+.item-link {
+  padding: 30px;
+}
+
+span.label.secondary {
+  background-color: $green;
+  color: #fff;
+  margin: 2px;
+}
+
+span.label.radius {
+  border-radius: 7px;
 }
