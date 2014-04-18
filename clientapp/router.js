@@ -123,10 +123,10 @@ module.exports = Backbone.Router.extend({
       var pathways = new Achievements({
           pageSize: 4,
           source: Achievements.PATHWAYS //,
-//          type: Achievement.PATHWAY
       });
       backpack.fetch();
       wishlist.fetch();
+      pathways.fetch();
       app.renderPage(new DashboardPage({
         model: window.app,
         collection: this.listing,
