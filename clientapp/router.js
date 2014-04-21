@@ -53,7 +53,7 @@ module.exports = Backbone.Router.extend({
 
   showPathway: function (id) {
     id = parseInt(id);
-    var pathway = cache.pathway || new Achievement({
+    var pathway = new Achievement({
       id: id,
       type: 'pathway',
       title: 'A Very Long Pathway Title ' + id,
@@ -121,11 +121,12 @@ module.exports = Backbone.Router.extend({
           type: Achievement.BADGE
       });
       var pathways = new Achievements({
-              pageSize: 4,
-              source: Achievements.PATHWAY
+          pageSize: 4,
+          source: Achievements.PATHWAYS
       });
       backpack.fetch();
       wishlist.fetch();
+      pathways.fetch();
       app.renderPage(new DashboardPage({
         model: window.app,
         collection: this.listing,

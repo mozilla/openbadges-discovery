@@ -7,7 +7,7 @@ module.exports = HumanView.extend({
     'click .js-login': 'login',
     'click .js-logout': 'logout',
     'click .js-view-latest': 'landing',
-    'click .js-user-panel': 'dashboard'
+    'click .user-panel': 'dashboard'
   },
   render: function () {
     this.renderAndBind(this.model);

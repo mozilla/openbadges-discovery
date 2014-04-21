@@ -1,19 +1,30 @@
-<section class="page landing">
-  <div class="banner">
-    <div class="row text-center">
-      <p>
-        Stumptown fugiat street art 8-bit Cosby sweater mumblecore. Intelligentsia slow-carb Austin, lo-fi Pitchfork blog freegan est iPhone.
-      </p>
-      {% if currentUser.loggedIn %}
-        <a href="#" class="button js-quiz">Take the Quiz</a>
-      {% else %}
-        <a href="#" class="button js-login">Sign in / Sign up</a>
-      {% endif %}
+<section class="page landing-page">
+  <section class="landing-cover-image page-header">
+  </section>
+  <section class="landing-title-section">
+    <div class="row text-center landing-title">
+      <div class="medium-9 columns">
+        <p>
+          Stumptown fugiat street art 8-bit Cosby sweater mumblecore. Intelligentsia slow-carb Austin, lo-fi Pitchfork blog freegan est iPhone.
+        </p>
+      </div>
+      <div class="medium-3 columns">
+        {% if currentUser.loggedIn %}
+          <a href="#" class="button js-quiz button-orange">Take the Quiz</a>
+        {% else %}
+          <a href="#" class="button js-login">Sign in / Sign up</a>
+        {% endif %}
+      </div>
     </div>
-  </div>
-  <div class="row text-center">
-    <h2>Featured</h2>
-  </div>
-  <section class="content">
+  </section>
+  <section>
+    <div class="row text-center page-body-rounded">
+      <div class="medium-12 columns">
+        <h2>Featured</h2>
+        <div class="content">
+        </div>
+      </div>
+    </div>
+
   </section>
 </section>

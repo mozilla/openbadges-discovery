@@ -1,7 +1,14 @@
 .pathway-page {
-  .pathway-cover-image,
-  .pathway-editor {
-    background-color: #999;
+  .pathway-cover-image{
+    background-image: url("/static/pathway/pathway-header-desktop.svg");
+  }
+
+  .page-body-pathway {
+    background-image: url("/static/pathway/pathway-background-desktop.svg");
+  }
+  .pathway-header{
+    background: white;
+    padding-top: 10px;
   }
 
 	.pathway-title-edit{

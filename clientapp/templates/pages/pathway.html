@@ -1,30 +1,31 @@
 <section class="page pathway-page">
-  <section class="pathway-cover-image banner">
+  <section class="pathway-cover-image page-header">
     <div class="row text-center">
-      <div class="small-12 large-8 small-centered columns">
+      <div class="small-12 large-8 small-centered columns pathway main-icon">
         <img src="/static/pathway.png">
       </div>
     </div>
   </section>
-  <section class="pathway-data banner">
-    <div class="row text-center">
+  <section class="pathway-data">
+    <div class="row text-center pathway-header">
       <div class="small-12 large-8 small-centered columns">
         <h1 class="foo">{{pathway.title}}</h1>
         <p class="foo">
           {{pathway.description}}
         </p>
-        <i class="fa fa-chevron-down fa-2x"></i>
+        <div>
+          {% if user.loggedIn %}
+            <a href="#" class="button pledge-button js-pledge-button button-blue">Pledge to do this!</a>
+          {% else %}
+            <a href="#" class="button pledge-button js-pledge-button">Log in to pledge</a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </section>
-  <section class="pathway-editor banner">
-    <div class="row text-center">
-      {% if user.loggedIn %}
-        <a href="#" class="button pledge-button js-pledge-button">Pledge to do this!</a>
-      {% else %}
-        <a href="#" class="button pledge-button js-pledge-button">Log in to pledge</a>
-      {% endif %}
-      <div class="pathway-editor-container small-12 medium-8 large-8 small-centered columns">
+  <section class="pathway-editor">
+    <div class="row text-center page-body-pathway">
+      <div class="pathway-editor-container small-12 medium-10 large-8 small-centered columns">
       </div>
     </div>
   </section>

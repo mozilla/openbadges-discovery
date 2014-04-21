@@ -4,14 +4,24 @@ var Achievement = require('./achievement');
 
 var BACKPACK = 'backpack';
 var WISHLIST = 'wishlist';
+var PATHWAYS = 'pathways';
 
 function randomType () {
   return Math.random() < 0.5 ? Achievement.BADGE : Achievement.PATHWAY;
 }
 
 var id = 1;
+var type= null;
 function fakeAchievement (opts) {
-  var type = opts.type || (opts.src === BACKPACK) ? Achievement.BADGE : randomType();
+  if (opts.src === BACKPACK) {
+       type = Achievement.BADGE;
+  }
+  else if (opts.src === PATHWAYS){
+       type = Achievement.PATHWAY;
+  }
+  else{
+       type = randomType() ;
+  }
   var data = {
     id: id++,
     type: type.toLowerCase(),
@@ -47,3 +57,4 @@ module.exports = Backbone.Collection.extend({
 
 module.exports.BACKPACK = BACKPACK;
 module.exports.WISHLIST = WISHLIST;
+module.exports.PATHWAYS = PATHWAYS;
