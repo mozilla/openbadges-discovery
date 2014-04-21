@@ -4,6 +4,11 @@ var util = require('util');
 
 module.exports = HumanView.extend({
   template: templates.includes.achievement,
+  initialize: function () {
+    this.listenTo(this.model, 'change:favorite', function (model, val) {
+      this.model.save({favorite: val}, {patch: true});
+    });
+  },
   classBindings: {
     userFavorite: '.js-favorite-icon'
   },

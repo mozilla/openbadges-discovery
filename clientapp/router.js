@@ -76,10 +76,6 @@ module.exports = Backbone.Router.extend({
     var requirements = new Requirements({
       parentId: pledged._id
     });
-    requirements.on('change', function (model) {
-      console.log('requirements event', arguments);
-      model.save();
-    });
     var backpack = new Achievements({
       pageSize: 4,
       source: Achievements.BACKPACK
@@ -92,7 +88,6 @@ module.exports = Backbone.Router.extend({
     backpack.fetch();
     wishlist.fetch();
     $.when(pledged.fetch(), requirements.fetch()).done(function () {
-      console.log(pledged.attributes);
       app.renderPage(new PledgedPage({
         model: pledged,
         collection: requirements,
@@ -116,7 +111,7 @@ module.exports = Backbone.Router.extend({
       });
       var pathways = new Achievements({
           pageSize: 4,
-          source: Achievements.PATHWAYS
+          source: Achievements.PLEDGED
       });
       backpack.fetch();
       wishlist.fetch();

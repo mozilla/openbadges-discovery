@@ -2,13 +2,20 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Achievement = require('./achievement');
 
-var BACKPACK = 'backpack';
-var WISHLIST = 'wishlist';
+var BACKPACK = 'earned';
+var WISHLIST = 'favorite';
+var PLEDGED = 'pledged';
 
 module.exports = Backbone.Collection.extend({
   model: Achievement,
   url: function () {
-    return '/api/achievement';
+    if (window.app.currentUser.loggedIn && this.source) {
+      var uid = window.app.currentUser.id;
+      return '/api/user/' + uid + '/' + this.source;
+    }
+    else {
+      return '/api/achievement';
+    }
   },
   initialize: function (opts) {
     opts = opts || {};
@@ -32,3 +39,4 @@ module.exports = Backbone.Collection.extend({
 
 module.exports.BACKPACK = BACKPACK;
 module.exports.WISHLIST = WISHLIST;
+module.exports.PLEDGED = PLEDGED;

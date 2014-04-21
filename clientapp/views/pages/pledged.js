@@ -12,11 +12,13 @@ module.exports = HumanView.extend({
   initialize: function (opts) {
     opts = opts || {};
     this.addSources = opts.addSources;
-    this.listenTo(this.model, 'all', function () {
-      console.log('model event', arguments);
-    });
     this.listenTo(this.model, 'change', function (model) {
-      console.log('Change', arguments);
+      model.save();
+    });
+    this.listenTo(this.collection, 'change', function (model) {
+      if (!model.isNew()) model.save();
+    });
+    this.listenTo(this.collection, 'positioned', function (model) {
       model.save();
     });
   },
