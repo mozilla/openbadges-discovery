@@ -4,15 +4,17 @@
   <section class="landing-title-section">
     <div class="row text-center landing-title">
       <div class="medium-9 columns">
-        <p>
-          Stumptown fugiat street art 8-bit Cosby sweater mumblecore. Intelligentsia slow-carb Austin, lo-fi Pitchfork blog freegan est iPhone.
-        </p>
+        {% if currentUser.loggedIn %}
+          <p>Welcome! Now that you are all settled help us help you. Tell us what you like doing so we can make some recommendations.</p>
+        {% else %}
+          <p>Explore pathways to career opportunities. Discover your own personalized journey with Open Badges. Learn valued skills and navigate your potential along the way!</p>
+        {% endif %}
       </div>
       <div class="medium-3 columns">
         {% if currentUser.loggedIn %}
-          <a href="#" class="button js-quiz button-orange">Take the Quiz</a>
+          <a href="https://docs.google.com/a/varelidi.com/forms/d/1T0FqgLKYw0cLUPvxirTZ2UIvOJHVZYtC71cU8jU1I24/viewform" class="button js-quiz button-orange">Take the Quiz</a>
         {% else %}
-          <a href="#" class="button js-login">Sign in / Sign up</a>
+          <a href="#" class="button js-login button-orange">Log In Using Persona</a>
         {% endif %}
       </div>
     </div>
@@ -20,11 +22,10 @@
   <section>
     <div class="row text-center page-body-rounded">
       <div class="medium-12 columns">
-        <h2>Featured</h2>
+        <h2>Latest</h2>
         <div class="content">
         </div>
       </div>
     </div>
-
   </section>
 </section>
