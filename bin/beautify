@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+var beautify = require('js-beautify');
+var file = require('file');
+var path = require('path');
+var fs = require('fs');
+
+var opts = require('minimist')(process.argv.slice(2), {
+  boolean: ['html', 'js', '!'],
+  default: {
+    'html': true,
+    'js': true
+  },
+  alias: {
+    'help': 'h',
+    'verbose': 'v',
+    'warn': 'w'
+  }
+});
+
+if (opts.help) {
+  console.log("Usage: %s [options]", path.basename(process.argv[1]));
+  console.log();
+  console.log("Options:");
+  console.log("  -h, --help     Output usage information");
+  console.log("  -v, --verbose  Enable verbose output");
+  console.log("  -w, --warn     Print warnings but return success");
+  console.log("  -!             Edit files in place");
+  console.log("  --no-html      Skip html files");
+  console.log("  --no-js        Skip js files");
+  process.exit(0);
+}
+
+const EDIT = opts['!'];
+const VERBOSE = opts.verbose;
+const WARN = opts.warn;
+
+var EXTS = [];
+if (opts.html) EXTS.push('html');
+if (opts.js) EXTS.push('js');
+
+var config = JSON.parse(fs.readFileSync(path.join(__dirname, '../.jsbeautifyrc')));
+if (VERBOSE) console.log(".jsbeautifyrc config:\n%s\n", JSON.stringify(config, null, '  '));
+
+
+var ugly = 0;
+var all = 0;
+
+var srcDirs = ['app', 'clientapp', 'tests'];
+srcDirs.forEach(function (dir) {
+  file.walkSync(path.join(__dirname, '..', dir), function (dirPath, dirs, files) {
+    files.forEach(function (file) {
+      var filePath = path.join(dirPath, file);
+      var type = path.extname(file).slice(1);
+      if (EXTS.indexOf(type) !== -1) {
+        all++;
+        var contents = fs.readFileSync(filePath, {encoding: 'utf-8'});
+        var beautiful = beautify[type](contents, config);
+        if (beautiful.trim() !== contents.trim()) {
+          if (VERBOSE) console.log(path.relative(process.cwd(), filePath), 'can be beautified');
+          ugly++;
+          if (EDIT) {
+            fs.writeFileSync(filePath, beautiful);
+          }
+        }
+        else {
+          if (VERBOSE) console.log(path.relative(process.cwd(), filePath), 'is beautiful');
+        }
+      }
+    });
+  });
+});
+
+console.log("%s%d of %d files %s beautified.", VERBOSE ? "\n" : "", ugly, all, EDIT ? "were" : "can be");
+if (!EDIT) console.log("Run `%s -!` to beautify files in place.", path.relative(process.cwd(), process.argv[1]));
+
+process.exit(WARN ? 0 : ugly);
