@@ -35,7 +35,14 @@ app.use(middleware.csrf({ whitelist: [] }));
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 app.use('/font-awesome', express.static(path.join(__dirname, '../bower_components/font-awesome')));
 
-app.use('/api', api.createServer());
+var apiServer;
+if (config('GOOGLE_KEY', false)) {
+  apiServer = api.createServer(require('./google-data'));
+}
+else {
+  apiServer = api.createServer();
+}
+app.use('/api', apiServer);
 
 persona(app, {
   audience: PERSONA_AUDIENCE,

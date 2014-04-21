@@ -22,29 +22,33 @@ function createApp (fixtures, cb) {
   var fakeRequirements = new DataStore();
   var fakeFavs = new DataStore();
 
-  app.fixtures = fixtures = fixtures || {};
+  fixtures = fixtures || {};
   cb = cb || function () {};
-  async.each(fixtures.achievements || [], function(achievement, cb) {
-    fakeAchievements.insert(achievement, function (err, doc) {
-      if (err) return cb(err);
-      fixtures.achievements[fixtures.achievements.indexOf(achievement)] = doc;
-      cb();
-    });
-  }, function (err) {
-    if (err) throw err;
-
-    async.each(fixtures.requirements || [], function (requirement, cb) {
-      fakeRequirements.insert(requirement, cb);
+  var fixtureFn = (typeof fixtures === 'function') ? fixtures : function (cb) { cb(fixtures); };
+  fixtureFn(function(fixtures) {
+    app.fixtures = fixtures;
+    async.each(fixtures.achievements || [], function(achievement, cb) {
+      fakeAchievements.insert(achievement, function (err, doc) {
+        if (err) return cb(err);
+        fixtures.achievements[fixtures.achievements.indexOf(achievement)] = doc;
+        cb();
+      });
     }, function (err) {
       if (err) throw err;
 
-      async.each(fixtures.favorites || [], function (favorite, cb) {
-        favorite.itemId = fixtures.achievements[favorite.achievementIdx]._id;
-        delete favorite.achievementIdx;
-        fakeFavs.insert(favorite, cb);
+      async.each(fixtures.requirements || [], function (requirement, cb) {
+        fakeRequirements.insert(requirement, cb);
       }, function (err) {
         if (err) throw err;
-        cb(fixtures);
+
+        async.each(fixtures.favorites || [], function (favorite, cb) {
+          favorite.itemId = fixtures.achievements[favorite.achievementIdx]._id;
+          delete favorite.achievementIdx;
+          fakeFavs.insert(favorite, cb);
+        }, function (err) {
+          if (err) throw err;
+          cb(fixtures);
+        });
       });
     });
   });
