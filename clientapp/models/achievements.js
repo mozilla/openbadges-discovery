@@ -22,7 +22,6 @@ function fakeAchievement (opts) {
   else{
        type = randomType() ;
   }
- // var type = opts.type || (opts.src === BACKPACK) ? Achievement.BADGE : randomType();// || (opts.src=== PATHWAYS) ? Achievement.PATHWAY : randomType()  ;
   var data = {
     id: id++,
     type: type.toLowerCase(),

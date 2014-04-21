@@ -28,9 +28,6 @@ body {
   background-color: $background-color;
   font-family: Helvetica, sans-serif;
 }
-#pages {
-  //background-color: white;
-}
 
 header {
   background-color: white;
@@ -79,10 +76,6 @@ footer {
   color: $text-dark;
   .f-dropdown { color: $text-dark; }
   &:hover { background-color: $blue; }
-}
-
-.banner {
-  // background-color: lightgray;
 }
 
 .logout-control a,

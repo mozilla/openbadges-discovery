@@ -14,26 +14,19 @@ $background-color: #f4f4f2;
   }
 
   .landing-title-section{
-	background: $blue;
+    background: $blue;
   }
 
   .landing-title{
-	background: $green;
-	p {
-		text-align: left;
-		color: #fff;
-	}
+    background: $green;
+    p {
+      text-align: left;
+      color: #fff;
+    }
   }
 
   .landing-header {
     background: white;
     padding-top: 10px;
   }
-
-//  .landing-background {
-//    background: white;
-//    width: 1000px;
-//    background-position: center;
-//  }
-
 }
