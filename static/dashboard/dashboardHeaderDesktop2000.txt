@@ -1,6 +1,0 @@
-avatar
-
-position
-left: centered
-top: 160px
-radius 120px
