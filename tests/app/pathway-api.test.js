@@ -16,8 +16,7 @@ function makePathway(name, count, cb) {
   });
 }
 
-// NB: skipped!
-describe.skip('Pathway API', function () {
+describe('Pathway API', function () {
 
   beforeEach(function (done) {
     db.deleteAll(done);
