@@ -8,21 +8,7 @@
 @import "add-list";
 @import "dashboard-page";
 @import "landing-page";
-
-/*** COLORS ***/
-$green: #7ad69c;
-$blue: #0fa1d6;
-$text-dark: #4d4f53;
-$text-light: #ffffff;
-$background-color: #f4f4f2;
-
-/*** WIDTHS ***/
-$one-wide: 13.6%;
-$two-wide: 30.9%;
-$three-wide: 50%;
-$four-wide: 65.5%;
-$five-wide: 82.7%;
-$six-wide: 100%;
+@import "variables";
 
 body {
   background-color: $background-color;
