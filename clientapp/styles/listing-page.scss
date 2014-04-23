@@ -4,7 +4,11 @@
 
   .row { padding: 0 20px; }
 
-  .columns { padding: 0 0.5em }
+  .columns { 
+    padding: 0 0.5em 
+    height: 365px;
+    overflow: hidden;
+  }
 
   .full-length-hr {
     min-width: 1000px;

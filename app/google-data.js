@@ -26,13 +26,16 @@ module.exports = function load (cb) {
             log('Fetched %d cells', cells.length);
             var time = Date.now();
             var achievements = cells.map(function (cell) {
+              var imgSrc = (typeof cell.imagefile === 'string') ? cell.imagefile : '';
+              imgSrc = imgSrc.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
               return {
                 created_at: time--,
                 type: 'badge',
-                title: typeof cell.badgename === 'string' ? cell.badgename : "No title in " + cell.title,
+                title: (typeof cell.badgename === 'string') ? cell.badgename : "No title in " + cell.title,
                 description: typeof cell.description === 'string' ? cell.description : "No description in " + cell.title,
-                tags: typeof cell.tags === 'string' ? cell.tags.split(/[, ]+/) : [],
-                creator: "A. Creator"
+                tags: (typeof cell.tags === 'string') ? cell.tags.split(/[, ]+/) : [],
+                creator: "A. Creator",
+                imgSrc: imgSrc
               };
             });
             cb({achievements: achievements});
