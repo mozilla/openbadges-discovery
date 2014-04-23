@@ -1,0 +1,20 @@
+.button-base{
+  background-size: cover;
+  background-position: center;
+  background-color: none;
+  border-radius: 10px;
+  line-height: 0.2;
+  border: 2px solid #fff;
+}
+.button{
+  background: url(/static/button-blue.svg) no-repeat;
+  @extend .button-base
+}
+.button.button-secondary{
+  background: url(/static/button-grey.svg) no-repeat;
+  @extend .button-base
+}
+.button.button-alert{
+  background: url(/static/button-orange.svg) no-repeat;
+  @extend .button-base
+}

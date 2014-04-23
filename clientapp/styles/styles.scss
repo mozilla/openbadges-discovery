@@ -8,21 +8,8 @@
 @import "add-list";
 @import "dashboard-page";
 @import "landing-page";
-
-/*** COLORS ***/
-$green: #7ad69c;
-$blue: #0fa1d6;
-$text-dark: #4d4f53;
-$text-light: #ffffff;
-$background-color: #f4f4f2;
-
-/*** WIDTHS ***/
-$one-wide: 13.6%;
-$two-wide: 30.9%;
-$three-wide: 50%;
-$four-wide: 65.5%;
-$five-wide: 82.7%;
-$six-wide: 100%;
+@import "variables";
+@import "button";
 
 body {
   background-color: $background-color;
@@ -37,6 +24,7 @@ header {
     line-height: 72px;
   }
 }
+
 .main-icon {
   width: 155px;
   height: 155px;
@@ -50,22 +38,24 @@ header {
   margin-left: auto;
   margin-right: auto;
 }
+
 .nav-header {
   padding-top: 0.9em;
   position: absolute;
   width: 100%;
 }
+
 .page-header {
   background-position: center;
   height: 300px;
 }
+
 .page-body-rounded {
   padding-bottom: 2em;
   background-color: #fff;
-  border-bottom-left-radius: 1em;
-  border-bottom-right-radius: 1em;
-  box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+  @include box-shadow;
 }
+
 footer {
   padding-bottom: 3em;
 }
@@ -105,33 +95,12 @@ footer {
   cursor: -webkit-grab;
   cursor: grab;
 }
+
 .edit-mode.cursor-grabbing {
   cursor: move;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
   cursor: grabbing;
-}
-.button-base{
-  background-size: cover;
-  background-position: center;
-  background-color: none;
-  border-radius: 10px;
-  line-height: 0.2;
-  border: 2px solid #fff;
-}
-.button-blue{
-  background: url(/static/button-blue.svg) no-repeat;
-  @extend .button-base
-}
-
-.button-grey{
-  background: url(/static/button-grey.svg) no-repeat;
-  @extend .button-base
-}
-
-.button-orange{
-  background: url(/static/button-orange.svg) no-repeat;
-  @extend .button-base
 }
 
 // Styling Achievements
@@ -152,12 +121,9 @@ footer {
   padding: 30px;
 }
 
-span.label.secondary {
+.label.achievement-tag {
   background-color: $green;
   color: #fff;
   margin: 2px;
-}
-
-span.label.radius {
   border-radius: 7px;
 }
