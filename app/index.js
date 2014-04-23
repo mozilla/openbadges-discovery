@@ -1,6 +1,6 @@
 const express = require('express');
 const clientApp = require('../clientapp');
-const api = require('./api');
+const api = require('./dummy-api');
 const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
@@ -35,7 +35,7 @@ app.use(middleware.csrf({ whitelist: [] }));
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 app.use('/font-awesome', express.static(path.join(__dirname, '../bower_components/font-awesome')));
 
-app.use('/api', api);
+app.use('/api', api.createServer());
 
 persona(app, {
   audience: PERSONA_AUDIENCE,

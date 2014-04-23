@@ -12,6 +12,15 @@ module.exports = HumanView.extend({
   initialize: function (opts) {
     opts = opts || {};
     this.addSources = opts.addSources;
+    this.listenTo(this.model, 'change', function (model) {
+      model.save();
+    });
+    this.listenTo(this.collection, 'change', function (model) {
+      if (!model.isNew()) model.save();
+    });
+    this.listenTo(this.collection, 'positioned', function (model) {
+      model.save();
+    });
   },
   render: function () {
     this.renderAndBind({
@@ -42,7 +51,6 @@ module.exports = HumanView.extend({
     var pathwayTitleView = new PathwayTitleView({
       model: this.model
     });
-
 
     this.renderSubview(pathwayTitleView, '.pathway-title');
 

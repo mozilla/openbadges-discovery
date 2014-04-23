@@ -98,7 +98,7 @@ function makePathwayItem(item) {
       img.x = margin + (rw / 2) - (imgBounds.width / 2);
       img.y = margin + (rh / 2) - (imgBounds.height / 2) - (24 / 2);
 
-      title.x = margin + (rw / 2) - (title.getBounds().width /2);
+      title.x = margin + (rw / 2) - (title.getBounds().width / 2);
       title.y = img.y + imgBounds.height;
     }
 
@@ -194,8 +194,11 @@ module.exports = Backbone.View.extend({
         var xs = _.pluck(this.requirements.where({y: row}), 'x');
         var empties = _.difference(_.range(world.columnCount), xs);
         if (empties.length) {
-          model.x = empties.shift();
-          model.y = row;
+          model.set({
+            x: empties.shift(),
+            y: row
+          });
+          model.trigger('positioned', model);
         }
         else {
           row++;
@@ -244,8 +247,10 @@ module.exports = Backbone.View.extend({
     item.on('pressmove', function (evt) {
       if (this.isRearrangeable()) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
-        item.model.x = coords.x;
-        item.model.y = coords.y;
+        item.model.set({
+          x: coords.x,
+          y: coords.y
+        });
         evt.nativeEvent.preventDefault();
         this.refresh();
       }

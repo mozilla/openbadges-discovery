@@ -4,6 +4,11 @@ var util = require('util');
 
 module.exports = HumanView.extend({
   template: templates.includes.achievement,
+  initialize: function () {
+    this.listenTo(this.model, 'change:favorite', function (model, val) {
+      this.model.save({favorite: val}, {patch: true});
+    });
+  },
   classBindings: {
     userFavorite: '.js-favorite-icon'
   },
@@ -18,7 +23,7 @@ module.exports = HumanView.extend({
   },
   navToItem: function (evt) {
     var item = this.model;
-    var url = util.format('%s/%d', item.type, item.id);
+    var url = util.format('%s/%s', item.type, item._id);
     app.router.navigateTo(url, item);
     evt.preventDefault();
     evt.stopPropagation();
