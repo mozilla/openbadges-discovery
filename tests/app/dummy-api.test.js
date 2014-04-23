@@ -42,7 +42,7 @@ describe('Dummy API', function () {
         .expect(function (res) {
           var achievements = res.body;
           achievements.length.should.equal(8);
-          var last = achievements[7].order;
+          var last = achievements[7].created_at;
           request(server)
             .get('/achievement')
             .query({pageSize: 8, after: last})
@@ -50,7 +50,7 @@ describe('Dummy API', function () {
             .expect(function (res2) {
               var achievements2 = res2.body;
               achievements2.length.should.equal(8);
-              achievements2[0].order.should.be.lessThan(last);
+              achievements2[0].created_at.should.be.lessThan(last);
             })
             .end(done);
         })
@@ -402,7 +402,7 @@ describe('Dummy API', function () {
             .send({cloneId: latest._id})
             .expect(200)
             .expect(function (res) {
-              res.body.order.should.be.greaterThan(latest.order);
+              res.body.created_at.should.be.greaterThan(latest.created_at);
             })
             .end(function (err, res) {
               if (err) return done(err);

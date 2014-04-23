@@ -16,7 +16,7 @@ module.exports = HumanModel.define({
       values: [BADGE, PATHWAY],
       required: true
     },
-    order: {
+    created_at: {
       type: 'number'
     },
     title: {

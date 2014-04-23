@@ -57,9 +57,9 @@ function createApp (fixtures, cb) {
     opts = opts || {};
     var type = opts.type || randomType();
     var data = {
-      order: opts.order,
+      created_at: opts.created_at,
       type: type.toLowerCase(),
-      title: 'A Very Long ' + type + ' Title ' + opts.order,
+      title: 'A Very Long ' + type + ' Title ' + opts.created_at,
       description: "Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Hi.",
       tags: ['service', 'barista', 'coffeelover', 'fake'],
       creator: 'Starbucks'
@@ -95,15 +95,15 @@ function createApp (fixtures, cb) {
 
     if (!pageSize) return res.send(400);
 
-    log('looking for order lt %s', after);
+    log('looking for created_at lt %s', after);
 
-    fakeAchievements.find({order: {$lt: after}}).sort({order: -1}).limit(pageSize).exec(function (err, docs) {
+    fakeAchievements.find({created_at: {$lt: after}}).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
       if (docs.length !== pageSize) {
         var fill = pageSize - docs.length;
         log('Generating %d achievements...', fill);
         docs = docs.concat(_.times(fill, function () {
           return fakeAchievement({
-            order: --after
+            created_at: --after
           });
         }));
         fakeAchievements.insert(docs, function (err, docs) {
@@ -121,7 +121,7 @@ function createApp (fixtures, cb) {
     var pageSize = parseInt(req.query.pageSize);
     var uid = req.session && req.session.user && req.session.user.id;
 
-    fakeAchievements.find({order: {$lt: after}}).sort({order: -1}).limit(pageSize).exec(function (err, docs) {
+    fakeAchievements.find({created_at: {$lt: after}}).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
       if (err) throw err;
       if (uid) {
         return addFavs(docs, uid, function (err, docs) {
@@ -254,7 +254,7 @@ function createApp (fixtures, cb) {
       if (!base) res.send(404);
       delete base._id;
       base.userId = userId;
-      base.order = Date.now();
+      base.created_at = Date.now();
       fakeAchievements.insert(base, function (err, pledged) {
         if (err) throw err;
         fakeRequirements.find({pathwayId: cloneId}, function (err, baseReqs) {

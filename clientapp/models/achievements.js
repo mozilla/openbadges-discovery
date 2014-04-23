@@ -29,7 +29,7 @@ module.exports = Backbone.Collection.extend({
   },
   addPage: function () {
     var data = {};
-    if (this.length) data.after = this.last().order;
+    if (this.length) data.after = this.last().created_at;
     this.fetch({
       remove: false,
       data: data
