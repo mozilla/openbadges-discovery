@@ -44,7 +44,7 @@ module.exports = Backbone.Router.extend({
   showBadge: function (id) {
     var badge = new Achievement({
       _id: id,
-      type: 'badge'
+      type: Achievement.BADGE
     });
     badge.fetch();
     badge.once('sync', function () {
@@ -55,7 +55,7 @@ module.exports = Backbone.Router.extend({
   showPathway: function (id) {
     var pathway = new Achievement({
       _id: id,
-      type: 'pathway'
+      type: Achievement.PATHWAY
     });
     var requirements = new Requirements({
       parentId: pathway._id
