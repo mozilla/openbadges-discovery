@@ -27,7 +27,6 @@
     "underscore": "~1.5.2",
     "human-model": "~2.6.0",
     "human-view": "~1.6.0",
-    "bower": "git://github.com/neoziro/bower.git#v1.2.8-patched",
     "node-sass": "~0.8.1",
     "express-persona": "~0.1.1",
     "clientconfig": "0.0.4",
@@ -39,7 +38,8 @@
     "query-param-getter": "0.0.1",
     "browserify-shim": "~3.3.2",
     "displayer-api-client": "~0.1.2",
-    "nedb": "~0.10.5"
+    "nedb": "~0.10.5",
+    "bower": "~1.3.2"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
