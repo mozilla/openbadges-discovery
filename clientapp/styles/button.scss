@@ -10,11 +10,11 @@
   background: url(/static/button-blue.svg) no-repeat;
   @extend .button-base
 }
-.button.secondary{
+.button.button-secondary{
   background: url(/static/button-grey.svg) no-repeat;
   @extend .button-base
 }
-.button.alert{
+.button.button-alert{
   background: url(/static/button-orange.svg) no-repeat;
   @extend .button-base
 }
