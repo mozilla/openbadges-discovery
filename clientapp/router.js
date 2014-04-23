@@ -61,10 +61,7 @@ module.exports = Backbone.Router.extend({
       parentId: pathway._id
     });
     $.when(pathway.fetch(), requirements.fetch()).done(function () {
-      console.log('both done', arguments);
       app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
-    }).fail(function () {
-      console.log('something failed', arguments);
     });
   },
 

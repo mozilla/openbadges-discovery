@@ -26,7 +26,6 @@ module.exports = HumanView.extend({
       this.backpackList.getSelected({deselect: true}),
       this.wishlistList.getSelected({deselect: true})
     );
-    console.log('selected', selected);
     this.trigger('add', selected);
     evt.preventDefault();
   },

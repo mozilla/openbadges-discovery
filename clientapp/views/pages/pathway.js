@@ -26,17 +26,8 @@ module.exports = HumanView.extend({
         cloneId: this.model._id
       });
       pledged.save().done(function (model, status, xhr) {
-        console.log('WAAAAH', model, model._id);
         window.app.router.navigateTo('/pledged/' + model._id);
-      }).fail(function () {
-        console.log('No pledgey', arguments);
       });
-      /*
-      window.app.router.navigateTo('/pledged/' + this.model.id, {
-        pathway: this.model,
-        requirements: this.collection
-      });
-      */
     }
     else {
       window.app.startLogin();
