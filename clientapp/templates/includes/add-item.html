@@ -2,11 +2,7 @@
   <div class="achievement">
     <div class="token">
       <label class="add-selector">
-        {% if type == 'badge' %}
-          <img src="/static/badge.png">
-        {% else %}
-          <img src="/static/pathway.png">
-        {% endif %}
+        <img src="{{image}}">
         <input type="checkbox" class="js-add-item" data-id="{{_id}}">
       </label>
     </div>
