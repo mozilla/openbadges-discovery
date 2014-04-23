@@ -66,7 +66,7 @@ function createApp (fixtures, cb) {
       title: 'A Very Long ' + type + ' Title ' + opts.created_at,
       description: "Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Hi.",
       tags: ['service', 'barista', 'coffeelover', 'fake'],
-      creator: 'Starbucks'
+      creator: 'A. Creator'
     };
     return data;
   }
