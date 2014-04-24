@@ -206,9 +206,10 @@ module.exports = Backbone.View.extend({
     var item = makePathwayItem(model);
 
     if (model.newFlag) {
-      var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
-      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
-      newFlag.y = 15;
+      var newFlag = new createjs.Bitmap('/static/pathway/badge-new.svg');
+//      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
+      newFlag.x = 278;
+      newFlag.y = 0;
       newFlag.name = 'newFlag';
       item.addChild(newFlag);
 
