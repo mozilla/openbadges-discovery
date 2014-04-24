@@ -31,6 +31,70 @@ function findPathway(server, after, context, done) {
       
 describe('Dummy API', function () {
 
+  describe('Fixtures', function () {
+    it('should return server immediately', function () {
+      api.createServer().should.be.an.Object;
+      api.createServer({}).should.be.an.Object;
+      api.createServer({}, function () {}).should.be.an.Object;
+    });
+
+    it('should expose fixtures on object', function () {
+      var app = api.createServer({foo: 'bar'});
+      app.should.have.property('fixtures');
+      app.fixtures.should.eql({foo: 'bar'});
+    });
+
+    it('should invoke callback with initialized fixtures', function (done) {
+      var app = api.createServer({foo: 'bar'}, function (fixtures) {
+        fixtures.should.eql({foo: 'bar'});
+        done();
+      });
+    });
+
+    it('should add _ids to achievements', function (done) {
+      var app = api.createServer({achievements: [{foo: 'bar'}]}, function (fixtures) {
+        fixtures.achievements[0].should.have.property('_id');
+        done();
+      });
+    });
+
+    it('should connect favorites to achievements through achievementIdx', function (done) {
+      var app = api.createServer({
+        achievements: [{foo: 'bar'}, {foo: 'baz'}],
+        favorites: [{userId: 1, achievementIdx: 1, favorite: true}]
+      }, function (fixtures) {
+        fixtures.favorites[0].should.have.property('itemId');
+        fixtures.favorites[0].should.not.have.property('achievementIdx');
+        fixtures.favorites[0].itemId.should.equal(fixtures.achievements[1]._id);
+        done();
+      });
+    });
+
+    it('should connect requirements to pathways through pathwayIdx', function (done) {
+      var app = api.createServer({
+        achievements: [{foo: 'bar'}, {foo: 'baz'}],
+        requirements: [{pathwayIdx: 1}]
+      }, function (fixtures) {
+        fixtures.requirements[0].should.have.property('pathwayId');
+        fixtures.requirements[0].should.not.have.property('pathwayIdx');
+        fixtures.requirements[0].pathwayId.should.equal(fixtures.achievements[1]._id);
+        done();
+      });
+    });
+
+    it('should optionally fetch requirement name from badge through badgeIdx', function (done) {
+      var app = api.createServer({
+        achievements: [{title: 'The title'}, {foo: 'baz'}],
+        requirements: [{pathwayIdx: 1, badgeIdx: 0}]
+      }, function (fixtures) {
+        fixtures.requirements[0].should.have.property('name');
+        fixtures.requirements[0].should.not.have.property('badgeIdx');
+        fixtures.requirements[0].name.should.equal(fixtures.achievements[0].title);
+        done();
+      });
+    });
+  });
+
   describe('GET /achievements', function () {
     it('should generate achievements on demand', function (done) {
       var server = api.createServer();

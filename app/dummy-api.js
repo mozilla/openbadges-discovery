@@ -37,6 +37,12 @@ function createApp (fixtures, cb) {
       if (err) throw err;
 
       async.each(fixtures.requirements || [], function (requirement, cb) {
+        requirement.pathwayId = fixtures.achievements[requirement.pathwayIdx]._id;
+        delete requirement.pathwayIdx;
+        if (requirement.hasOwnProperty('badgeIdx')) {
+          requirement.name = fixtures.achievements[requirement.badgeIdx].title;
+          delete requirement.badgeIdx;
+        }
         fakeRequirements.insert(requirement, cb);
       }, function (err) {
         if (err) throw err;
