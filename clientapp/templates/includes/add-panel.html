@@ -1,15 +1,22 @@
 <div class="page-body-pathway-add-badges">
   <hr noshade>
   <div class="row">
-  <h6>Select the badges you want to add</h6>
-  <a href="#" class="button js-add-items"><i class=" fa fa-check"></i> Add now</a>
-  <a href="#" class="button button-secondary js-cancel-add"><i class="fa fa-times"></i> Cancel</a>
+    <h6 class="small-4 columns">Select the badges you want to add</h6>
+    <div class="small-4 columns small-offset-4">
+        <a href="#" class="button js-add-items"><i class=" fa fa-check"></i> Add now</a>
+        <a href="#" class="button button-secondary js-cancel-add"><i class="fa fa-times"></i>
+      Cancel</a>
+    </div>
   </div>
-  <h2>{{backpack.models.length}} Badges</h2>
+  <div class="row">
+    <h2 class="small-3 columns">{{backpack.models.length}} Badges</h2>
+  </div>
   <div id="backpackPanel" class="js-backpack-items content">
   </div>
   <hr noshade>
-  <h2>{{wishlist.models.length}} Favorites</h2>
+  <div class="row">
+    <h2 class="small-3 columns">{{wishlist.models.length}} Favorites</h2>
+  </div>
   <div id="wishlistPanel" class="js-wishlist-items content">
   </div>
 </div>
