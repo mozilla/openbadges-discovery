@@ -5,8 +5,10 @@
         <a href="#" class="item-link js-view-item">
         {% if type == 'badge' %}
           <img src="/static/badge.png">
+          <img src="/static/badgeIconBadge.svg" class="badge-icon">
         {% else %}
           <img src="/static/pathway.png">
+          <img src="/static/badgeIconPathway.svg" class="pathway-icon">
         {% endif %}
         </a>
         <a href="#" class="wishlist-button js-toggle-wishlist">
@@ -15,13 +17,11 @@
       </div>
     </div>
     <div class="data">
-      <h5>{{title}}</h5>
+      <h5 class="data-badge-title">{{title}}</h5>
+      <h5 class="data-created-by">Created by {{creator}}</h5>
       {% for tag in tags %}
         <span class="label achievement-tag">#{{tag}}</span>
       {% endfor %}
-      <div>
-        Created by {{creator}}
-      </div>
     </div>
   </div>
 </div>
