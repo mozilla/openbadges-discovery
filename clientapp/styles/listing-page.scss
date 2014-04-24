@@ -1,6 +1,16 @@
 .listing {
   margin-top: 1em;
   margin-bottom: 1em;
+
+  .row { padding: 0 20px; }
+
+  .columns { padding: 0 0.5em }
+
+  .full-length-hr {
+    min-width: 1000px;
+    margin: 40px;
+    margin-left: -15px;
+  }
 }
 
 .achievement {

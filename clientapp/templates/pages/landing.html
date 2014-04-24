@@ -10,18 +10,16 @@
           <p>Explore pathways to career opportunities. Discover your own personalized journey with Open Badges. Learn valued skills and navigate your potential along the way!</p>
         {% endif %}
       </div>
-      <div class="medium-3 columns">
-        {% if currentUser.loggedIn %}
-          <a href="https://docs.google.com/a/varelidi.com/forms/d/1T0FqgLKYw0cLUPvxirTZ2UIvOJHVZYtC71cU8jU1I24/viewform" class="button js-quiz button-orange">Take the Quiz</a>
-        {% else %}
-          <a href="#" class="button button-alert js-login">Log In Using Persona</a>
-        {% endif %}
-      </div>
+      {% if currentUser.loggedIn %}
+        <a href="https://docs.google.com/a/varelidi.com/forms/d/1T0FqgLKYw0cLUPvxirTZ2UIvOJHVZYtC71cU8jU1I24/viewform" class="button js-quiz button-callout">Take the Quiz  &raquo;</a>
+      {% else %}
+        <a href="#" class="button button-callout js-login">Log In Using Persona &raquo;</a>
+      {% endif %}
     </div>
   </section>
   <section>
     <div class="row text-center page-body-rounded">
-      <div class="medium-12 columns">
+      <div class="medium-12 columns mobile-full-width">
         <h2>Latest</h2>
         <div class="content">
         </div>

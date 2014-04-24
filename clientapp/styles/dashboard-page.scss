@@ -1,3 +1,16 @@
+.nav-container {
+  margin-top: 5px;
+  .fa-bars { color: black; }
+}
+
+.avatar-image { margin-right: 10px; }
+
+.user-email {
+  color: white;
+  font-family: "Open Sans", helvetica, arial, sans-serif;
+  font-size: 14px;
+}
+
 .dashboard-page {
   padding-bottom: 2em;
 
@@ -9,5 +22,8 @@
     background: white;
     padding-top: 10px;
   }
+}
 
+@media screen and (max-width: 1024px) {
+  .nav-container { margin-left: 20px; }
 }

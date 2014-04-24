@@ -16,12 +16,21 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
+.right { float: right; }
+.left { float: left; }
+
 header {
   background-color: white;
   padding-bottom: 0.2em;
 
   .columns {
     line-height: 72px;
+    padding-left: 0;
+  }
+
+  .header-logo {
+    width: 207px;
+    padding: 20px 0;
   }
 }
 
@@ -51,7 +60,7 @@ header {
 }
 
 .page-body-rounded {
-  padding-bottom: 2em;
+  padding-bottom: 1.2em;
   background-color: #fff;
   @include box-shadow;
 }
@@ -111,14 +120,36 @@ footer {
 }
 
 .wishlist-button{
-  margin: 15px;
+  margin: 20px;
   .favorite-icon{
     color: #d4d4d2;
+    font-size: 25px;
+  }
+  .favorite-icon.userFavorite {
+    color: $favorite-blue;
+  }
+}
+
+.data {
+  .data-badge-title { margin-top: 15px; }
+  .data-created-by {
+    margin: 10px 0 15px 0;
+    font-size: 12px;
+    font-family: "Open Sans", helvetica, arial, sans-serif;
+    color: $light-gray;
   }
 }
 
 .item-link {
   padding: 30px;
+  position: relative;
+  .badge-icon,
+  .pathway-icon {
+    position: absolute;
+    right: 10px;
+  }
+  .pathway-icon { top: 0; }
+  .badge-icon { top: 10px; }
 }
 
 .label.achievement-tag {
@@ -126,4 +157,29 @@ footer {
   color: #fff;
   margin: 2px;
   border-radius: 7px;
+}
+
+@media screen and (max-width: 1024px) {
+  header {
+    .header-logo { padding-left: 20px; }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-body-rounded {
+    .mobile-full-width {
+      padding: 0;
+    }
+    .listing {
+      .row { padding: 0; }
+      .token {
+        border-radius: 0;
+        .item-link {
+          .badge-icon,
+          .pathway-icon { top: -15px;}
+        }
+      }
+      .data { padding: 0 30px; }
+    }
+  }
 }
