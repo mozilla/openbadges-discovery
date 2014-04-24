@@ -30,7 +30,7 @@ that isn't so specific and works great!*/
   &:hover { background-color: $orange; }
 }
 
-.button-orange {
+.button-callout {
   background: url(/static/button-orange.svg) no-repeat;
   @extend .button-base
 }
@@ -39,7 +39,7 @@ that isn't so specific and works great!*/
   border: 1px solid $gray;
   color: $button-gray;
   padding: 8px 95px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans", helvetica, arial, sans-serif;
   font-size: 16px;
   @extend .button-base;
   .fa-arrow-down { margin-left: 10px; }
