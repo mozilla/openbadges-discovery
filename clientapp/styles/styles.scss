@@ -122,22 +122,36 @@ footer {
     display:none;
   }
 }
-.add-badge-button{
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 3px;
-  .add-badge-icon{
-    width: 30px;
-    height:30px;
-    margin: 10px;
-    border-radius:0;
-    background-size: cover;
-    border: 0;
-    background: url(/static/pathway/badge-icon-checked-spritesheet-v2.svg) 0 0 no-repeat;
-    &.userAddBadge {
+
+.achievement .token {
+  input[type=checkbox] + div{
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 3px;
+      width: 30px;
+      height: 30px;
+      margin: 10px;
+      border-radius: 0;
+      background-size: cover;
+      border: 0;
+      background: url(/static/pathway/badge-icon-checked-spritesheet-v2.svg) 0 0 no-repeat;
+
+  }
+}
+.achievement .token {
+  input[type=checkbox]:checked + div {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 3px;
+      width: 30px;
+      height: 30px;
+      margin: 10px;
+      border-radius: 0;
+      background-size: cover;
+      border: 0;
       background: url(/static/pathway/badge-icon-checked-spritesheet-v2.svg) 0 -30px no-repeat;
-    }
   }
 }
 
