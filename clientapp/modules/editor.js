@@ -51,7 +51,7 @@ function makePathwayItem(item) {
   container.name = item.cid;
   container.setBounds(0, 0, world.columnWidth, world.columnWidth);
   var rect = new createjs.Shape();
-  var imgSrc = item.imgSrc ? '/api/image/' + item._id : '/static/badge.png';
+  var imgSrc = item.imgSrc ? '/api/image/' + item._id : '/static/defaultBadge.svg';
   var img = new createjs.Bitmap(imgSrc);
   var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
   container.addChild(rect, img, title);
