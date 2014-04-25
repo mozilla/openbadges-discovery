@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(middleware.session());
-app.use(middleware.csrf({ whitelist: [] }));
+app.use(middleware.csrf({ whitelist: ['/api/.*'] }));
 
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 app.use('/font-awesome', express.static(path.join(__dirname, '../bower_components/font-awesome')));
