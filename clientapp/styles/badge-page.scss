@@ -1,3 +1,4 @@
+@import "variables";
 .badge-page {
   padding-bottom: 2em;
   .badge {
@@ -12,6 +13,28 @@
   }
 
   .badge-header {
-	background-image: url("/static/badges/badges-header-desktop.svg");
+	  background-image: url("/static/badges/badges-header-desktop.svg");
   }
+
+  .badge-page-title {
+  	margin: 60px 0 20px 0;
+  	font-family: "Open Sans Light", helvetica, arial, sans-serif;
+  	font-size: 32px;
+  	color: $text-dark;
+  	line-height: 1em;
+  }
+
+  .wishlist-button { margin: 0 0 0 10px; }
+
+  .badge-page-description { margin-bottom: 30px; }
+}
+
+@media screen and (max-width: 480px) {
+	.badge-page {
+		.badge-page-title { margin: 60px 1px 30px 1px; }
+
+		.wishlist-button {
+			margin: -10px 0 0 35px;
+		}
+	}
 }
