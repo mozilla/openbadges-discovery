@@ -7,7 +7,7 @@
           <img src="{{imgSrc|default('static/badge.png')}}">
           <img src="/static/badgeIconBadge.svg" class="badge-icon">
         {% else %}
-          <img src="/static/pathway.png">
+          <img src="{{imgSrc|default('/static/pathway.png')}}">
           <img src="/static/badgeIconPathway.svg" class="pathway-icon">
         {% endif %}
         </a>

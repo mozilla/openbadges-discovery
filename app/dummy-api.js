@@ -41,6 +41,7 @@ function createApp (fixtures, cb) {
         delete requirement.pathwayIdx;
         if (requirement.hasOwnProperty('badgeIdx')) {
           requirement.name = fixtures.achievements[requirement.badgeIdx].title;
+          requirement.imgSrc = fixtures.achievements[requirement.badgeIdx].imgSrc;
           delete requirement.badgeIdx;
         }
         fakeRequirements.insert(requirement, cb);

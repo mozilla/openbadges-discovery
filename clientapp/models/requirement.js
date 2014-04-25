@@ -8,6 +8,7 @@ module.exports = HumanModel.define({
     x: ['number'],
     y: ['number'],
     name: ['string'],
+    imgSrc: ['string'],
     core: {
       type: 'boolean',
       default: false
