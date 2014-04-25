@@ -44,6 +44,9 @@ module.exports = HumanModel.define({
       type: 'boolean',
       required: true,
       default: false
+    },
+    imgSrc: {
+      type: 'string'
     }
   },
   derived: {

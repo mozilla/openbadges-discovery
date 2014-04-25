@@ -4,6 +4,7 @@ const config = require('./lib/config');
 const _ = require('underscore');
 const DataStore = require('nedb');
 const async = require('async');
+const request = require('request');
 
 function log () {
   if (config('DEV', false)) console.log.apply(null, arguments);
@@ -37,6 +38,13 @@ function createApp (fixtures, cb) {
       if (err) throw err;
 
       async.each(fixtures.requirements || [], function (requirement, cb) {
+        requirement.pathwayId = fixtures.achievements[requirement.pathwayIdx]._id;
+        delete requirement.pathwayIdx;
+        if (requirement.hasOwnProperty('badgeIdx')) {
+          requirement.name = fixtures.achievements[requirement.badgeIdx].title;
+          requirement.imgSrc = fixtures.achievements[requirement.badgeIdx].imgSrc;
+          delete requirement.badgeIdx;
+        }
         fakeRequirements.insert(requirement, cb);
       }, function (err) {
         if (err) throw err;
@@ -292,6 +300,16 @@ function createApp (fixtures, cb) {
     fakeAchievements.update({_id: id}, {$set: req.body}, function (err, doc) {
       if (err) throw err;
       return res.json({});
+    });
+  });
+
+  app.get('/image/:id', function (req, res, next) {
+    var id = req.params.id;
+    fakeRequirements.findOne({_id: id}, function (err, doc) {
+      if (err) throw err;
+      if (!doc.imgSrc) return res.send(400);
+      res.type('png');
+      return request(doc.imgSrc).pipe(res); 
     });
   });
 
