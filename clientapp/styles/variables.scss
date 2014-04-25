@@ -23,8 +23,18 @@ $six-wide: 100%;
   font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
-  src: url("../fonts/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
-       url("../fonts/OpenSans-Regular-webfont.woff") format("woff"),
-       url("../fonts/OpenSans-Regular-webfont.ttf") format("truetype"),
-       url("../fonts/OpenSans-Regular-webfont.svg#OpenSansRegular") format("svg");
+  src: url("/static/fonts/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/static/fonts/OpenSans-Regular-webfont.woff") format("woff"),
+       url("/static/fonts/OpenSans-Regular-webfont.ttf") format("truetype"),
+       url("/static/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular") format("svg");
+}
+
+@font-face {
+  font-family: "Open Sans Light";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/static/fonts/OpenSans-Light-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/static/fonts/OpenSans-Light-webfont.woff") format("woff"),
+       url("/static/fonts/OpenSans-Light-webfont.ttf") format("truetype"),
+       url("/static/fonts/OpenSans-Light-webfont.svg#OpenSansLight") format("svg");
 }
