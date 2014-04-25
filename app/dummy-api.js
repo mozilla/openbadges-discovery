@@ -3,6 +3,7 @@ const http = require('http');
 const config = require('./lib/config');
 const _ = require('underscore');
 const async = require('async');
+const request = require('request');
 const fakeData = require('./fake-data');
 
 function log () {
@@ -200,10 +201,20 @@ function createApp(opts) {
     });
   });
 
-  app.all('*', function (req, res, next) {
-    return res.send(404); 
+  app.get('/image/:id', function (req, res, next) {
+    var id = req.params.id;
+    appData.achievements.findOne({_id: id}, function (err, doc) {
+      if (err) throw err;
+      if (!doc || !doc.imgSrc) return res.send(400);
+      res.type('png');
+      return request(doc.imgSrc).pipe(res);
+    });
   });
-  
+
+  app.all('*', function (req, res, next) {
+    return res.send(404);
+  });
+
   return app;
 }
 
