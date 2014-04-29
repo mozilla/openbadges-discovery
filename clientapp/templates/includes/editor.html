@@ -1,8 +1,21 @@
 <div>
-  {% if showControls %}
-    <a href="#" class="button" data-stack="addPanel" >Add</a>
-    <a href="#" class="button button-alert js-delete" data-toggle="off">Delete</a>
-    <a href="#" class="button button-secondary js-undo">Undo</a>
-  {% endif %}
-  <canvas class="editor" width="1000"></canvas>
+    {% if showControls %}
+      <div class="small-12">
+        <div class="pathway-side-nav">
+          <li><a href="#" class="js-view-similar view-similar-btn"></a></li>
+          <li><a href="#" class="js-add-badge add-badge-btn" data-stack="addPanel" ></a></li>
+          <li><a href="#" class="js-add-storybit add-storybit-btn"></a></li>
+          <li><a href="#" class="remove-items-btn js-delete" data-toggle="off"></a> </li>
+          <li> <a href="#" class="undo-btn js-undo">Undo</a> </li>
+        </div>
+      </div>
+    <!--<ul class="magellan tabs vertical" data-magellan-expedition="fixed">-->
+        <!--<li data-magellan-arrival="grid"><a href="#grid">Grid</a></li>-->
+        <!--<li data-magellan-arrival="tabs"><a href="#tabs">Tabs</a></li>-->
+        <!--<li data-magellan-arrival="buttons"><a href="#buttons">Buttons</a></li>-->
+    <!--</ul>-->
+    {% endif %}
+    <div class="small-12 medium-8 medium-centered columns">
+      <canvas class="editor" width="1000"></canvas>
+    </div>
 </div>

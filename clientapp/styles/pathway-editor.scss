@@ -1,3 +1,62 @@
+.pathway-side-nav{
+  background-color: white;
+  position: absolute;
+  top: 220px;
+  left: 0pt;
+  list-style-type: none;
+  border-top-right-radius:10px;
+  border-bottom-right-radius:10px;
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    &:last-child{
+      border-bottom: none;
+    }
+    a{
+      width: 25px;
+      height: 25px;
+      background-size: cover;
+      display: block;
+    }
+  }
+}
+
+.view-similar-btn{
+  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  &.active{
+    background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
+  }
+}
+
+
+.add-badge-btn{
+  background: url(/static/pathway/icon-add-badge.svg) 0 0 no-repeat;
+  &.active{
+    background: url(/static/pathway/icon-add-badge-active.svg) 0 0 no-repeat;
+  }
+}
+
+.add-storybit-btn{
+  background: url(/static/pathway/icon-add-storybit.svg) 0 0 no-repeat;
+  &.active{
+    background: url(/static/pathway/icon-add-storybit-active.svg) 0 0 no-repeat;
+  }
+}
+
+.remove-items-btn{
+  background: url(/static/pathway/icon-remove-parts.svg) 0 0 no-repeat;
+  &.active{
+    background: url(/static/pathway/icon-remove-parts-active.svg) 0 0 no-repeat;
+  }
+}
+
+.undo-btn{
+  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  &.active{
+    background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
+  }
+}
+
 .editor {
   width: 100%;
 }

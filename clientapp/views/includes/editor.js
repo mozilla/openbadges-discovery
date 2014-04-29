@@ -46,12 +46,20 @@ module.exports = HumanView.extend({
   events: {
     'click [data-toggle]': 'toggle',
     'click .js-delete': 'deleteMode',
-    'click .js-undo': 'undo'
+    'click .js-undo': 'undo',
+    'click .js-add-storybit': 'addStorybits',
+    'click .js-view-similar' : 'viewSimilar',
+    'click .js-add-badge' : 'addBadges'
   },
   deleteMode: function (evt) {
     var state = $(evt.target).attr('data-toggle');
     this.editor.enableDelete(state === 'on');
     this.editor.refresh();
+    var btn= $(evt.target);
+    if(btn.hasClass('active')){
+      btn.removeClass('active');
+    }else{
+      btn.addClass('active');}
     evt.preventDefault();
   },
   toggle: function (evt) {
@@ -62,6 +70,36 @@ module.exports = HumanView.extend({
   undo: function (evt) {
     this.undoManager.undo();
     this.editor.refresh();
+    var btn= $(evt.target);
+    if(btn.hasClass('active')){
+      btn.removeClass('active');
+    }else{
+      btn.addClass('active');}
+    evt.preventDefault();
+  },
+  viewSimilar: function(evt){
+    var btn= $(evt.target);
+    if(btn.hasClass('active')){
+      btn.removeClass('active');
+    }else{
+      btn.addClass('active');}
+    evt.preventDefault();
+  },
+  addBadges: function(evt){
+    var btn= $(evt.target);
+    if(btn.hasClass('active')){
+      btn.removeClass('active');
+    }else{
+      btn.addClass('active');}
+    evt.preventDefault();
+  },
+  addStorybits: function(evt){
+    var btn= $(evt.target);
+    if(btn.hasClass('active')){
+      btn.removeClass('active');
+    }else{
+      btn.addClass('active');}
     evt.preventDefault();
   }
+
 });
