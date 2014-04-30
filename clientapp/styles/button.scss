@@ -9,11 +9,13 @@
 
 .button {
   background: url(/static/button-blue.svg) no-repeat;
+  background-size: cover;
   @extend .button-base
 }
 
 .button.button-secondary {
   background: url(/static/button-grey.svg) no-repeat;
+  background-size: cover;
   @extend .button-base
 }
 

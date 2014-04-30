@@ -6,11 +6,17 @@ var Achievements = require('../../models/achievements');
 module.exports = HumanView.extend({
   template: templates.includes.addPanel,
   initialize: function (opts) {
+
     this.backpack = opts.sources.backpack;
     this.wishlist = opts.sources.wishlist;
+    this.listenToAndRun(this.backpack, 'add', this.render);
+    this.listenToAndRun(this.wishlist, 'add', this.render);
   },
   render: function () {
-    this.renderAndBind();
+    this.renderAndBind({
+      backpack: this.backpack,
+      wishlist: this.wishlist
+    });
     this.backpackList = new ItemList({collection: this.backpack});
     this.wishlistList = new ItemList({collection: this.wishlist});
     this.renderSubview(this.backpackList, '.js-backpack-items');
