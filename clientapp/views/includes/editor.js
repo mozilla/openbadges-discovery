@@ -46,13 +46,16 @@ module.exports = HumanView.extend({
   events: {
     'click [data-toggle]': 'toggle',
     'click .js-delete': 'deleteMode',
-    'click .js-undo': 'undo'
+    'click .js-undo': 'undo',
+    'click .js-add-storybit': 'activate',
+    'click .js-view-similar' : 'activate',
+    'click .js-add-badge' : 'activate'
   },
   deleteMode: function (evt) {
     var state = $(evt.target).attr('data-toggle');
     this.editor.enableDelete(state === 'on');
     this.editor.refresh();
-    evt.preventDefault();
+    this.activate(evt);
   },
   toggle: function (evt) {
     var btn = $(evt.target);
@@ -62,6 +65,18 @@ module.exports = HumanView.extend({
   undo: function (evt) {
     this.undoManager.undo();
     this.editor.refresh();
+    this.activate(evt);
+  },
+  activate: function(evt) {
+    var btn = $(evt.target);
+    var parentLi = $(evt.target.parentNode);
+    if (btn.hasClass('active')) {
+      btn.removeClass('active');
+      parentLi.removeClass('active');
+    } else {
+      btn.addClass('active');
+      parentLi.addClass('active');
+    }
     evt.preventDefault();
   }
-});
+  });

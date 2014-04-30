@@ -1,8 +1,16 @@
 <div>
-  {% if showControls %}
-    <a href="#" class="button" data-stack="addPanel" >Add</a>
-    <a href="#" class="button button-alert js-delete" data-toggle="off">Delete</a>
-    <a href="#" class="button button-secondary js-undo">Undo</a>
-  {% endif %}
-  <canvas class="editor" width="1000"></canvas>
+    {% if showControls %}
+      <div class="small-12">
+        <div class="pathway-side-nav">
+          <li><div class="js-view-similar view-similar-btn"><div class="hoverVS">View Similar</div></div></li>
+          <li><div class="js-add-badge add-badge-btn" data-stack="addPanel" ><div class="hoverAddBadge">Add Badge</div></div></li>
+          <li><div class="js-add-storybit add-storybit-btn"><div class="hoverAddStory">Add Storybit</div></div></li>
+          <li><div class="remove-items-btn js-delete" data-toggle="off"><div class="hoverDelete">Delete</div></div> </li>
+          <li><div class="undo-btn js-undo"><div class="hoverUndo">Undo</div></div> </li>
+        </div>
+      </div>
+    {% endif %}
+    <div class="small-12 medium-8 medium-centered columns">
+      <canvas class="editor" width="1000"></canvas>
+    </div>
 </div>
