@@ -58,6 +58,16 @@ that isn't so specific and works great!*/
 
 .add-badge-btn{
   background: url(/static/pathway/icon-add-badge.svg) 0 0 no-repeat;
+  .hoverAddBadge{
+    display:none;
+  }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    .hoverAddBadge{
+      display:block;
+    }
+  }
   &.active{
     background: url(/static/pathway/icon-add-badge-active.svg) 0 0 no-repeat;
   }
