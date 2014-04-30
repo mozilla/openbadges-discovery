@@ -24,14 +24,21 @@
   	line-height: 1em;
   }
 
-  .wishlist-button { margin: 0 0 0 10px; }
+  .wishlist-button { margin: -10px 0 0 10px; }
 
   .badge-page-description { margin-bottom: 30px; }
 }
 
 @media screen and (max-width: 480px) {
 	.badge-page {
-		.badge-page-title { margin: 60px 1px 30px 1px; }
+    .badge-header {
+      background-image: url("/static/badges/badgesHeaderMobile.svg");
+      background-size: 100%;
+    }
+		.badge-page-title {
+      margin: 30px auto;
+      width: 266px;
+    }
 
 		.wishlist-button {
 			margin: -10px 0 0 35px;
