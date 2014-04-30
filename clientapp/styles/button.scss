@@ -50,6 +50,21 @@ that isn't so specific and works great!*/
 
 .view-similar-btn{
   background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  .hoverVS{
+    display:none;
+  }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
+    .hoverVS{
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
+    }
+  }
   &.active{
     background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
   }
@@ -64,8 +79,13 @@ that isn't so specific and works great!*/
   &:hover{
     width: 150px;
     background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
     .hoverAddBadge{
-      display:block;
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
     }
   }
   &.active{
@@ -75,6 +95,21 @@ that isn't so specific and works great!*/
 
 .add-storybit-btn{
   background: url(/static/pathway/icon-add-storybit.svg) 0 0 no-repeat;
+  .hoverAddStory{
+    display:none;
+  }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
+    .hoverAddStory{
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
+    }
+  }
   &.active{
     background: url(/static/pathway/icon-add-storybit-active.svg) 0 0 no-repeat;
   }
@@ -82,6 +117,21 @@ that isn't so specific and works great!*/
 
 .remove-items-btn{
   background: url(/static/pathway/icon-remove-parts.svg) 0 0 no-repeat;
+  .hoverDelete{
+    display:none;
+  }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
+    .hoverDelete{
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
+    }
+  }
   &.active{
     background: url(/static/pathway/icon-remove-parts-active.svg) 0 0 no-repeat;
   }
@@ -89,6 +139,21 @@ that isn't so specific and works great!*/
 
 .undo-btn{
   background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  .hoverUndo{
+    display:none;
+  }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
+    .hoverUndo{
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
+    }
+  }
   &.active{
     background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
   }
