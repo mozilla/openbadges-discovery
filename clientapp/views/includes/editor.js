@@ -69,10 +69,13 @@ module.exports = HumanView.extend({
   },
   activate: function(evt) {
     var btn = $(evt.target);
+    var parentLi = $(evt.target.parentNode);
     if (btn.hasClass('active')) {
       btn.removeClass('active');
+      parentLi.removeClass('active');
     } else {
       btn.addClass('active');
+      parentLi.addClass('active');
     }
     evt.preventDefault();
   }
