@@ -167,6 +167,16 @@ input[type="text"].search-box {
   top: 0;
   width: 155px;
   border: none;
+  z-index: 0;
+}
+
+.search-icon{
+  display: block;
+  position: absolute;
+  top: 7px;
+  left: 195px;
+  margin:0 0 0 0;
+  z-index:1;
 }
 
 .header-dropdown {
