@@ -175,15 +175,24 @@ input[type="text"].search-box {
   position: absolute;
   top: 7px;
   left: 195px;
-  margin:0 0 0 0;
   z-index:1;
 }
 
 .header-dropdown {
+  margin-top:10px;
+  background-color: #ffffff;
+  max-width: 205px;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  li{
+    line-height:15px;
+    border-bottom: 1px solid #ccc;
+    &:last-child{
+      border-bottom:none;
+    }
+  }
 }
 
 @media screen and (max-width: 1024px) {
