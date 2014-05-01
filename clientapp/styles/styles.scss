@@ -159,6 +159,23 @@ footer {
   border-radius: 7px;
 }
 
+input[type="text"].search-box {
+  box-shadow: none;
+  height: 30px;
+  position: absolute;
+  left: 65px;
+  top: 0;
+  width: 155px;
+  border: none;
+}
+
+.header-dropdown {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+}
+
 @media screen and (max-width: 1024px) {
   header {
     .header-logo { padding-left: 20px; }
