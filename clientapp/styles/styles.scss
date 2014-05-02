@@ -79,7 +79,7 @@ footer {
 
 .logout-control a,
 .login-control a {
-  border-top: 1px solid lightgray;
+//  border-top: 1px solid lightgray;  DO WE WANT A SPECIAL BORDER FOR LOGIN/LOGOUT?
 }
 
 .user-panel {
@@ -157,6 +157,48 @@ footer {
   color: #fff;
   margin: 2px;
   border-radius: 7px;
+}
+
+input[type="text"].search-box {
+  box-shadow: none;
+  height: 30px;
+  position: absolute;
+  left: 65px;
+  top: 0;
+  width: 155px;
+  border: none;
+  z-index: 0;
+}
+
+.search-icon{
+  display: block;
+  position: absolute;
+  top: 7px;
+  left: 195px;
+  z-index:1;
+}
+
+.header-dropdown {
+  margin-top:10px;
+  background-color: #ffffff;
+  max-width: 205px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  border:none;
+  li{
+    line-height:15px;
+    border-bottom: 1px solid #ccc;
+    &:last-child{
+      border-bottom:none;
+    }
+  }
+  &.open:before{
+    width: 40px;
+    background-color: #ffffff;
+    left: 0px;
+  }
 }
 
 @media screen and (max-width: 1024px) {
