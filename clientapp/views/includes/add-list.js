@@ -29,7 +29,8 @@ module.exports = HumanView.extend({
     if (opts && opts.deselect) this.deselectAll();
 
     return ids.map(function (id) {
-      return collection.get(id);
+      // return collection.get(id); <-- doesn't work with idAttribute?
+      return collection.findWhere({_id: id});
     });
   },
   deselectAll: function () {

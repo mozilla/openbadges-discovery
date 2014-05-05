@@ -2,7 +2,7 @@
   <header>
     <div class="row">
       <div class="small-6 columns">
-        <img src="/static/logo.png" alt="OpenBadges Discovery"/> 
+        <img src="/static/discover-logo.svg" alt="OpenBadges Discovery" class="header-logo" />
       </div>
       <div class="small-6 columns">
         <a href="https://www.mozilla.org/" id="tabzilla">mozilla</a>
@@ -11,29 +11,34 @@
   </header>
   <nav>
     <div class="row">
-      <div class="small-6 columns">
-        <a href="#" class="button dropdown" data-dropdown="nav">
-          <i class="fa fa-bars"></i>
-        </a>
-        <ul id="nav" data-dropdown-content class="f-dropdown">
-          <li><a href="#" class="js-view-latest"><i class="fa fa-clock-o"></i> Latest</a></li>
-          <li class="logout-control js-logout-item"><a href="#" class="js-logout">Sign out</a></li>
-          <li class="login-control js-login-item"><a href="#" class="js-login">Sign in</a></li>
-        </ul>
-      </div>
-      <div class="small-6 columns text-right user-panel">
-        <span class="js-user-panel">
-          <i class="fa fa-user fa-2x"></i>
-          <span class="js-user-email show-for-large-up" href="#">{{ currentUser.email }}</span>
-        </span>
+      <div class="small-12">
+        <div class="nav-header">
+          <div class="row">
+            <div class="small-6 columns">
+              <div class="nav-container">
+                <a href="#" class="button-square" data-dropdown="nav">
+                  <i class="fa fa-bars"></i>
+                </a>
+                <ul id="nav" data-dropdown-content class="f-dropdown">
+                  <li><a href="#" class="js-view-latest"><i class="fa fa-clock-o"></i> Latest</a></li>
+                  <li class="logout-control js-logout-item"><a href="#" class="js-logout">Sign out</a></li>
+                  <li class="login-control js-login-item"><a href="#" class="js-login">Sign in</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="small-6 columns">
+              <div class="user-panel right">
+                <span class="js-user-panel">
+                   <img src="/static/avatar.svg" width="40px" height="40px" class="avatar-image">
+                  <span class="js-user-email user-email show-for-large-up" href="#">{{ currentUser.email }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
   <section id="pages">
   </section>
-  <footer>
-    <div class="row text-center">
-      <h3>Footer</h3>
-    </div>
-  </footer>
 </section>

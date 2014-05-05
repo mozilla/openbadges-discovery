@@ -1,0 +1,46 @@
+.button-base {
+  background-size: cover;
+  background-position: center;
+  background-color: none;
+  border-radius: 10px;
+  line-height: 0.2;
+  border: 2px solid #fff;
+}
+
+.button {
+  background: url(/static/button-blue.svg) no-repeat;
+  @extend .button-base
+}
+
+.button.button-secondary {
+  background: url(/static/button-grey.svg) no-repeat;
+  @extend .button-base
+}
+
+/*i think we should delete this, i made an orange button
+that isn't so specific and works great!*/
+.button.button-alert {
+  background: url(/static/button-orange.svg) no-repeat;
+  @extend .button-base
+}
+
+.button-square {
+  padding: 6px 13px;
+  background-color: white;
+  &:hover { background-color: $orange; }
+}
+
+.button-callout {
+  background: url(/static/button-orange.svg) no-repeat;
+  @extend .button-base
+}
+
+.button-view-more {
+  border: 1px solid $gray;
+  color: $button-gray;
+  padding: 8px 95px;
+  font-family: "Open Sans", helvetica, arial, sans-serif;
+  font-size: 16px;
+  @extend .button-base;
+  .fa-arrow-down { margin-left: 10px; }
+}

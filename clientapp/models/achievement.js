@@ -4,13 +4,20 @@ var BADGE = 'badge';
 var PATHWAY = 'pathway';
 
 module.exports = HumanModel.define({
+  urlRoot: function () {
+    return '/api/' + this.type;
+  },
+  idAttribute: '_id',
   props: {
-    id: {
-      type: 'number'
+    _id: {
+      type: 'string'
     },
     type: {
       values: [BADGE, PATHWAY],
       required: true
+    },
+    created_at: {
+      type: 'number'
     },
     title: {
       type: 'string',

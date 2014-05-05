@@ -39,3 +39,9 @@
     height: 100%;
   }
 }
+
+@mixin box-shadow {
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+}

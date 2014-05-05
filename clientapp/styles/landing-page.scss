@@ -1,0 +1,27 @@
+@import "variables";
+
+.landing-page {
+  padding-bottom: 2em;
+
+  .landing-cover-image{
+    background-image: url("/static/landing/landingHeaderDesktop2000-v2.svg");
+    height: 230px;
+  }
+
+  .landing-title-section{
+    background: $blue;
+  }
+
+  .landing-title{
+    background: $green;
+    p {
+      text-align: left;
+      color: #fff;
+    }
+  }
+
+  .landing-header {
+    background: white;
+    padding-top: 10px;
+  }
+}

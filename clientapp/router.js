@@ -1,4 +1,5 @@
 var Backbone = require('backbone');
+var Pledged = require('./models/pledged');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
@@ -19,10 +20,6 @@ module.exports = Backbone.Router.extend({
     window.app.currentUser.on('change:loggedIn', function () {
       app.history.loadUrl();
     });
-    this.listing = new Achievements({
-      pageSize: 8
-    });
-    this.listing.fetch({reset: true});
   },
 
   routes: {
@@ -36,62 +33,49 @@ module.exports = Backbone.Router.extend({
   },
 
   landing: function () {
-    app.renderPage(new LandingView({
-      model: window.app,
-      collection: this.listing
-    }));
+    var listing = new Achievements([], {
+      pageSize: 8
+    });
+    listing.fetch().then(function () {
+      app.renderPage(new LandingView({
+        model: window.app,
+        collection: listing
+      }));
+    });
   },
 
   showBadge: function (id) {
-    var badge = cache || new Achievement({
-      type: 'badge',
-      title: 'A Very Long Badge Title ' + id,
-      creator: 'None',
-      tags: ['service', 'barista', 'coffeelover', 'fake'],
-      favorite: !!query('fav'),
-      earned: !!query('earned')
+    var badge = new Achievement({
+      _id: id,
+      type: Achievement.BADGE
     });
-    app.renderPage(new BadgePage({model: badge}));
+    badge.fetch();
+    badge.once('sync', function () {
+      app.renderPage(new BadgePage({model: badge}));
+    });
   },
 
   showPathway: function (id) {
-    id = parseInt(id);
-    var pathway = cache.pathway || new Achievement({
-      id: id,
-      type: 'pathway',
-      title: 'A Very Long Pathway Title ' + id,
-      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Hi.',
-      creator: 'None',
-      favorite: !!query('fav')
+    var pathway = new Achievement({
+      _id: id,
+      type: Achievement.PATHWAY
     });
-    var requirements = new Requirements(null, {
-      parentId: pathway.id
+    var requirements = new Requirements({
+      parentId: pathway._id
     });
-    requirements.fetch();
-    app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
+    $.when(pathway.fetch(), requirements.fetch()).done(function () {
+      app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
+    });
   },
 
   showEditor: function (id) {
-    id = parseInt(id);
-    cache = cache || {};
-    var pathway = cache.pathway || new Achievement({
-      id: id,
-      type: 'pathway',
-      title: 'A Very Long Pathway Title ' + id,
-      description: 'Authentic meh Marfa Thundercats roof party Brooklyn, scenester locavore ennui wayfarers typewriter 3 wolf moon gastropub. Another.',
-      creator: 'None',
-      favorite: !!query('fav')
+    var pledged = new Pledged({
+      _id: id,
+      userId: window.app.currentUser.id
     });
-    var requirements;
-    if (cache.requirements) {
-      requirements = cache.requirements;
-    }
-    else {
-      requirements = new Requirements(null, {
-        parentId: pathway.id
-      });
-      requirements.fetch();
-    }
+    var requirements = new Requirements({
+      parentId: pledged._id
+    });
     var backpack = new Achievements({
       pageSize: 4,
       source: Achievements.BACKPACK
@@ -103,14 +87,16 @@ module.exports = Backbone.Router.extend({
     });
     backpack.fetch();
     wishlist.fetch();
-    app.renderPage(new PledgedPage({
-      model: pathway,
-      collection: requirements,
-      addSources: {
-        backpack: backpack,
-        wishlist: wishlist
-      }
-    }));
+    $.when(pledged.fetch(), requirements.fetch()).done(function () {
+      app.renderPage(new PledgedPage({
+        model: pledged,
+        collection: requirements,
+        addSources: {
+          backpack: backpack,
+          wishlist: wishlist
+        }
+      }));
+    });
   },
 
   recent: function () {
@@ -133,14 +119,14 @@ module.exports = Backbone.Router.extend({
           type: Achievement.BADGE
       });
       var pathways = new Achievements({
-              pageSize: 4,
-              source: Achievements.PATHWAY
+          pageSize: 4,
+          source: Achievements.PLEDGED
       });
       backpack.fetch();
       wishlist.fetch();
+      pathways.fetch();
       app.renderPage(new DashboardPage({
         model: window.app,
-        collection: this.listing,
         sources: {
               backpack: backpack,
               wishlist: wishlist,

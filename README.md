@@ -69,6 +69,9 @@ or less schema-less.
 At the moment this project is using [precommit-hook](https://github.com/nlf/precommit-hook) to run `jshint` and tests
 before commits. Feel free to propose changes to the jshint configuration; it is by no means final.
 
+It also runs `bin/beautify --warn` which will report files that don't live up to formatting conventions, but currently
+*will not fail the validation step.* Run `bin/beautify -h` for a help statement.
+
 ### Development Mode
 
 Development mode can be enabled to rebuild CSS, recompile templates and rebuild the clientside JS, unminified, on each

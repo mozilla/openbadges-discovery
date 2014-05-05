@@ -6,31 +6,75 @@
 @import "pathway-page";
 @import "listing-page";
 @import "add-list";
+@import "dashboard-page";
+@import "landing-page";
+@import "variables";
+@import "button";
 
 body {
-  background-color: lightgray;
+  background-color: $background-color;
+  font-family: Helvetica, sans-serif;
 }
-#pages {
-  background-color: white;
-}
+
+.right { float: right; }
+.left { float: left; }
+
 header {
   background-color: white;
   padding-bottom: 0.2em;
 
   .columns {
     line-height: 72px;
+    padding-left: 0;
+  }
+
+  .header-logo {
+    width: 207px;
+    padding: 20px 0;
   }
 }
-nav {
-  margin-top: 0.2em;
-  padding-top: 0.8em;
+
+.main-icon {
+  width: 155px;
+  height: 155px;
+  margin-top: 73px;
 }
+
+.dashboard-icon{
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-header {
+  padding-top: 0.9em;
+  position: absolute;
+  width: 100%;
+}
+
+.page-header {
+  background-position: center;
+  height: 300px;
+}
+
+.page-body-rounded {
+  padding-bottom: 1.2em;
+  background-color: #fff;
+  @include box-shadow;
+}
+
 footer {
   padding-bottom: 3em;
 }
 
-.banner {
-  background-color: lightgray;
+.white-button {
+  background-color: white;
+  border-color: white;
+  color: $text-dark;
+  .f-dropdown { color: $text-dark; }
+  &:hover { background-color: $blue; }
 }
 
 .logout-control a,
@@ -42,10 +86,15 @@ footer {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 
   .fa-user {
     background: white;
     padding: 4px 8px;
+    border-radius: 50%;
+    border: 1px solid white;
+    padding: 8px 12px;
+    margin-right:  15px;
   }
 }
 
@@ -55,9 +104,82 @@ footer {
   cursor: -webkit-grab;
   cursor: grab;
 }
+
 .edit-mode.cursor-grabbing {
   cursor: move;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
   cursor: grabbing;
+}
+
+// Styling Achievements
+.token {
+  border-radius: 2em;
+  background-image: url(/static/badge-background.svg);
+  background-size: cover;
+}
+
+.wishlist-button{
+  margin: 20px;
+  .favorite-icon{
+    color: #d4d4d2;
+    font-size: 25px;
+  }
+  .favorite-icon.userFavorite {
+    color: $favorite-blue;
+  }
+}
+
+.data {
+  .data-badge-title { margin-top: 15px; }
+  .data-created-by {
+    margin: 10px 0 15px 0;
+    font-size: 12px;
+    font-family: "Open Sans", helvetica, arial, sans-serif;
+    color: $light-gray;
+  }
+}
+
+.item-link {
+  padding: 30px;
+  position: relative;
+  .badge-icon,
+  .pathway-icon {
+    position: absolute;
+    right: 10px;
+  }
+  .pathway-icon { top: 0; }
+  .badge-icon { top: 10px; }
+}
+
+.label.achievement-tag {
+  background-color: $green;
+  color: #fff;
+  margin: 2px;
+  border-radius: 7px;
+}
+
+@media screen and (max-width: 1024px) {
+  header {
+    .header-logo { padding-left: 20px; }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-body-rounded {
+    .mobile-full-width {
+      padding: 0;
+    }
+    .listing {
+      .row { padding: 0; }
+      .token {
+        border-radius: 0;
+        .item-link {
+          .badge-icon,
+          .pathway-icon { top: -15px;}
+        }
+      }
+      .data { padding: 0 30px; }
+    }
+  }
 }

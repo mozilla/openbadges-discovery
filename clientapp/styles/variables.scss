@@ -1,0 +1,30 @@
+/*** COLORS ***/
+$orange: #f8933c;
+$green: #7ad69c;
+$blue: #0fa1d6;
+$favorite-blue: #0fa1d6;
+$button-gray: #a6a6a6;
+$gray: #cccccc;
+$text-dark: #4d4f53;
+$text-light: #ffffff;
+$light-gray: #b8b8b8;
+$background-color: #f4f4f2;
+
+/*** WIDTHS ***/
+$one-wide: 13.6%;
+$two-wide: 30.9%;
+$three-wide: 50%;
+$four-wide: 65.5%;
+$five-wide: 82.7%;
+$six-wide: 100%;
+
+/*** FONTS ***/
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/OpenSans-Regular-webfont.woff") format("woff"),
+       url("../fonts/OpenSans-Regular-webfont.ttf") format("truetype"),
+       url("../fonts/OpenSans-Regular-webfont.svg#OpenSansRegular") format("svg");
+}

@@ -7,16 +7,15 @@
         {% else %}
           <img src="/static/pathway.png">
         {% endif %}
-        <input type="checkbox" class="js-add-item" data-id="{{id}}">
+        <input type="checkbox" class="js-add-item" data-id="{{_id}}">
       </label>
     </div>
     <div class="data">
       <h5>{{title}}</h5>
       {% for tag in tags %}
-        <span class="secondary radius label">#{{tag}}</span>
+        <span class="label achievement-tag">#{{tag}}</span>
       {% endfor %}
       <div>
-        <img src="/static/sbux.jpg" width=50>
         Created by {{creator}}
       </div>
     </div>
