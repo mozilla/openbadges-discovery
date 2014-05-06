@@ -3,6 +3,7 @@ const should = require('should');
 const request = require('supertest');
 const _ = require('underscore');
 const express = require('express');
+const Fixture = require('../../app/fixture-data');
 
 console.warn = function () {};
 
@@ -252,8 +253,8 @@ describe('Dummy API', function () {
             .get('/pathway/' + id + '/requirement')
             .expect(200)
             .expect(function (res) {
-              res.body.length.should.equal(1);
-              res.body[0].should.eql(newReq);
+              res.body.length.should.equal(6);
+              res.body.should.containEql(newReq);
             })
             .end(done);
         });
@@ -269,7 +270,7 @@ describe('Dummy API', function () {
     it('should update requirement', function (done) {
       var id = this.pathway._id;
       var server = this.server;
-      var original = {x: 0, y: 6, name: 'New req', core: false};
+      var original = {x: 0, y: 6, name: 'New req', core: false, pathwayId: id};
       var changes = {x:2, y:1};
       request(server)
         .post('/pathway/' + id + '/requirement')
@@ -289,8 +290,8 @@ describe('Dummy API', function () {
                 .get('/pathway/' + id + '/requirement')
                 .expect(200)
                 .expect(function (res) {
-                  res.body.length.should.equal(1);
-                  res.body[0].should.have.properties(changes);
+                  res.body.length.should.equal(6);
+                  res.body.should.containEql(_.extend(original, changes));
                 })
                 .end(done);
             });
@@ -314,7 +315,7 @@ describe('Dummy API', function () {
 
   describe('GET /user/:id/favorite', function () {
     it('should return favorited achievements', function (done) {
-      var server = api.createServer({
+      var fixture = Fixture({
         favorites: [
           {userId: 1, achievementIdx: 0, favorite: true}
         ],
@@ -322,6 +323,7 @@ describe('Dummy API', function () {
           {title: "My achievement"}
         ]
       });
+      var server = api.createServer({dataGenerator: fixture});
       var app = express();
       app.use(setUser({id: 1}));
       app.use(server);
@@ -340,10 +342,12 @@ describe('Dummy API', function () {
   describe('GET /user/:id/pledged', function () {
     it('should return pledged pathways', function (done) {
       var server = api.createServer({
-        achievements: [
-          {title: "My pledged", userId: 1},
-          {title: "Someone else's pledged", userId: 2}
-        ]
+        dataGenerator: Fixture({
+          achievements: [
+            {title: "My pledged", userId: 1},
+            {title: "Someone else's pledged", userId: 2}
+          ]
+        })
       });
       var app = express();
       app.use(setUser({id: 1}));
@@ -362,11 +366,13 @@ describe('Dummy API', function () {
 
   describe('POST /user/:id/pledged', function () {
     it('should pledge a clone of a pathway', function (done) {
-      var server = api.createServer({
+      var fixture = Fixture({
         achievements: [
           {title: "A pathway", userId: 2}
         ]
-      }, function (fixtures) {
+      });
+      fixture(function (err, data, fixtures) {
+        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({id: 1}));
         app.use(server);
@@ -422,9 +428,10 @@ describe('Dummy API', function () {
 
   describe('GET /user/:id/pledged/:pid', function () {
     it('should return pledged pathway', function (done) {
-      var server = api.createServer({
+      Fixture({
         achievements: [{title: "A pathway", userId: 1}]
-      }, function (fixtures) {
+      })(function (err, data, fixtures) {
+        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({id: 1}));
         app.use(server);
@@ -444,9 +451,10 @@ describe('Dummy API', function () {
 
   describe('PUT /user/:id/pledged/:pid', function () {
     it('should edit pledged pathway', function (done) {
-      var server = api.createServer({
+      Fixture({
         achievements: [{title: "Original", userId: 1}]
-      }, function (fixtures) {
+      })(function (err, data, fixtures) {
+        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({id: 1}));
         app.use(server);
