@@ -35,14 +35,14 @@ app.use(middleware.csrf({ whitelist: [] }));
 app.use(staticRoot, express.static(staticDir, {maxAge: DEV_MODE ? 0 : 86400000}));
 app.use('/font-awesome', express.static(path.join(__dirname, '../bower_components/font-awesome')));
 
-var apiServer;
+var generator;
 if (config('GOOGLE_KEY', false)) {
-  apiServer = api.createServer(require('./google-data'));
+  generator = require('./google-data');
 }
 else {
-  apiServer = api.createServer();
+  generator = require('./fake-data');
 }
-app.use('/api', apiServer);
+app.use('/api', api.createServer({dataGenerator: generator}));
 
 persona(app, {
   audience: PERSONA_AUDIENCE,
