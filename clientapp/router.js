@@ -3,11 +3,13 @@ var Pledged = require('./models/pledged');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
+var Search = require('./models/search');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
 var PledgedPage = require('./views/pages/pledged');
 var DashboardPage = require('./views/pages/dashboard');
+var SearchPage = require('./views/pages/search');
 var query = require('query-param-getter');
 
 var cache;
@@ -26,6 +28,7 @@ module.exports = Backbone.Router.extend({
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
     'dashboard': 'showDashboard',
+    'recent': 'recent',
     '*url': 'nope'
   },
 
@@ -92,6 +95,15 @@ module.exports = Backbone.Router.extend({
           backpack: backpack,
           wishlist: wishlist
         }
+      }));
+    });
+  },
+
+  recent: function () {
+    var search = new Search();
+    search.fetch().then(function () {
+      app.renderPage(new SearchPage({
+        model: search
       }));
     });
   },
