@@ -3,6 +3,11 @@ var HumanModel = require('human-model');
 var BADGE = 'badge';
 var PATHWAY = 'pathway';
 
+var DEFAULT_IMG = {
+  'badge': '/static/badge.png',
+  'pathway': '/static/pathway.png'
+};
+
 module.exports = HumanModel.define({
   urlRoot: function () {
     return '/api/' + this.type;
@@ -44,6 +49,9 @@ module.exports = HumanModel.define({
       type: 'boolean',
       required: true,
       default: false
+    },
+    imgSrc: {
+      type: 'string'
     }
   },
   derived: {
@@ -60,6 +68,12 @@ module.exports = HumanModel.define({
       deps: ['favorite'],
       fn: function () {
         return window.app.currentUser.loggedIn ? this.favorite : false; 
+      }
+    },
+    image: {
+      deps: ['imgSrc', 'type'],
+      fn: function () {
+        return this.imgSrc ? this.imgSrc : DEFAULT_IMG[this.type];
       }
     }
   }
