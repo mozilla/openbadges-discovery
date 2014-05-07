@@ -26,8 +26,9 @@ module.exports = Backbone.Collection.extend({
     this.source = opts.source;
     this.params = {
       pageSize: opts.pageSize || 8,
-      type: opts.type
     };
+    if (opts.type) this.params.type = opts.type;
+    if (opts.tag) this.params.tag = opts.tag;
   },
   sync: function (method, collection, options) {
     options.data = _.extend({}, this.params, options.data);

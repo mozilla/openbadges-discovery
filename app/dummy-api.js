@@ -47,12 +47,14 @@ function createApp(opts) {
     var after = parseInt(req.query.after || Date.now());
     var pageSize = parseInt(req.query.pageSize);
     var type = req.query.type;
+    var tag = req.query.tag;
     var uid = req.session && req.session.user && req.session.user.id;
 
     var query = {
       created_at: {$lt: after}
     };
     if (type) query.type = type;
+    if (tag) query.tags = tag;
     appData.achievements.find(query).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
       if (err) throw err;
       if (uid) {
