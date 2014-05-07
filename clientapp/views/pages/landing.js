@@ -27,7 +27,6 @@ module.exports = HumanView.extend({
     return this;
   },
   buildUrl: function (parts) {
-    console.log(this.args, parts);
     var args = _.extend({}, this.args, parts);
     var url = '';
     var ordered = ['y', 't', 'c'];
