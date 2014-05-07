@@ -9,6 +9,9 @@ module.exports = HumanView.extend({
     this.renderSubview(new ListingView({
       collection: this.collection
     }), '.content');
+    this.listenTo(this.collection, 'sync', function (collection, resp, opts) {
+      window.app.router.navigate('/' + collection.length, {replace: true, trigger: false});
+    });
     return this;
   }
 });
