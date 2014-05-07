@@ -13,7 +13,7 @@ module.exports = HumanView.extend({
       collection: this.collection
     }), '.content');
     this.listenTo(this.collection, 'sync', function (collection, resp, opts) {
-      window.app.router.navigate('/' + collection.length, {
+      window.app.router.navigate('c/' + collection.length + '/', {
         replace: this.replaceNext,
         trigger: false
       });

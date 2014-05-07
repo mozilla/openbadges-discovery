@@ -17,14 +17,20 @@ module.exports = Backbone.Collection.extend({
       return '/api/achievement';
     }
   },
-  initialize: function (opts) {
+  initialize: function (models, opts) {
+    if (!opts && _.isObject(models) && !_.isArray(models)) {
+      opts = models;
+      models = [];
+    }
     opts = opts || {};
-    this.pageSize = opts.pageSize || 8;
     this.source = opts.source;
-    this.type = opts.type;
+    this.params = {
+      pageSize: opts.pageSize || 8,
+      type: opts.type
+    };
   },
   sync: function (method, collection, options) {
-    options.data = _.extend({ pageSize: collection.pageSize }, options.data);
+    options.data = _.extend({}, this.params, options.data);
     return Backbone.sync(method, collection, options);
   },
   addPage: function () {

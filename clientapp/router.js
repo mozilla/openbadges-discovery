@@ -21,7 +21,7 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '(t/:tag/)(:count)': 'landing',
+    '(c/:count/)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
@@ -29,7 +29,7 @@ module.exports = Backbone.Router.extend({
     '*url': 'nope'
   },
 
-  landing: function (tag, count) {
+  landing: function (count) {
     var initialCount = parseInt(count || 16);
     var listing = new Achievements([], {
       pageSize: 8
@@ -99,16 +99,16 @@ module.exports = Backbone.Router.extend({
   },
 
   showDashboard: function () {
-      var backpack = new Achievements({
+      var backpack = new Achievements([], {
           pageSize: 4,
           source: Achievements.BACKPACK
       });
-      var wishlist = new Achievements({
+      var wishlist = new Achievements([], {
           pageSize: 4,
           source: Achievements.WISHLIST,
           type: Achievement.BADGE
       });
-      var pathways = new Achievements({
+      var pathways = new Achievements([], {
           pageSize: 4,
           source: Achievements.PLEDGED
       });
