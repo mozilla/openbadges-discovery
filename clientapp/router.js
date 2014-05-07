@@ -21,8 +21,7 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '': 'landing',
-    ':count': 'landing',
+    '(t/:tag/)(:count)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
@@ -30,7 +29,7 @@ module.exports = Backbone.Router.extend({
     '*url': 'nope'
   },
 
-  landing: function (count) {
+  landing: function (tag, count) {
     var initialCount = parseInt(count || 16);
     var listing = new Achievements([], {
       pageSize: 8
@@ -38,7 +37,8 @@ module.exports = Backbone.Router.extend({
     listing.fetch({data: {pageSize: initialCount}}).then(function () {
       app.renderPage(new LandingView({
         model: window.app,
-        collection: listing
+        collection: listing,
+        bareUrl: Array.prototype.filter.call(arguments, function(arg){ return !!arg; })
       }));
     });
   },
