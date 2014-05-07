@@ -132,11 +132,14 @@ function createApp(opts) {
 
   app.get('/user/:uid/favorite', function (req, res, next) {
     var uid = parseInt(req.params.uid);
+    var type = req.query.type;
 
     appData.favorites.find({userId: uid}, function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
-      appData.achievements.find({_id: {$in: ids}}, function (err, docs) {
+      var query = {_id: {$in: ids}};
+      if (type) query.type = type;
+      appData.achievements.find(query, function (err, docs) {
         docs = docs.map(function (doc) {
           doc.favorite = true;
           return doc;
