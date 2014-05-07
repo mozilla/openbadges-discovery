@@ -19,7 +19,7 @@
       <h5 class="data-badge-title">{{title}}</h5>
       <h5 class="data-created-by">Created by {{creator}}</h5>
       {% for tag in tags %}
-        <span class="label achievement-tag">#{{tag}}</span>
+        <a class="label achievement-tag js-tag" data-tag="{{tag}}">#{{tag}}</a>
       {% endfor %}
     </div>
   </div>

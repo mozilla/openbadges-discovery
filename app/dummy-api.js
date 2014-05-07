@@ -46,9 +46,16 @@ function createApp(opts) {
   app.get('/achievement', function getAchievements(req, res, next) {
     var after = parseInt(req.query.after || Date.now());
     var pageSize = parseInt(req.query.pageSize);
+    var type = req.query.type;
+    var tag = req.query.tag;
     var uid = req.session && req.session.user && req.session.user.id;
 
-    appData.achievements.find({created_at: {$lt: after}}).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
+    var query = {
+      created_at: {$lt: after}
+    };
+    if (type) query.type = type;
+    if (tag) query.tags = tag;
+    appData.achievements.find(query).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
       if (err) throw err;
       if (uid) {
         return addFavs(docs, uid, function (err, docs) {
@@ -132,11 +139,14 @@ function createApp(opts) {
 
   app.get('/user/:uid/favorite', function (req, res, next) {
     var uid = parseInt(req.params.uid);
+    var type = req.query.type;
 
     appData.favorites.find({userId: uid}, function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
-      appData.achievements.find({_id: {$in: ids}}, function (err, docs) {
+      var query = {_id: {$in: ids}};
+      if (type) query.type = type;
+      appData.achievements.find(query, function (err, docs) {
         docs = docs.map(function (doc) {
           doc.favorite = true;
           return doc;

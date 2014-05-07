@@ -21,7 +21,7 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '': 'landing',
+    '(y/:type/)(t/:tag/)(c/:count/)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
@@ -29,14 +29,36 @@ module.exports = Backbone.Router.extend({
     '*url': 'nope'
   },
 
-  landing: function () {
+  landing: function (type, tag, count) {
+    var initialCount = parseInt(count || 16);
     var listing = new Achievements([], {
-      pageSize: 8
+      pageSize: 8,
+      type: type,
+      tag: tag
     });
-    listing.fetch().then(function () {
+    var args = {
+      y: type,
+      t: tag,
+      c: count
+    };
+    var name;
+    if (type) {
+      if (type === Achievement.BADGE) name = "Badges";
+      else name = "Pathways";
+    }
+    else if (tag) {
+      name = "#" + tag;
+    }
+    else {
+      name = "Latest";
+    }
+    listing.fetch({data: {pageSize: initialCount}}).then(function () {
       app.renderPage(new LandingView({
         model: window.app,
-        collection: listing
+        collection: listing,
+        bareUrl: Array.prototype.filter.call(arguments, function(arg){ return !!arg; }),
+        args: args,
+        name: name
       }));
     });
   },
@@ -97,16 +119,16 @@ module.exports = Backbone.Router.extend({
   },
 
   showDashboard: function () {
-      var backpack = new Achievements({
+      var backpack = new Achievements([], {
           pageSize: 4,
           source: Achievements.BACKPACK
       });
-      var wishlist = new Achievements({
+      var wishlist = new Achievements([], {
           pageSize: 4,
           source: Achievements.WISHLIST,
           type: Achievement.BADGE
       });
-      var pathways = new Achievements({
+      var pathways = new Achievements([], {
           pageSize: 4,
           source: Achievements.PLEDGED
       });

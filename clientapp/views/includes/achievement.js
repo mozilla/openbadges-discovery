@@ -19,7 +19,8 @@ module.exports = HumanView.extend({
   },
   events: {
     'click .js-view-item': 'navToItem',
-    'click .js-toggle-wishlist': 'toggleWishlist'
+    'click .js-toggle-wishlist': 'toggleWishlist',
+    'click .js-tag': 'clickTag'
   },
   navToItem: function (evt) {
     var item = this.model;
@@ -40,5 +41,9 @@ module.exports = HumanView.extend({
     }
     evt.preventDefault();
     evt.stopPropagation();
+  },
+  clickTag: function (evt) {
+    var tag = $(evt.target).data('tag');
+    window.app.router.navigateTo('t/' + tag + '/');
   }
 });
