@@ -21,7 +21,7 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '(c/:count/)': 'landing',
+    '(y/:type/)(c/:count/)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
@@ -29,16 +29,31 @@ module.exports = Backbone.Router.extend({
     '*url': 'nope'
   },
 
-  landing: function (count) {
+  landing: function (type, count) {
     var initialCount = parseInt(count || 16);
     var listing = new Achievements([], {
-      pageSize: 8
+      pageSize: 8,
+      type: type
     });
+    var args = {
+      y: type,
+      c: count
+    };
+    var name;
+    if (type) {
+      if (type === Achievement.BADGE) name = "Badges";
+      else name = "Pathways";
+    }
+    else {
+      name = "Latest";
+    }
     listing.fetch({data: {pageSize: initialCount}}).then(function () {
       app.renderPage(new LandingView({
         model: window.app,
         collection: listing,
-        bareUrl: Array.prototype.filter.call(arguments, function(arg){ return !!arg; })
+        bareUrl: Array.prototype.filter.call(arguments, function(arg){ return !!arg; }),
+        args: args,
+        name: name
       }));
     });
   },
