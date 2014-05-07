@@ -2,7 +2,7 @@ const db = require('../../app/lib/db');
 const async = require('async');
 const stream = require('stream');
 
-describe('db', function () {
+describe.skip('db', function () {
 
   describe('callback API', function () {
     beforeEach(function (done) {

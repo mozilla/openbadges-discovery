@@ -7,7 +7,8 @@ const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
-const User = require('./models/user');
+const DataStore = require('nedb');
+const User = new DataStore();
 
 const DEV_MODE = config('DEV', false);
 const PORT = config('PORT', 3000);
@@ -52,7 +53,7 @@ persona(app, {
       reason: err
     });
 
-    User.getOrCreate({email: email}, function (err, user) {
+    User.findOne({email: email}, function (err, user) {
       if (err) {
         console.log(err.message);
         return res.json({
@@ -60,11 +61,27 @@ persona(app, {
           reason: 'Problem encountered getting user ' + email
         });
       }
-      req.session.user = user;
-      return res.json({
-        status: 'okay',
-        user: user
-      });
+
+      function finish(user) {
+        req.session.user = user;
+        return res.json({
+          status: 'okay',
+          user: user
+        });
+      }
+
+      if (!user) {
+        User.insert({email: email}, function (err, user) {
+          if (err) {
+            return res.json({
+              status: 'failure',
+              reason: 'Problem encountered creating user ' + email
+            });
+          }
+          return finish(user);
+        });
+      }
+      else return finish(user);
     });
   },
   logoutResponse: function (err, req, res) {

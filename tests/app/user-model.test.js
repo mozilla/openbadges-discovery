@@ -1,7 +1,7 @@
 var User = require('../../app/models/user');
 var db = require('../../app/lib/db');
 
-describe('User model', function () {
+describe.skip('User model', function () {
 
   afterEach(function (done) {
     db.deleteAll(done);
