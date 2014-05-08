@@ -59,7 +59,7 @@ module.exports = HumanModel.define({
       deps: ['favorite', 'earned'],
       fn: function () {
         if (this.earned) return 'owned';
-        else if (this.favorite) return 'wishlisted';
+        else if (this.favorite) return 'favorited';
         else return undefined;
       }
     },
