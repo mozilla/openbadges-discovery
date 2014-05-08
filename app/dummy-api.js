@@ -17,10 +17,18 @@ function createApp(opts) {
 
   var generator = opts.dataGenerator || fakeData;
   var appData;
+  var loading = false;
   app.use(function (req, res, next) {
     if (appData) return next();
+    function wait() {
+      if (!appData) return setTimeout(wait, 250);
+      next();
+    }
+    if (loading) return wait();
+    loading = true;
     return generator(function (err, dataStores) {
       appData = dataStores;
+      loading = false;
       return next(err);
     });
   });

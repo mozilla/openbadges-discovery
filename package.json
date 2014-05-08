@@ -41,7 +41,7 @@
     "nedb": "~0.10.5",
     "bower": "~1.3.2",
     "googleclientlogin": "~0.2.8",
-    "google-spreadsheets": "~0.3.0"
+    "google-spreadsheets": "git://github.com/stenington/node-google-spreadsheets.git"
   },
   "devDependencies": {
     "mocha": "~1.15.1",
