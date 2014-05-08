@@ -137,11 +137,13 @@ function processPathway(cells, cb) {
     async.map(cells, function (cell, cb) {
       Achievements.findOne({title: cell.badgename}, function (err, badge) {
         if (err) throw err;
+        cell.x = parseInt(cell.x);
+        cell.y = parseInt(cell.y);
         var rowY = parseInt(cell.title.match(/\d+/)[0] - 3);
         var requirement = {
           pathwayId: id,
-          x: cell.hasOwnProperty('x') ? parseInt(cell.x) : 1,
-          y: cell.hasOwnProperty('y') ? parseInt(cell.y) : rowY,
+          x: _.isNaN(cell.x) ? 1 : cell.x,
+          y: _.isNaN(cell.y) ? rowY : cell.y,
           name: cell.badgename,
           core: !!cell.core
         };
