@@ -127,9 +127,23 @@ function createApp(opts) {
     var pid = req.params.pid;
     var rid = req.params.rid;
 
-    appData.requirements.update({_id: rid}, {$set: req.body}, {}, function (err) {
+    var requirement = req.body;
+    requirement.pathwayId = pid;
+    appData.requirements.update({_id: rid}, {$set: req.body}, {upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
-      return res.json({});
+      var changed = {};
+      if (newDoc && newDoc._id !== rid) changed._id = newDoc._id;
+      return res.json(changed);
+    });
+  });
+
+  app.delete('/pathway/:pid/requirement/:rid', function (req, res, next) {
+    var pid = req.params.pid;
+    var rid = req.params.rid;
+
+    appData.requirements.remove({_id: rid}, function (err, num) {
+      if (err) throw err;
+      return res.send(200);
     });
   });
 
