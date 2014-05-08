@@ -50,7 +50,22 @@ function processSpreadsheet(spreadsheet, cb) {
           if (err) throw err;
           processBadges(cells, cb);
         });
-      }, cb);
+      }, function (err, results) {
+        results = Array.prototype.concat.apply([], results);
+        var time = Date.now();
+        results.sort(function (a, b) {
+          if ((a.imgSrc && b.imgSrc) || (!a.imgSrc && !b.imgSrc)) return 0;
+          if (a.imgSrc) return -1;
+          return 1;
+        }).forEach(function (achievement) {
+          achievement.created_at = time--;
+        });
+        Achievements.insert(results, function (err, docs) {
+          if (err) throw err;
+          log('Created %d badges', docs.length);
+          cb();
+        });
+      });
     },
     function (cb) {
       async.map(pathwaySheets, function (worksheet, cb) {
@@ -85,8 +100,7 @@ function value(val, def) {
 function processBadges(cells, cb) {
   log('Fetched %d cells', cells.length);
   var result = cells.filter(function (cell) {
-    if (!cell.keeping) return true;
-    else return (typeof cell.keeping === 'string');
+    return cell.keeping;
   }).map(function (cell) {
     var badge = {
       type: 'badge',
@@ -99,20 +113,7 @@ function processBadges(cells, cb) {
     badge.imgSrc = badge.imgSrc.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
     return badge;
   });
-  var time = Date.now();
-  result.sort(function (a, b) {
-    if ((a.imgSrc && b.imgSrc) || (!a.imgSrc && !b.imgSrc)) return 0;
-    if (a.imgSrc) return -1;
-    return 1;
-  }).forEach(function (achievement) {
-    achievement.created_at = time--;
-  });
-
-  Achievements.insert(result, function (err, docs) {
-    if (err) throw err;
-    log('Created %d badges', docs.length);
-    cb();
-  });
+  cb(null, result);
 }
 
 function processPathway(cells, cb) {
