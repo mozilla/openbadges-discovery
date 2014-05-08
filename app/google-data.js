@@ -139,8 +139,8 @@ function processPathway(cells, cb) {
         var rowY = parseInt(cell.title.match(/\d+/)[0] - 3);
         var requirement = {
           pathwayId: id,
-          x: parseInt(cell.x) || 1,
-          y: parseInt(cell.y) || rowY,
+          x: cell.hasOwnProperty('x') ? parseInt(cell.x) : 1,
+          y: cell.hasOwnProperty('y') ? parseInt(cell.y) : rowY,
           name: cell.badgename,
           core: !!cell.core
         };
