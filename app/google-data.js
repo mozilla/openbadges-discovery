@@ -108,7 +108,8 @@ function processBadges(cells, cb) {
       description: value(cell.description, "No description in " + cell.title),
       tags: value(cell.tags, []),
       creator: "A. Creator",
-      imgSrc: value(cell.imagefile, '')
+      imgSrc: value(cell.imagefile, ''),
+      criteria: cell.criteria
     };
     badge.imgSrc = badge.imgSrc.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
     return badge;
