@@ -1,18 +1,18 @@
 <div class="row text-center">
   <div class="medium-12 text-center">
-    <h2 style="color:white">{{ currentUser.email }}</h2>
+    <h2 class="dashboard-email">{{ currentUser.email }}</h2>
   </div>
   <div class="medium-2 medium-offset-3 columns">
     <img src="/static/dashboard/icoDashboardPathway.svg">
-    <p>{{pathways.models.length}} pathways</p>
+    <p class="icon-length">{{pathways.models.length}} Pathways</p>
   </div>
   <div class="medium-2 columns">
     <img src="static/dashboard/icoDashboardBadge.svg">
-    <p>{{backpack.models.length}} badges</p>
+    <p class="icon-length">{{backpack.models.length}} Badges</p>
   </div>
   <div class="medium-2 columns">
 	<img src="/static/dashboard/icoDashboardFavorited.svg">
-	<p>{{wishlist.models.length}} favorited</p>
+	<p class="icon-length">{{wishlist.models.length}} Favorited</p>
   </div>
   <div class="medium-3"></div>
 </div>

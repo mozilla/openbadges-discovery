@@ -15,12 +15,29 @@
   padding-bottom: 2em;
 
   .dashboard-cover-image{
-    background-image: url("/static/dashboard/dashboardHeaderDesktop2000.svg");
+    background: url("/static/dashboard/dashboardHeaderDesktop2000.svg") no-repeat;
+    background-position: center;
   }
+
+  .page-header.dashboard-cover-image { height: 320px; }
 
   .dashboard-header {
     background: white;
     padding-top: 10px;
+  }
+
+  .dashboard-email {
+    margin: 0 0 20px 0;
+    font-family: "Open Sans";
+    font-size: 24px;
+    color: white;
+  }
+
+  .icon-length {
+    font-family: "Open Sans";
+    font-size: 14px;
+    color: white;
+    margin: 15px 0 20px 0;
   }
 }
 
