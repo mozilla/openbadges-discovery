@@ -14,8 +14,9 @@
         <i class="fa fa-heart favorite-icon js-favorite-icon"></i>
       </a>
       <p class="badge-page-description">{{description}}</p>
-      <h2>Criteria</h2>
-      <p>{{criteria}}</p>
+      <div class="badge-page-criteria">
+        {{criteria|safe}}
+      </div>
       {% for tag in tags %}
       <a href="/t/{{tag}}/" class="label achievement-tag">#{{tag}}</a>
       {% endfor %}

@@ -27,6 +27,14 @@
   .wishlist-button { margin: -10px 0 0 10px; }
 
   .badge-page-description { margin-bottom: 30px; }
+
+  .badge-page-criteria {
+    margin-bottom: 30px;
+
+    ul {
+      text-align: left;
+    }
+  }
 }
 
 @media screen and (max-width: 480px) {
