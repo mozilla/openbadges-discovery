@@ -6,7 +6,7 @@ module.exports = HumanModel.define({
       type: 'string'
     },
     userId: {
-      type: 'number'
+      type: 'string'
     },
     cloneId: {
       type: 'string'

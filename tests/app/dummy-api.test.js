@@ -92,7 +92,7 @@ describe('Dummy API', function () {
     it('should decorate with favorites when logged in', function (done) {
       var server = api.createServer();
       var app = express();
-      app.use(setUser({id: 1}));
+      app.use(setUser({_id: 'a1'}));
       app.use(server);
       request(app)
         .get('/achievement')
@@ -167,7 +167,7 @@ describe('Dummy API', function () {
         var id = this.id;
         var fav = this.achievement.favorite;
         var app = express();
-        app.use(setUser({id: 1}));
+        app.use(setUser({_id: 'a1'}));
         app.use(this.server);
         request(app)
           .patch('/' + name + '/' + id)
@@ -302,10 +302,10 @@ describe('Dummy API', function () {
   describe('GET /user/:id/earned', function () {
     it('should return an empty list for now', function (done) {
       var app = express();
-      app.use(setUser({id: 1}));
+      app.use(setUser({_id: 'a1'}));
       app.use(api.createServer());
       request(app)
-        .get('/user/1/earned')
+        .get('/user/a1/earned')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect([])
@@ -317,7 +317,7 @@ describe('Dummy API', function () {
     it('should return favorited achievements', function (done) {
       var fixture = Fixture({
         favorites: [
-          {userId: 1, achievementIdx: 0, favorite: true}
+          {userId: 'a1', achievementIdx: 0, favorite: true}
         ],
         achievements: [
           {title: "My achievement"}
@@ -325,10 +325,10 @@ describe('Dummy API', function () {
       });
       var server = api.createServer({dataGenerator: fixture});
       var app = express();
-      app.use(setUser({id: 1}));
+      app.use(setUser({_id: 'a1'}));
       app.use(server);
       request(app)
-        .get('/user/1/favorite')
+        .get('/user/a1/favorite')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -344,16 +344,16 @@ describe('Dummy API', function () {
       var server = api.createServer({
         dataGenerator: Fixture({
           achievements: [
-            {title: "My pledged", userId: 1},
-            {title: "Someone else's pledged", userId: 2}
+            {title: "My pledged", userId: 'a1'},
+            {title: "Someone else's pledged", userId: 'a2'}
           ]
         })
       });
       var app = express();
-      app.use(setUser({id: 1}));
+      app.use(setUser({_id: 'a1'}));
       app.use(server);
       request(app)
-        .get('/user/1/pledged')
+        .get('/user/a1/pledged')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
@@ -368,23 +368,23 @@ describe('Dummy API', function () {
     it('should pledge a clone of a pathway', function (done) {
       var fixture = Fixture({
         achievements: [
-          {title: "A pathway", userId: 2}
+          {title: "A pathway", userId: 'a2'}
         ]
       });
       fixture(function (err, data, fixtures) {
         var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
-        app.use(setUser({id: 1}));
+        app.use(setUser({_id: 'a1'}));
         app.use(server);
         request(app)
-          .post('/user/1/pledged')
+          .post('/user/a1/pledged')
           .send({cloneId: fixtures.achievements[0]._id})
           .expect(200)
           .expect('Content-Type', /json/)
           .expect(function (res) {
             res.body.should.be.an.Object;
             res.body.title.should.equal("A pathway");
-            res.body.userId.should.equal(1);
+            res.body.userId.should.equal('a1');
             res.body._id.should.not.equal(fixtures.achievements[0]._id);
           })
           .end(done);
@@ -394,7 +394,7 @@ describe('Dummy API', function () {
     it('should make clone the newest achievement', function (done) {
       var server = api.createServer();
       var app = express();
-      app.use(setUser({id: 1}));
+      app.use(setUser({_id: 'a1'}));
       app.use(server);
       request(app)
         .get('/achievement')
@@ -404,7 +404,7 @@ describe('Dummy API', function () {
           if (err) return done(err);    
           var latest = res.body[0];
           request(app)
-            .post('/user/1/pledged')
+            .post('/user/a1/pledged')
             .send({cloneId: latest._id})
             .expect(200)
             .expect(function (res) {
@@ -429,20 +429,20 @@ describe('Dummy API', function () {
   describe('GET /user/:id/pledged/:pid', function () {
     it('should return pledged pathway', function (done) {
       Fixture({
-        achievements: [{title: "A pathway", userId: 1}]
+        achievements: [{title: "A pathway", userId: 'a1'}]
       })(function (err, data, fixtures) {
         var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
-        app.use(setUser({id: 1}));
+        app.use(setUser({_id: 'a1'}));
         app.use(server);
         request(app)
-          .get('/user/1/pledged/' + fixtures.achievements[0]._id)
+          .get('/user/a1/pledged/' + fixtures.achievements[0]._id)
           .expect(200)
           .expect('Content-Type', /json/)
           .expect(function (res) {
             res.body.should.be.an.Object;
             res.body.title.should.equal("A pathway");
-            res.body.userId.should.equal(1);
+            res.body.userId.should.equal('a1');
           })
           .end(done);
       });
@@ -452,14 +452,14 @@ describe('Dummy API', function () {
   describe('PUT /user/:id/pledged/:pid', function () {
     it('should edit pledged pathway', function (done) {
       Fixture({
-        achievements: [{title: "Original", userId: 1}]
+        achievements: [{title: "Original", userId: 'a1'}]
       })(function (err, data, fixtures) {
         var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
         var app = express();
-        app.use(setUser({id: 1}));
+        app.use(setUser({_id: 'a1'}));
         app.use(server);
         request(app)
-          .put('/user/1/pledged/' + fixtures.achievements[0]._id)
+          .put('/user/a1/pledged/' + fixtures.achievements[0]._id)
           .send({title: "New", description: "Desc"})
           .expect(200)
           .expect('Content-Type', /json/)
@@ -467,7 +467,7 @@ describe('Dummy API', function () {
           .end(function (err) {
             if (err) return done(err);
             request(server)
-              .get('/user/1/pledged/' + fixtures.achievements[0]._id)
+              .get('/user/a1/pledged/' + fixtures.achievements[0]._id)
               .expect(200)
               .expect(function (res) {
                 res.body.should.be.an.Object;

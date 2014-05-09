@@ -90,7 +90,7 @@ module.exports = Backbone.Router.extend({
   showEditor: function (id) {
     var pledged = new Pledged({
       _id: id,
-      userId: window.app.currentUser.id
+      userId: window.app.currentUser._id
     });
     var requirements = new Requirements({
       parentId: pledged._id

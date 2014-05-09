@@ -39,6 +39,11 @@ function createApp(opts) {
     next();
   });
 
+  app.use(function (req, res, next) {
+    if (req.session && req.session.user) req.userId = req.session.user._id;
+    next();
+  });
+
   function addFavs (docs, uid, cb) {
     if (!_.isArray(docs)) docs = [docs];
     var itemIds = _.pluck(docs, '_id');
@@ -56,7 +61,6 @@ function createApp(opts) {
     var pageSize = parseInt(req.query.pageSize);
     var type = req.query.type;
     var tag = req.query.tag;
-    var uid = req.session && req.session.user && req.session.user.id;
 
     var query = {
       created_at: {$lt: after}
@@ -65,8 +69,8 @@ function createApp(opts) {
     if (tag) query.tags = tag;
     appData.achievements.find(query).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
       if (err) throw err;
-      if (uid) {
-        return addFavs(docs, uid, function (err, docs) {
+      if (req.userId) {
+        return addFavs(docs, req.userId, function (err, docs) {
           if (err) throw err;
           return res.json(docs);
         });
@@ -80,12 +84,11 @@ function createApp(opts) {
   app.get('/achievement/:id', getAchievement);
   function getAchievement(req, res, next) {
     var id = req.params.id;
-    var uid = req.session && req.session.user && req.session.user.id;
     appData.achievements.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       if (doc) {
-        if (uid) {
-          return addFavs(doc, uid, function (err, doc) {
+        if (req.userId) {
+          return addFavs(doc, req.userId, function (err, doc) {
             if (err) throw err;
             return res.json(doc);
           });
@@ -100,13 +103,12 @@ function createApp(opts) {
   app.patch('/pathway/:id', setFavorite);
   app.patch('/achievement/:id', setFavorite);
   function setFavorite(req, res, next) {
-    var uid = req.session && req.session.user && req.session.user.id;
     var id = req.params.id;
 
-    if (!uid) res.send(403);
+    if (!req.userId) res.send(403);
 
     var data = _.pick(req.body, 'favorite');
-    appData.favorites.update({userId: uid, itemId: id}, {$set: data}, {upsert: true}, function (err) {
+    appData.favorites.update({userId: req.userId, itemId: id}, {$set: data}, {upsert: true}, function (err) {
       if (err) throw err;
       return res.json({});
     });
@@ -160,7 +162,7 @@ function createApp(opts) {
   });
 
   app.get('/user/:uid/favorite', function (req, res, next) {
-    var uid = parseInt(req.params.uid);
+    var uid = req.params.uid;
     var type = req.query.type;
 
     appData.favorites.find({userId: uid}, function (err, docs) {
@@ -179,7 +181,7 @@ function createApp(opts) {
   });
 
   app.get('/user/:id/pledged', function (req, res, next) {
-    var userId = parseInt(req.params.id);
+    var userId = req.params.id;
 
     appData.achievements.find({userId: userId}, function (err, docs) {
       if (err) throw err;
@@ -189,7 +191,7 @@ function createApp(opts) {
 
   app.post('/user/:id/pledged', function (req, res, next) {
     var cloneId = req.body.cloneId;
-    var userId = parseInt(req.params.id);
+    var userId = req.params.id;
 
     appData.achievements.findOne({_id: cloneId}, function (err, base) {
       if (err) throw err;

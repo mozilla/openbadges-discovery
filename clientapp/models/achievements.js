@@ -10,7 +10,7 @@ module.exports = Backbone.Collection.extend({
   model: Achievement,
   url: function () {
     if (window.app.currentUser.loggedIn && this.source) {
-      var uid = window.app.currentUser.id;
+      var uid = window.app.currentUser._id;
       return '/api/user/' + uid + '/' + this.source;
     }
     else {

@@ -76,11 +76,11 @@ describe('Achievements', function () {
       app: {
         currentUser: {
           loggedIn: true,
-          id: 1
+          _id: 'a1'
         }
       }
     };
     var c = new Achievements([], {source: Achievements.BACKPACK});
-    c.url().should.equal('/api/user/1/earned');
+    c.url().should.equal('/api/user/a1/earned');
   });
 });

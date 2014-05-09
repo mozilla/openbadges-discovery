@@ -8,6 +8,7 @@ const DataStore = require('nedb');
 
 const Achievements = new DataStore();
 const Requirements = new DataStore();
+const Favorites = new DataStore();
 
 function log () { if (config('DEV', false)) console.log.apply(null, arguments); }
 
@@ -84,7 +85,8 @@ function processSpreadsheet(spreadsheet, cb) {
 
     cb(null, {
       achievements: Achievements,
-      requirements: Requirements
+      requirements: Requirements,
+      favorites: Favorites
     });
   });
 }
