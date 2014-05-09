@@ -18,6 +18,12 @@ module.exports = HumanView.extend({
         collection.add(before.attributes, options);
       }
     });
+    undoManager.changeUndoType("change", {
+      "condition": function (model) {
+        var changed = model.changedAttributes();
+        return !(Object.keys(changed).length === 1 && changed.hasOwnProperty('_id'));
+      }
+    });
     undoManager.register(this.collection);
     undoManager.startTracking();
   },
