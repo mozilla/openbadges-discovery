@@ -41,6 +41,9 @@ function createApp(opts) {
 
   app.use(function (req, res, next) {
     if (req.session && req.session.user) req.userId = req.session.user._id;
+    var pagination = req.pagination = {};
+    if (!Number.isNaN(parseInt(req.query.pageSize))) pagination.pageSize = parseInt(req.query.pageSize);
+    pagination.after = parseInt(req.query.after) || Date.now();
     next();
   });
 
@@ -57,17 +60,15 @@ function createApp(opts) {
   }
 
   app.get('/achievement', function getAchievements(req, res, next) {
-    var after = parseInt(req.query.after || Date.now());
-    var pageSize = parseInt(req.query.pageSize);
     var type = req.query.type;
     var tag = req.query.tag;
 
     var query = {
-      created_at: {$lt: after}
+      created_at: {$lt: req.pagination.after}
     };
     if (type) query.type = type;
     if (tag) query.tags = tag;
-    appData.achievements.find(query).sort({created_at: -1}).limit(pageSize).exec(function (err, docs) {
+    appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
       if (err) throw err;
       if (req.userId) {
         return addFavs(docs, req.userId, function (err, docs) {
@@ -168,9 +169,12 @@ function createApp(opts) {
     appData.favorites.find({userId: uid}, function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
-      var query = {_id: {$in: ids}};
+      var query = {
+        _id: {$in: ids},
+        created_at: {$lt: req.pagination.after}
+      };
       if (type) query.type = type;
-      appData.achievements.find(query, function (err, docs) {
+      appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
         docs = docs.map(function (doc) {
           doc.favorite = true;
           return doc;
@@ -183,7 +187,13 @@ function createApp(opts) {
   app.get('/user/:id/pledged', function (req, res, next) {
     var userId = req.params.id;
 
-    appData.achievements.find({userId: userId}, function (err, docs) {
+    var query = {
+      userId: userId, 
+      created_at: {
+        $lt: req.pagination.after
+      }
+    };
+    appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
       if (err) throw err;
       return res.json(docs);
     });
