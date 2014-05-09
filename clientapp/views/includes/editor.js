@@ -4,6 +4,7 @@ var RequirementView = require('./requirement');
 var _ = require('underscore');
 var Editor = require('editor');
 var UndoManager = require('backbone-undo');
+var query = require('query-param-getter');
 
 module.exports = HumanView.extend({
   template: templates.includes.editor,
@@ -24,7 +25,7 @@ module.exports = HumanView.extend({
   render: function () {
     this.renderAndBind({showControls: this.mode === "edit"});
     this.editor = new Editor({
-      columns: 3,
+      columns: query('columns') || 5,
       canvas: this.$('canvas')[0],
       mode: this.mode,
       requirements: this.collection
