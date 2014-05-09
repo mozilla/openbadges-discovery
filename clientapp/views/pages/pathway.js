@@ -22,7 +22,7 @@ module.exports = HumanView.extend({
   pledge: function (evt) {
     if (window.app.currentUser.loggedIn) {
       var pledged = new Pledged({
-        userId: window.app.currentUser.id,
+        userId: window.app.currentUser._id,
         cloneId: this.model._id
       });
       pledged.save().done(function (model, status, xhr) {

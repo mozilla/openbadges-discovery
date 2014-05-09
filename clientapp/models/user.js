@@ -4,9 +4,12 @@ module.exports = HumanModel.define({
   initialize: function (opts) {
     if (opts === null) this.setLoggedOut();
   },
+  idAttribute: '_id',
   url: '/api/user',
   props: {
-    id: ['number'],
+    _id: {
+      type: 'string'
+    },
     email: ['string']
   },
   derived: {
