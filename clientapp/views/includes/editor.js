@@ -8,6 +8,16 @@ var query = require('query-param-getter');
 
 module.exports = HumanView.extend({
   template: templates.includes.editor,
+
+  events: {
+    'click [data-toggle]': 'toggle',
+    'click .js-delete': 'deleteMode',
+    'click .js-undo': 'undo',
+    'click .js-add-storybit': 'activate',
+    'click .js-view-similar' : 'activate',
+    'click .js-add-badge' : 'activate'
+  },
+
   initialize: function (opts) {
     this.mode = opts.mode;
     var undoManager = this.undoManager = new UndoManager();
@@ -50,14 +60,7 @@ module.exports = HumanView.extend({
     this.stopListening();
     return this;
   },
-  events: {
-    'click [data-toggle]': 'toggle',
-    'click .js-delete': 'deleteMode',
-    'click .js-undo': 'undo',
-    'click .js-add-storybit': 'activate',
-    'click .js-view-similar' : 'activate',
-    'click .js-add-badge' : 'activate'
-  },
+
   deleteMode: function (evt) {
     var state = $(evt.target).attr('data-toggle');
     this.editor.enableDelete(state === 'on');
@@ -76,7 +79,7 @@ module.exports = HumanView.extend({
   },
   activate: function(evt) {
     var btn = $(evt.target);
-    var parentLi = $(evt.target.parentNode);
+    var parentLi = $(evt.target).closest('.sidebar-menu-item');
     if (btn.hasClass('active')) {
       btn.removeClass('active');
       parentLi.removeClass('active');
@@ -86,4 +89,4 @@ module.exports = HumanView.extend({
     }
     evt.preventDefault();
   }
-  });
+});
