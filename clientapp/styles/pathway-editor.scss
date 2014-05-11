@@ -1,19 +1,18 @@
 @import "variables";
+
 .pathway-side-nav{
   position: absolute;
   top: 220px;
   left: 0pt;
   list-style-type: none;
-  li {
-    &.active{
-      background-color:$blue;
-    }
+  .sidebar-menu-item {
+    display:table;
+    &.active { background-color:$blue; }
     &:hover{
       border-top-right-radius:5px;
       border-bottom-right-radius:5px;
     }
-    display:table;
-    &:first-child{border-top-right-radius:10px;}
+    &:first-child { border-top-right-radius:10px; }
     background-color: white;
     padding: 10px;
     border-bottom: 1px solid #ccc;
@@ -21,25 +20,7 @@
       border-bottom: none;
       border-bottom-right-radius:10px;
     }
-    a{
-      width: 25px;
-      height: 25px;
-      background-size: cover;
-      display: block;
-    }
-    div{
-      width: 25px;
-      height: 25px;
-      background-size: cover;
-      display: block;
-    }
   }
 }
 
-.editor {
-  width: 100%;
-}
-
-[data-toggle="on"] {
-  background-color: #007295;
-}
+.editor { width: 100%; }

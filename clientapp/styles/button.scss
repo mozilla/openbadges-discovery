@@ -47,114 +47,52 @@ that isn't so specific and works great!*/
   .fa-arrow-down { margin-left: 10px; }
 }
 
-
-.view-similar-btn{
-  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
-  .hoverVS{
-    display:none;
-  }
+.view-similar-btn,
+.add-badge-btn,
+.add-storybit-btn,
+.remove-items-btn,
+.undo-btn {
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  display: block;
+  .hover-sidebar { display:none; }
   &:hover{
     width: 150px;
     background-size:25px;
     border-bottom-right-radius:10px;
     padding-top: 5px;
-    .hoverVS{
+    .hover-sidebar {
       margin-top: 25px;
       margin-left: 25px;
       display:inline;
       color: $blue;
     }
   }
-  &.active{
-    background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
-  }
+}
+
+.view-similar-btn {
+  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  &.active { background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat; }
 }
 
 
-.add-badge-btn{
+.add-badge-btn {
   background: url(/static/pathway/icon-add-badge.svg) 0 0 no-repeat;
-  .hoverAddBadge{
-    display:none;
-  }
-  &:hover{
-    width: 150px;
-    background-size:25px;
-    border-bottom-right-radius:10px;
-    padding-top: 5px;
-    .hoverAddBadge{
-      margin-top: 25px;
-      margin-left: 25px;
-      display:inline;
-      color: $blue;
-    }
-  }
-  &.active{
-    background: url(/static/pathway/icon-add-badge-active.svg) 0 0 no-repeat;
-  }
+  &.active { background: url(/static/pathway/icon-add-badge-active.svg) 0 0 no-repeat; }
 }
 
-.add-storybit-btn{
+.add-storybit-btn {
   background: url(/static/pathway/icon-add-storybit.svg) 0 0 no-repeat;
-  .hoverAddStory{
-    display:none;
-  }
-  &:hover{
-    width: 150px;
-    background-size:25px;
-    border-bottom-right-radius:10px;
-    padding-top: 5px;
-    .hoverAddStory{
-      margin-top: 25px;
-      margin-left: 25px;
-      display:inline;
-      color: $blue;
-    }
-  }
-  &.active{
-    background: url(/static/pathway/icon-add-storybit-active.svg) 0 0 no-repeat;
-  }
+  &.active{ background: url(/static/pathway/icon-add-storybit-active.svg) 0 0 no-repeat; }
 }
 
-.remove-items-btn{
+.remove-items-btn {
   background: url(/static/pathway/icon-remove-parts.svg) 0 0 no-repeat;
-  .hoverDelete{
-    display:none;
-  }
-  &:hover{
-    width: 150px;
-    background-size:25px;
-    border-bottom-right-radius:10px;
-    padding-top: 5px;
-    .hoverDelete{
-      margin-top: 25px;
-      margin-left: 25px;
-      display:inline;
-      color: $blue;
-    }
-  }
-  &.active{
-    background: url(/static/pathway/icon-remove-parts-active.svg) 0 0 no-repeat;
-  }
+  &.active { background: url(/static/pathway/icon-remove-parts-active.svg) 0 0 no-repeat; }
 }
 
-.undo-btn{
+.undo-btn {
   background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
-  .hoverUndo{
-    display:none;
-  }
-  &:hover{
-    width: 150px;
-    background-size:25px;
-    border-bottom-right-radius:10px;
-    padding-top: 5px;
-    .hoverUndo{
-      margin-top: 25px;
-      margin-left: 25px;
-      display:inline;
-      color: $blue;
-    }
-  }
-  &.active{
-    background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat;
-  }
+  &.active{ background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat; }
 }
