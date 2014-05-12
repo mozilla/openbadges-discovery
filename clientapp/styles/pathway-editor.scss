@@ -7,7 +7,11 @@
   list-style-type: none;
   .sidebar-menu-item {
     display:table;
-    &.active { background-color:$blue; }
+    &.active,
+    &:active { 
+      color: white;
+      background-color:$blue; 
+    }
     &:hover{
       border-top-right-radius:5px;
       border-bottom-right-radius:5px;
