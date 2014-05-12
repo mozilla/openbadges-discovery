@@ -1,8 +1,19 @@
 <div>
   {% if showControls %}
-    <a href="#" class="button" data-stack="addPanel" >Add</a>
-    <a href="#" class="button button-alert js-delete" data-toggle="off">Delete</a>
-    <a href="#" class="button button-secondary js-undo">Undo</a>
+  <ul class="editor-controls">
+    <li class="editor-button editor-add js-editor-add" data-stack="addPanel">
+      <button/>
+      <label>Add</label>
+    </li>
+    <li class="editor-button editor-delete js-editor-delete" data-toggle>
+      <button/>
+      <label>Delete</label>
+    </li>
+    <li class="editor-button editor-undo js-editor-undo">
+      <button/>
+      <label>Undo</label>
+    </li>
+  </ul>
   {% endif %}
   <canvas class="editor" width="1000"></canvas>
 </div>

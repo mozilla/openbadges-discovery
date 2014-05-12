@@ -1,7 +1,87 @@
+@import "variables";
+
 .editor {
   width: 100%;
+  padding: 50px;
 }
 
-[data-toggle="on"] {
-  background-color: #007295;
+.editor-controls {
+  position: absolute;
+  left: 0;
+  top: 220px;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+
+  .editor-button {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 1px;
+    background-color: white;
+    white-space: nowrap;
+    position: relative;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition: width 0.2s;
+
+    button {
+      width: 45px;
+      height: 45px;
+      display: block;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      left: 0;
+      z-index: 2;
+      transition: background-image 0s;
+    }
+    button:focus {
+      outline: 0;
+    }
+
+    &:first-child button {
+      border-top-right-radius: 5px;
+    }
+    &:last-child button {
+      border-bottom: none;
+      border-bottom-right-radius: 5px;
+    }
+
+    label {
+      width: 150px;
+      padding-left: 45px;
+      line-height: 45px;
+      text-align: left;
+      vertical-align: top;
+      position: absolute;
+      right: 0;
+      z-index: 1;
+    }
+
+    &:hover {
+      width: 150px;
+    }
+
+    &:active,
+    &.active {
+      background-color: $blue;
+    }
+  }
+
+  @mixin icon($baseFile, $activeFile) {
+    button {
+      background: url($baseFile) center no-repeat white;
+    }
+    &:active button, 
+    &.active button {
+      background: url($activeFile) center no-repeat $blue;
+    }
+  }
+
+  .editor-add {
+    @include icon("/static/pathway/icon-add-badge.svg", "/static/pathway/icon-add-badge-active.svg");
+  }
+  .editor-delete {
+    @include icon("/static/pathway/icon-remove-parts.svg", "/static/pathway/icon-remove-parts-active.svg");
+  }
 }
