@@ -24,3 +24,20 @@
 }
 
 .editor { width: 100%; }
+
+.pathway-title {
+  position: relative;
+
+  .fa-gear {
+    font-size: 25px;
+    color: black;
+    position: absolute;
+    top: 0;
+    right: 40px;
+  }
+}
+
+.add-panel-container {
+  padding: 20px;
+  margin: 0 -15px;
+}
