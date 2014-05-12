@@ -1,11 +1,10 @@
-.achievement .token {
-  input[type=checkbox]{
-    display:none;
-  }
+.add-selector {
+  input[type=checkbox]{ display:none; }
 }
 
-.achievement .token {
-  input[type=checkbox] + div{
+.add-selector {
+  input[type=checkbox] + .add-checkbox,
+  input[type=checkbox]:checked + .add-checkbox {
     position: absolute;
     top: 0;
     right: 0;
@@ -17,21 +16,9 @@
     background-size: cover;
     border: 0;
     background: url(/static/pathway/badge-icon-checked-spritesheet-v2.svg) 0 0 no-repeat;
-
   }
 }
-.achievement .token {
-  input[type=checkbox]:checked + div {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 3px;
-    width: 30px;
-    height: 30px;
-    margin: 10px;
-    border-radius: 0;
-    background-size: cover;
-    border: 0;
-    background: url(/static/pathway/badge-icon-checked-spritesheet-v2.svg) 0 -30px no-repeat;
-  }
+
+.add-selector {
+  input[type=checkbox]:checked + .add-checkbox { background-position: 0 -30px; }
 }
