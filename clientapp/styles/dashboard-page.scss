@@ -39,6 +39,15 @@
     color: white;
     margin: 15px 0 20px 0;
   }
+
+  .dashboard-stats {
+    margin: 0;
+
+    li {
+      display: inline-block;
+      margin: 0 15px
+    }
+  }
 }
 
 @media screen and (max-width: 1024px) {
