@@ -8,6 +8,13 @@ var query = require('query-param-getter');
 
 module.exports = HumanView.extend({
   template: templates.includes.editor,
+
+  events: {
+    'click [data-toggle]': 'toggle',
+    'click .js-delete': 'deleteMode',
+    'click .js-undo': 'undo'
+  },
+
   initialize: function (opts) {
     this.mode = opts.mode;
     var undoManager = this.undoManager = new UndoManager();
@@ -50,16 +57,12 @@ module.exports = HumanView.extend({
     this.stopListening();
     return this;
   },
-  events: {
-    'click [data-toggle]': 'toggle',
-    'click .js-delete': 'deleteMode',
-    'click .js-undo': 'undo'
-  },
+
   deleteMode: function (evt) {
     var state = $(evt.target).attr('data-toggle');
     this.editor.enableDelete(state === 'on');
     this.editor.refresh();
-    evt.preventDefault();
+    this.activate(evt);
   },
   toggle: function (evt) {
     var btn = $(evt.target);
@@ -69,6 +72,12 @@ module.exports = HumanView.extend({
   undo: function (evt) {
     this.undoManager.undo();
     this.editor.refresh();
+  },
+  activate: function(evt) {
+    var btn = $(evt.target);
+    var parentLi = $(evt.target).closest('.sidebar-menu-item');
+    btn.toggleClass('active');
+    parentLi.toggleClass('active');
     evt.preventDefault();
   }
 });

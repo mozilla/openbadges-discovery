@@ -1,7 +1,50 @@
-.editor {
-  width: 100%;
+@import "variables";
+
+.pathway-side-nav{
+  position: absolute;
+  top: 220px;
+  left: 0pt;
+  list-style-type: none;
+  .sidebar-menu-item {
+    display:table;
+    &.active,
+    &:active { 
+      color: white;
+      background-color:$blue; 
+    }
+    &:hover{
+      border-top-right-radius:5px;
+      border-bottom-right-radius:5px;
+    }
+    &:first-child { border-top-right-radius:10px; }
+    background-color: white;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    &:last-child{
+      border-bottom: none;
+      border-bottom-right-radius:10px;
+    }
+  }
 }
 
-[data-toggle="on"] {
-  background-color: #007295;
+.editor {
+  width: 100%;
+  padding: 50px;
+}
+
+.pathway-title {
+  position: relative;
+
+  .fa-gear {
+    font-size: 25px;
+    color: black;
+    position: absolute;
+    top: 0;
+    right: 40px;
+  }
+}
+
+.add-panel-container {
+  padding: 20px;
+  margin: 0 -15px;
 }

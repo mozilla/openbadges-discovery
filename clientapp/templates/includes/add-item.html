@@ -1,9 +1,14 @@
-<li>
+<div class="small-12 medium-4 large-3 columns">
   <div class="achievement">
     <div class="token">
       <label class="add-selector">
-        <img src="{{image}}">
-        <input type="checkbox" class="js-add-item" data-id="{{_id}}">
+        {% if type == 'badge' %}
+        <img src="/static/badge.png">
+        {% else %}
+        <img src="/static/pathway.png">
+        {% endif %}
+        <input type="checkbox" name="{{_id}}" class="js-add-item" data-id="{{_id}}">
+        <span for="{{_id}}" class="add-checkbox"> </span>
       </label>
     </div>
     <div class="data">
@@ -12,8 +17,9 @@
         <span class="label achievement-tag">#{{tag}}</span>
       {% endfor %}
       <div>
+        <img src="/static/sbux.jpg" width=50>
         Created by {{creator}}
       </div>
     </div>
   </div>
-</li>
+</div>

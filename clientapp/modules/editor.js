@@ -56,8 +56,8 @@ function makePathwayItem(item) {
   container.addChild(rect, img, title);
 
   var deleteButton = new createjs.Shape();
-  deleteButton.graphics.beginFill('white').drawRoundRect(0, 0, 40, 40, 5)
-    .beginStroke('black').moveTo(10, 10).lineTo(30, 30)
+  deleteButton.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
+    .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
     .moveTo(10, 30).lineTo(30, 10);
   deleteButton.on('click', function () {
     container.dispatchEvent('delete');
@@ -209,8 +209,9 @@ module.exports = Backbone.View.extend({
     var item = makePathwayItem(model);
 
     if (model.newFlag) {
-      var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
-      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
+      var newFlag = new createjs.Bitmap('/static/pathway/badge-new.svg');
+//      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
+      newFlag.x = 278;
       newFlag.y = 15;
       newFlag.name = 'newFlag';
       item.addChild(newFlag);

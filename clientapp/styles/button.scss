@@ -9,18 +9,13 @@
 
 .button {
   background: url(/static/button-blue.svg) no-repeat;
+  background-size: cover;
   @extend .button-base
 }
 
 .button.button-secondary {
   background: url(/static/button-grey.svg) no-repeat;
-  @extend .button-base
-}
-
-/*i think we should delete this, i made an orange button
-that isn't so specific and works great!*/
-.button.button-alert {
-  background: url(/static/button-orange.svg) no-repeat;
+  background-size: cover;
   @extend .button-base
 }
 
@@ -43,4 +38,60 @@ that isn't so specific and works great!*/
   font-size: 16px;
   @extend .button-base;
   .fa-arrow-down { margin-left: 10px; }
+}
+
+.view-similar-btn,
+.add-badge-btn,
+.add-storybit-btn,
+.remove-items-btn,
+.undo-btn {
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  display: block;
+  .hover-sidebar { display:none; }
+  &:hover{
+    width: 150px;
+    background-size:25px;
+    border-bottom-right-radius:10px;
+    padding-top: 5px;
+    .hover-sidebar {
+      margin-top: 25px;
+      margin-left: 25px;
+      display:inline;
+      color: $blue;
+    }
+  }
+  &.active,
+  &:active {
+    .hover-sidebar {
+      color: white;
+    }
+  }
+}
+
+.view-similar-btn {
+  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  &.active, &:active { background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat; }
+}
+
+
+.add-badge-btn {
+  background: url(/static/pathway/icon-add-badge.svg) 0 0 no-repeat;
+  &.active, &:active { background: url(/static/pathway/icon-add-badge-active.svg) 0 0 no-repeat; }
+}
+
+.add-storybit-btn {
+  background: url(/static/pathway/icon-add-storybit.svg) 0 0 no-repeat;
+  &.active, &:active { background: url(/static/pathway/icon-add-storybit-active.svg) 0 0 no-repeat; }
+}
+
+.remove-items-btn {
+  background: url(/static/pathway/icon-remove-parts.svg) 0 0 no-repeat;
+  &.active, &:active { background: url(/static/pathway/icon-remove-parts-active.svg) 0 0 no-repeat; }
+}
+
+.undo-btn {
+  background: url(/static/pathway/icon-view-similar.svg) 0 0 no-repeat;
+  &.active, &:active { background: url(/static/pathway/icon-view-similar-active.svg) 0 0 no-repeat; }
 }
