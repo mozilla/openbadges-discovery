@@ -119,31 +119,30 @@ module.exports = Backbone.Router.extend({
   },
 
   showDashboard: function () {
-      var backpack = new Achievements([], {
-          pageSize: 4,
-          source: Achievements.BACKPACK
-      });
-      var wishlist = new Achievements([], {
-          pageSize: 4,
-          source: Achievements.WISHLIST,
-          type: Achievement.BADGE
-      });
-      var pathways = new Achievements([], {
-          pageSize: 4,
-          source: Achievements.PLEDGED
-      });
-      backpack.fetch();
-      wishlist.fetch();
-      pathways.fetch();
+    var backpack = new Achievements([], {
+      pageSize: 4,
+      source: Achievements.BACKPACK
+    });
+    var wishlist = new Achievements([], {
+      pageSize: 4,
+      source: Achievements.WISHLIST,
+      type: Achievement.BADGE
+    });
+    var pathways = new Achievements([], {
+      pageSize: 4,
+      source: Achievements.PLEDGED
+    });
+    $.when(backpack.fetch(), wishlist.fetch(), pathways.fetch()).done(function () {
       app.renderPage(new DashboardPage({
         model: window.app,
         sources: {
-              backpack: backpack,
-              wishlist: wishlist,
-              pathways: pathways
-          }
-    }));
-},
+          backpack: backpack,
+          wishlist: wishlist,
+          pathways: pathways
+        }
+      }));
+    });
+  },
 
   nope: function () {
     if (app.currentPage) app.currentPage.remove();

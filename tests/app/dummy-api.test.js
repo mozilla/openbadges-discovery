@@ -320,7 +320,7 @@ describe('Dummy API', function () {
           {userId: 'a1', achievementIdx: 0, favorite: true}
         ],
         achievements: [
-          {title: "My achievement"}
+          {title: "My achievement", created_at: 10}
         ]
       });
       var server = api.createServer({dataGenerator: fixture});
@@ -344,8 +344,8 @@ describe('Dummy API', function () {
       var server = api.createServer({
         dataGenerator: Fixture({
           achievements: [
-            {title: "My pledged", userId: 'a1'},
-            {title: "Someone else's pledged", userId: 'a2'}
+            {title: "My pledged", userId: 'a1', created_at: 10},
+            {title: "Someone else's pledged", userId: 'a2', created_at: 10}
           ]
         })
       });
@@ -354,6 +354,7 @@ describe('Dummy API', function () {
       app.use(server);
       request(app)
         .get('/user/a1/pledged')
+        .query({pageSize: 4})
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
