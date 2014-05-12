@@ -56,8 +56,8 @@ function makePathwayItem(item) {
   container.addChild(rect, img, title);
 
   var deleteButton = new createjs.Shape();
-  deleteButton.graphics.beginFill('white').drawRoundRect(0, 0, 40, 40, 5)
-    .beginStroke('black').moveTo(10, 10).lineTo(30, 30)
+  deleteButton.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
+    .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
     .moveTo(10, 30).lineTo(30, 10);
   deleteButton.on('click', function () {
     container.dispatchEvent('delete');
