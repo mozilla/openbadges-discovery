@@ -1,30 +1,26 @@
 .pathway-page {
+  padding-bottom: 4em;
+
   .pathway-cover-image{
     background-image: url("/static/pathway/pathway-header-desktop.svg");
   }
 
   .page-body-pathway {
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
     background-image: url("/static/pathway/pathway-background-desktop.svg");
   }
-  
+
   .pathway-header{
     background: white;
     padding-top: 10px;
   }
 
-	.pathway-title-edit{
-		padding-top: 1em;
-	}
+	.pathway-title-edit{ padding-top: 1em; }
 
-  .pledge-button {
-    margin-top: 1em;
-  }
+  .pledge-button { margin-top: 1em; }
 }
 
-.content.active {
-  float: none;
-}
+.content.active { float: none; }
 
-.stack > .bottom {
-  display: none;
-}
+.stack > .bottom { display: none;}
