@@ -9,7 +9,8 @@
 
 .button {
   background: url(/static/button-blue.svg) no-repeat;
-  @extend .button-base
+  @extend .button-base;
+  .fa { line-height: 0; }
 }
 
 .button.button-secondary {
