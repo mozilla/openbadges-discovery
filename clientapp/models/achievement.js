@@ -81,6 +81,13 @@ module.exports = HumanModel.define({
       fn: function () {
         return this.imgSrc ? this.imgSrc : DEFAULT_IMG[this.type];
       }
+    },
+    creatorDisplay: {
+      deps: ['creator'],
+      fn: function () {
+        var user = window.app.currentUser;
+        return (user.loggedIn && user._id === this.userId) ? "You" : this.creator;
+      }
     }
   }
 });
