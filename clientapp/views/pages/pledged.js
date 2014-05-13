@@ -82,7 +82,7 @@ module.exports = HumanView.extend({
     'click [data-stack]': 'handleStackButton',
   },
   handleStackButton: function (evt) {
-    this.moveToTop('#' + $(evt.target).data('stack'));
+    this.moveToTop('#' + $(evt.currentTarget).data('stack'));
     evt.preventDefault();
   },
   moveToTop: function (sel) {

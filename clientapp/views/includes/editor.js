@@ -52,19 +52,18 @@ module.exports = HumanView.extend({
   },
   events: {
     'click [data-toggle]': 'toggle',
-    'click .js-delete': 'deleteMode',
-    'click .js-undo': 'undo'
+    'click .js-editor-delete': 'deleteMode',
+    'click .js-editor-undo': 'undo'
   },
   deleteMode: function (evt) {
-    var state = $(evt.target).attr('data-toggle');
-    this.editor.enableDelete(state === 'on');
+    var active = $(evt.currentTarget).hasClass('active');
+    this.editor.enableDelete(active);
     this.editor.refresh();
     evt.preventDefault();
   },
   toggle: function (evt) {
-    var btn = $(evt.target);
-    var state = btn.attr('data-toggle');
-    btn.attr('data-toggle', state === 'on' ? 'off' : 'on');
+    var btn = $(evt.currentTarget);
+    btn.toggleClass('active');
   },
   undo: function (evt) {
     this.undoManager.undo();
