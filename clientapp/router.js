@@ -8,6 +8,7 @@ var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
 var PledgedPage = require('./views/pages/pledged');
 var DashboardPage = require('./views/pages/dashboard');
+var StaticPage = require('./views/pages/static');
 var query = require('query-param-getter');
 
 var cache;
@@ -25,6 +26,7 @@ module.exports = Backbone.Router.extend({
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'pledged/:id': 'showEditor',
+    'page/:name': 'showPage',
     'dashboard': 'showDashboard',
     '*url': 'nope'
   },
@@ -144,9 +146,16 @@ module.exports = Backbone.Router.extend({
     });
   },
 
+  showPage: function (name) {
+    app.renderPage(new StaticPage({
+      name: name
+    }));
+  },
+
   nope: function () {
-    if (app.currentPage) app.currentPage.remove();
-    alert('404! Try again.');
+    app.renderPage(new StaticPage({
+      name: "404"
+    }));
   },
 
   navigateTo: function (url, data) {
