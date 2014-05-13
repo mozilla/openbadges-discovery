@@ -83,4 +83,7 @@
   .editor-delete {
     @include icon("/static/pathway/icon-remove-parts.svg", "/static/pathway/icon-remove-parts-active.svg");
   }
+  .editor-undo {
+    @include icon("/static/pathway/icon-undo.svg", "/static/pathway/icon-undo-active.svg");
+  }
 }
