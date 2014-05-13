@@ -55,6 +55,9 @@ module.exports = HumanModel.define({
     },
     imgSrc: {
       type: 'string'
+    },
+    userId: {
+      type: 'string'
     }
   },
   derived: {
