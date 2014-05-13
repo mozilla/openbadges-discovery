@@ -255,6 +255,17 @@ module.exports = Backbone.View.extend({
         this.refresh();
       }
     }, this);
+
+    var move = false;
+    item.on('mousedown', function (evt) {
+      move = false;
+    });
+    item.on('pressmove', function (evt) {
+      move = true;
+    });
+    item.on('click', function (evt) {
+      if (!move) this.trigger('click', evt.currentTarget.model);
+    }, this);
   },
   isRearrangeable: function () {
     return world.mode && (world.mode === 'edit');

@@ -24,6 +24,7 @@ module.exports = function Fixture(fixtures) {
         if (requirement.hasOwnProperty('badgeIdx')) {
           requirement.name = fixtures.achievements[requirement.badgeIdx].title;
           requirement.imgSrc = '/api/image/' + fixtures.achievements[requirement.badgeIdx]._id;
+          requirement.badgeId = fixtures.achievements[requirement.badgeIdx]._id;
           delete requirement.badgeIdx;
         }
         data.requirements.insert(requirement, cb);

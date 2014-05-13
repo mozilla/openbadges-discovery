@@ -42,6 +42,10 @@ module.exports = HumanView.extend({
       this.collection.remove(model);
     }, this);
 
+    this.listenTo(this.editor, 'click', function (model) {
+      app.router.navigateTo('/badge/' + model.badgeId);
+    });
+
     return this;
   },
   remove: function () {
