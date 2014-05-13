@@ -1,17 +1,17 @@
 <div>
   {% if showControls %}
   <ul class="editor-controls">
-    <li class="editor-button editor-add js-editor-add" data-stack="addPanel">
-      <button/>
-      <label>Add</label>
+    <li>
+      <button type="button" id="add-control" class="editor-add js-editor-add" data-stack="addPanel">Add</button>
+      <label for="add-control">Add</label>
     </li>
-    <li class="editor-button editor-delete js-editor-delete" data-toggle>
-      <button/>
-      <label>Delete</label>
+    <li>
+      <button type="button" id="delete-control" class="editor-delete js-editor-delete" data-toggle>Delete</button>
+      <label for="delete-control">Delete</label>
     </li>
-    <li class="editor-button editor-undo js-editor-undo">
-      <button/>
-      <label>Undo</label>
+    <li>
+      <button type="button" id="undo-control" class="editor-undo js-editor-undo">Undo</button>
+      <label for="undo-control">Undo</label>
     </li>
   </ul>
   {% endif %}

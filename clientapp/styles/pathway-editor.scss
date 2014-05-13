@@ -13,7 +13,7 @@
   list-style: none;
   overflow: hidden;
 
-  .editor-button {
+  li {
     width: 45px;
     height: 45px;
     margin-bottom: 1px;
@@ -28,6 +28,7 @@
       width: 45px;
       height: 45px;
       display: block;
+      color: transparent;
       margin: 0;
       padding: 0;
       position: absolute;
@@ -69,11 +70,9 @@
   }
 
   @mixin icon($baseFile, $activeFile) {
-    button {
-      background: url($baseFile) center no-repeat white;
-    }
-    &:active button, 
-    &.active button {
+    background: url($baseFile) center no-repeat white;
+    &:active,
+    &.active {
       background: url($activeFile) center no-repeat $blue;
     }
   }
