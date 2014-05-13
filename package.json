@@ -27,7 +27,7 @@
     "underscore": "~1.5.2",
     "human-model": "~2.6.0",
     "human-view": "~1.6.0",
-    "node-sass": "~0.8.1",
+    "node-sass": "~0.8.6",
     "express-persona": "~0.1.1",
     "clientconfig": "0.0.4",
     "backbone": "1.1.0",
