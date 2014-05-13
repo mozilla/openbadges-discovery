@@ -160,6 +160,29 @@ footer {
   border-radius: 7px;
 }
 
+.full-length-hr {
+  min-width: 1000px;
+  margin: 40px;
+  margin-left: -15px;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.clearfix { display: inline-block; }
+
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+
+.clearfix { display: block; }
+
+
 @media screen and (max-width: 1024px) {
   header {
     .header-logo { padding-left: 20px; }

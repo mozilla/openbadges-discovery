@@ -63,8 +63,10 @@
       width: 150px;
     }
 
-    &:active,
-    &.active {
+    button:active,
+    button.active,
+    button:active + label,
+    button.active + label {
       background-color: $blue;
     }
   }
@@ -86,4 +88,21 @@
   .editor-undo {
     @include icon("/static/pathway/icon-undo.svg", "/static/pathway/icon-undo-active.svg");
   }
+}
+
+.pathway-title {
+  position: relative;
+
+  .fa-gear {
+    font-size: 25px;
+    color: black;
+    position: absolute;
+    top: 0;
+    right: -25px;
+  }
+}
+
+.add-panel-container {
+  padding: 20px;
+  margin: 0 -15px;
 }
