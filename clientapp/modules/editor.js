@@ -2,7 +2,11 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = window.$; // WHHHHHHYYYYYYYY?!
 
-function World () { 
+var badgeBackground = new createjs.Bitmap("/static/badge-background.svg");
+var coreFlag = new createjs.Bitmap("/static/badge-core.svg");
+var newFlag = new createjs.Bitmap("/static/badge-new.svg");
+
+function World () {
 
   Object.defineProperty(this, "columnWidth", {
     get: function () { return this.canvasWidth / this.columnCount; },
@@ -50,10 +54,15 @@ function makePathwayItem(item) {
   container.model = item;
   container.name = item.cid;
   container.setBounds(0, 0, world.columnWidth, world.columnWidth);
-  var rect = new createjs.Shape();
+  var rect = badgeBackground.clone();
   var img = new createjs.Bitmap(item.imgSrc);
-  var title = new createjs.Text(item.name, "24px 'Helvetica Neue', Helvetica, Arial, sans-serif");
+  var title = new createjs.Text(item.name, "14px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif");
   container.addChild(rect, img, title);
+  var core;
+  if (item.core) {
+    core = coreFlag.clone();
+    container.addChild(core);
+  }
 
   var deleteButton = new createjs.Shape();
   deleteButton.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
@@ -65,7 +74,7 @@ function makePathwayItem(item) {
 
   img.image.onload = function () {
     container.layout();
-    container.dispatchEvent('ready'); 
+    container.dispatchEvent('ready');
   };
 
   function scaleToMax (img, w, h) {
@@ -88,17 +97,23 @@ function makePathwayItem(item) {
     var corners = 10;
     var rw = width - (2 * margin);
     var rh = height - (2 * margin);
-    var fill = item.core ? "#ECC" : "#EEE";
-    rect.graphics.clear().beginFill(fill)
-      .drawRoundRect(margin, margin, rw, rh, corners);
-    rect.setBounds(0, 0, rw, rh);
+    rect.x = rect.y = margin;
+    rect.scaleX = rw / rect.getBounds().width;
+    rect.scaleY = rh / rect.getBounds().height;
+
+    if (item.core) {
+      core.x = margin + rect.getTransformedBounds().width - core.getBounds().width - 5;
+      core.y = margin + 5;
+    }
 
     var imgBounds = scaleToMax(img, rw, rh - (24 * 2));
     if (imgBounds) {
       img.x = margin + (rw / 2) - (imgBounds.width / 2);
       img.y = margin + (rh / 2) - (imgBounds.height / 2) - (24 / 2);
 
-      title.x = margin + (rw / 2) - (title.getBounds().width / 2);
+      title.lineWidth = rw - 20;
+      title.textAlign = "center";
+      title.x = margin + (rw / 2);
       title.y = img.y + imgBounds.height;
     }
 
@@ -122,7 +137,7 @@ function makePathwayItem(item) {
 
 module.exports = Backbone.View.extend({
   initialize: function (opts) {
-    if (!(opts && opts.canvas && opts.columns && opts.requirements)) 
+    if (!(opts && opts.canvas && opts.columns && opts.requirements))
       throw new Error('You must specify canvas, columns, and requirements options');
 
     Object.defineProperties(this, {
@@ -182,7 +197,7 @@ module.exports = Backbone.View.extend({
           hex.setBounds(-coords.w/2, -coords.w/2, coords.w, coords.w);
           this.addChild(hex);
         }
-      } 
+      }
     };
 
     this.layout();
@@ -209,11 +224,11 @@ module.exports = Backbone.View.extend({
     var item = makePathwayItem(model);
 
     if (model.newFlag) {
-      var newFlag = new createjs.Text('NEW', "18px 'Helvetica Neue', Helvetica, Arial, sans-serif");
-      newFlag.x = item.getBounds().width - 10 - newFlag.getBounds().width - 5;
-      newFlag.y = 15;
-      newFlag.name = 'newFlag';
-      item.addChild(newFlag);
+      var flag = newFlag.clone();
+      flag.x = item.getBounds().width - flag.getBounds().width;
+      flag.y = 0;
+      flag.name = 'newFlag';
+      item.addChild(flag);
 
       item.on('mousedown', function () {
         item.model.newFlag = false;
@@ -223,7 +238,7 @@ module.exports = Backbone.View.extend({
     }
 
     item.on('ready', function () {
-      this.stage.addChild(item); 
+      this.stage.addChild(item);
       this.refresh();
     }, this);
 
