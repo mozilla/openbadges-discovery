@@ -21,9 +21,6 @@ module.exports = HumanView.extend({
     this.listenTo(this.collection, 'positioned', function (model) {
       model.save();
     });
-    this.listenTo(this.collection, 'add', function (model) {
-      model.save();
-    });
     this.listenTo(this.collection, 'remove', function (model) {
       model.destroy();
     });
