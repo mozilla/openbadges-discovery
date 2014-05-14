@@ -5,6 +5,10 @@ module.exports = HumanModel.define({
   idAttribute: '_id',
   props: {
     _id: ['string'],
+    badgeId: {
+      type: 'string',
+      required: 'true'
+    },
     x: ['number'],
     y: ['number'],
     name: ['string'],
@@ -31,6 +35,7 @@ module.exports.fromAchievement = function (achievement, opts) {
   // monkey patch of _prepareModel isn't fully working; let
   // collections build the actual model
   var attrs = {
+    badgeId: achievement._id,
     name: achievement.title,
     x: undefined,
     y: undefined

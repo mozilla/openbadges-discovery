@@ -147,7 +147,8 @@ function processPathway(cells, cb) {
           x: _.isNaN(cell.x) ? 1 : cell.x,
           y: _.isNaN(cell.y) ? rowY : cell.y,
           name: cell.badgename,
-          core: !!cell.core
+          core: !!cell.core,
+          badgeId: badge._id
         };
         if (badge && badge.imgSrc) requirement.imgSrc = '/api/image/' + badge._id;
         cb(null, requirement);
