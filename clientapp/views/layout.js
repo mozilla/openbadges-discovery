@@ -9,6 +9,7 @@ module.exports = HumanView.extend({
     'click .js-view-latest': 'landing',
     'click .js-view-pathways': 'pathways',
     'click .js-view-badges': 'badges',
+    'click .js-view-tag': 'tag',
     'click .user-panel': 'dashboard'
   },
   render: function () {
@@ -44,6 +45,11 @@ module.exports = HumanView.extend({
   },
   badges: function (evt) {
     window.app.router.navigateTo('y/badge/');
+  },
+  tag: function (evt) {
+    var tag = $(evt.target).text();
+    if (tag[0] === '#') tag = tag.slice(1);
+    window.app.router.navigateTo('t/' + tag + '/');
   },
   dashboard: function (evt) {
       window.app.router.navigateTo('dashboard');
