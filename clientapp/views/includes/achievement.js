@@ -24,7 +24,10 @@ module.exports = HumanView.extend({
   },
   navToItem: function (evt) {
     var item = this.model;
-    var url = util.format('%s/%s', item.type, item._id);
+    var type = item.type;
+    if (window.app.currentUser.loggedIn && item.userId && item.userId === window.app.currentUser._id)
+      type = "pledged";
+    var url = util.format('%s/%s', type, item._id);
     app.router.navigateTo(url, item);
     evt.preventDefault();
     evt.stopPropagation();
