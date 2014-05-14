@@ -35,6 +35,37 @@ header {
   }
 }
 
+[data-dropdown] {
+  width: 40px;
+  display: block;
+  &:focus { outline: none; }
+}
+
+.header-dropdown {
+  margin-top:10px;
+  background-color: #ffffff;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  border:none;
+  li {
+    line-height:15px;
+    border-bottom: 1px solid #ccc;
+    &:first-child { border-top-right-radius: 6px; }
+    &.dropdown-last {
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+      border-bottom: none;
+    }
+  }
+  &.open:before {
+    width: 40px;
+    background-color: #ffffff;
+    left: 0px;
+  }
+}
+
 .main-icon {
   width: 155px;
   height: 155px;
