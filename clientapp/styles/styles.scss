@@ -80,10 +80,28 @@ header {
   .dashboard-avatar { margin: 10px 0 0 5px; }
 }
 
-.nav-header {
+nav {
   padding-top: 0.9em;
   position: absolute;
   width: 100%;
+  z-index: 9;
+}
+
+.nav-container {
+  margin-top: 5px;
+  .fa-bars { color: black; }
+}
+
+@media screen and (max-width: 1024px) {
+  .nav-container { margin-left: 20px; }
+}
+
+.avatar-image { margin-right: 10px; }
+
+.user-email {
+  color: white;
+  font-family: "Open Sans", helvetica, arial, sans-serif;
+  font-size: 14px;
 }
 
 .page-header {
