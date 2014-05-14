@@ -53,7 +53,8 @@ function createApp(opts) {
     return appData.favorites.find({userId: uid, itemId: {$in: itemIds}}, function (err, favs) {
       if (err) cb(err);
       docs.forEach(function (doc) {
-        doc.favorite = !!_.findWhere(favs, {itemId: doc._id});
+        var entry = _.findWhere(favs, {itemId: doc._id});
+        doc.favorite = entry ? entry.favorite : false;
       });
       return cb(null, docs.length === 1 ? docs[0] : docs);
     });
@@ -166,7 +167,7 @@ function createApp(opts) {
     var uid = req.params.uid;
     var type = req.query.type;
 
-    appData.favorites.find({userId: uid}, function (err, docs) {
+    appData.favorites.find({userId: uid, favorite: true}, function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
       var query = {
