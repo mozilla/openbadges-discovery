@@ -373,7 +373,7 @@ describe('Dummy API', function () {
         ]
       });
       fixture(function (err, data, fixtures) {
-        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
+        var server = api.createServer({dataGenerator: function(db, cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({_id: 'a1'}));
         app.use(server);
@@ -432,7 +432,7 @@ describe('Dummy API', function () {
       Fixture({
         achievements: [{title: "A pathway", userId: 'a1'}]
       })(function (err, data, fixtures) {
-        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
+        var server = api.createServer({dataGenerator: function(db, cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({_id: 'a1'}));
         app.use(server);
@@ -455,7 +455,7 @@ describe('Dummy API', function () {
       Fixture({
         achievements: [{title: "Original", userId: 'a1'}]
       })(function (err, data, fixtures) {
-        var server = api.createServer({dataGenerator: function(cb) { cb(null, data); }});
+        var server = api.createServer({dataGenerator: function(db, cb) { cb(null, data); }});
         var app = express();
         app.use(setUser({_id: 'a1'}));
         app.use(server);

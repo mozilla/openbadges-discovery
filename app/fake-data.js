@@ -1,4 +1,3 @@
-const DataStore = require('nedb');
 const _ = require('underscore');
 
 function randomType () {
@@ -29,20 +28,16 @@ function fakeRequirement(opts) {
   };
 }
 
-module.exports = function initialize(cb) {
+module.exports = function initialize(data, cb) {
   cb = cb || function() {};
 
-  var achievementStore = new DataStore();
-  var requirementStore = new DataStore();
-  var favoriteStore = new DataStore();
-  
   var time = Date.now();
   var achievements = _.times(100, function() {
     return fakeAchievement({
       created_at: --time
     });
   });
-  achievementStore.insert(achievements, function(err, achievements) {
+  data.achievements.insert(achievements, function(err, achievements) {
     if (err) return cb(err);
 
     var requirements = Array.prototype.concat.apply([], achievements.map(function(achievement) {
@@ -54,13 +49,9 @@ module.exports = function initialize(cb) {
         });
       });
     }));
-    requirementStore.insert(requirements, function(err, requirements) {
+    data.requirements.insert(requirements, function(err, requirements) {
       if (err) return cb(err);
-      cb(null, {
-        achievements: achievementStore,
-        requirements: requirementStore,
-        favorites: favoriteStore
-      });
+      cb(null, data);
     });
   });
 };

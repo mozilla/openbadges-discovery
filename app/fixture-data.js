@@ -1,13 +1,12 @@
 const async = require('async');
-const DataStore = require('nedb');
+const DummyDB = require('./dummy-db');
 
 module.exports = function Fixture(fixtures) {
-  return function (cb) {
-    var data = {
-      achievements: new DataStore(),
-      requirements: new DataStore(),
-      favorites: new DataStore()
-    };
+  return function (data, cb) {
+    if (typeof data === 'function') {
+      cb = data;
+      data = new DummyDB();
+    }
 
     async.each(fixtures.achievements || [], function(achievement, cb) {
       data.achievements.insert(achievement, function (err, doc) {
