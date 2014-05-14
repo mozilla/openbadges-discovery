@@ -7,8 +7,7 @@ const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
-const DummyDB = require('./dummy-db');
-const db = new DummyDB();
+const db = require('./dummy-db').singleton;
 
 const DEV_MODE = config('DEV', false);
 const PORT = config('PORT', 3000);

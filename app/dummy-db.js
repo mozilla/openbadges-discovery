@@ -1,6 +1,6 @@
 const DataStore = require('nedb');
 
-module.exports = function () {
+var DummyDB = module.exports = function () {
   var db = {};
   [ 
     'achievements', 
@@ -14,3 +14,4 @@ module.exports = function () {
   return db;
 };
 
+module.exports.singleton = DummyDB();

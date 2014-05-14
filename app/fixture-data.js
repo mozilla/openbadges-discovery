@@ -5,8 +5,8 @@ module.exports = function Fixture(fixtures) {
   return function (data, cb) {
     if (typeof data === 'function') {
       cb = data;
-      data = new DummyDB();
     }
+    data = new DummyDB();
 
     async.each(fixtures.achievements || [], function(achievement, cb) {
       data.achievements.insert(achievement, function (err, doc) {
