@@ -17,6 +17,23 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
+h2, h3, p { color: #4d4f53; }
+
+h2, h3 { font-family: "Open Sans Light", helvetica, arial, sans-serif; }
+
+h2 { font-size: 32px; }
+
+h3 {
+  margin: 1.3em 0 0.7em 0;
+  font-size: 22px;
+}
+
+p  {
+  font-family: "Open Sans", helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+}
+
 .right { float: right; }
 .left { float: left; }
 
@@ -104,13 +121,20 @@ nav {
   font-size: 14px;
 }
 
+.menu-item {
+  top: 15px;
+  margin-right: 10px;
+  color: black;
+  &:hover { color: $orange; }
+}
+
 .page-header {
   background-position: center;
   height: 300px;
 }
 
 .page-body-rounded {
-  padding-bottom: 2em;
+  padding: 2em 0;
   background-color: #fff;
   @include box-shadow;
 }
