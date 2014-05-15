@@ -109,7 +109,7 @@ function processBadges(cells, cb) {
       title: value(cell.badgename, "No title in " + cell.title),
       description: value(cell.description, "No description in " + cell.title),
       tags: value(cell.tags, []),
-      creator: "A. Creator",
+      creator: cell.creator || "A. Creator",
       imgSrc: value(cell.imagefile, ''),
       criteria: cell.criteria
     };
