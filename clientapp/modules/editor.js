@@ -53,29 +53,57 @@ function makePathwayItem(item) {
   var container = new createjs.Container();
   container.model = item;
   container.name = item.cid;
+
   container.setBounds(0, 0, world.columnWidth, world.columnWidth);
+
+  function reemit (obj, evtName, newName) {
+    obj.on(evtName, function (evt) {
+      var newEvt = evt.clone();
+      newEvt.type = newName;
+      newEvt.nativeEvent = evt.nativeEvent;
+      container.dispatchEvent(newEvt);
+    });
+  }
+
   var rect = badgeBackground.clone();
+  reemit(rect, 'rollover', 'grab-rollover');
+  reemit(rect, 'rollout', 'grab-rollout');
+  reemit(rect, 'mousedown', 'grab');
+  reemit(rect, 'pressmove', 'move');
+  reemit(rect, 'pressup', 'release');
+  var move = false;
+  rect.on('mousedown', function (evt) {
+    move = false;
+  });
+  rect.on('pressmove', function (evt) {
+    move = true;
+  });
+  rect.on('click', function () {
+    if (!move) container.dispatchEvent('tile-click');
+  });
+  reemit(rect, 'dblclick', 'tile-dblclick');
+
   var img = new createjs.Bitmap(item.imgSrc);
+  img.image.onload = function () {
+    container.layout();
+    container.dispatchEvent('ready');
+  };
   var title = new createjs.Text(item.name, "14px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif");
   container.addChild(rect, img, title);
+
   var core;
   if (item.core) {
     core = coreFlag.clone();
     container.addChild(core);
   }
 
-  var deleteButton = new createjs.Shape();
-  deleteButton.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
+  var delBtn = new createjs.Shape();
+  delBtn.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
     .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
     .moveTo(10, 30).lineTo(30, 10);
-  deleteButton.on('click', function () {
-    container.dispatchEvent('delete');
-  });
-
-  img.image.onload = function () {
-    container.layout();
-    container.dispatchEvent('ready');
-  };
+  reemit(delBtn, 'click', 'delete');
+  reemit(delBtn, 'rollover', 'button-rollover');
+  reemit(delBtn, 'rollout', 'button-rollout');
 
   function scaleToMax (img, w, h) {
     var imgBounds = img.getBounds();
@@ -118,9 +146,9 @@ function makePathwayItem(item) {
     }
 
     if (!item.core) {
-      var idx = container.getChildIndex(deleteButton);
+      var idx = container.getChildIndex(delBtn);
       if (world.deletable) {
-        if (idx === -1) container.addChild(deleteButton);
+        if (idx === -1) container.addChild(delBtn);
       }
       else {
         if (idx !== -1) container.removeChildAt(idx);
@@ -242,24 +270,30 @@ module.exports = Backbone.View.extend({
       this.refresh();
     }, this);
 
+    item.on('button-rollover', function () {
+      $(this.stage.canvas).addClass('cursor-button');
+    }, this);
+    item.on('button-rollout', function () {
+      $(this.stage.canvas).removeClass('cursor-button');
+    }, this);
     item.on('delete', function (evt) {
       this.trigger('delete', evt.target.model);
     }, this);
 
-    item.on('rollover', function () {
+    item.on('grab-rollover', function () {
       if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grab');
     }, this);
-    item.on('mousedown', function () {
+    item.on('grab', function () {
       if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grabbing');
     }, this);
-    item.on('pressup', function () {
+    item.on('release', function () {
       if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grabbing');
     }, this);
-    item.on('rollout', function () {
+    item.on('grab-rollout', function () {
       if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grab');
     }, this);
 
-    item.on('pressmove', function (evt) {
+    item.on('move', function (evt) {
       if (this.isRearrangeable()) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
         item.model.set({
@@ -271,15 +305,8 @@ module.exports = Backbone.View.extend({
       }
     }, this);
 
-    var move = false;
-    item.on('mousedown', function (evt) {
-      move = false;
-    });
-    item.on('pressmove', function (evt) {
-      move = true;
-    });
-    item.on('click', function (evt) {
-      if (!move) this.trigger('click', evt.currentTarget.model);
+    item.on('tile-dblclick', function (evt) {
+      this.trigger('click', evt.currentTarget.model);
     }, this);
   },
   isRearrangeable: function () {
