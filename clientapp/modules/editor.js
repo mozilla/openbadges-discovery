@@ -145,16 +145,19 @@ function makePathwayItem(item) {
     rect.scaleX = rw / rect.getBounds().width;
     rect.scaleY = rh / rect.getBounds().height;
 
-    doneBtn.x = doneBtn.y = margin + 2;
-    if (item.complete) {
-      doneBtn.gotoAndStop('checked');
-      img.filters = [];
-      img.cache(0, 0, img.getBounds().width, img.getBounds().height);
-    }
-    else {
-      doneBtn.gotoAndStop('unchecked');
-      img.filters = [grayscale];
-      img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+    doneBtn.visible = world.showProgress;
+    if (doneBtn.visible) {
+      doneBtn.x = doneBtn.y = margin + 2;
+      if (item.complete) {
+        doneBtn.gotoAndStop('checked');
+        img.filters = [];
+        img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+      }
+      else {
+        doneBtn.gotoAndStop('unchecked');
+        img.filters = [grayscale];
+        img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+      }
     }
 
     if (item.core) {
@@ -196,17 +199,12 @@ module.exports = Backbone.View.extend({
     if (!(opts && opts.canvas && opts.columns && opts.requirements))
       throw new Error('You must specify canvas, columns, and requirements options');
 
-    Object.defineProperties(this, {
-      "columnCount": {
-        get: function () { return world.columnCount; },
-        set: function (val) { world.columnCount = val; }
-      },
-      "mode": {
-        get: function () { return world.mode; },
-        set: function (val) {
-          world.mode = val;
-        }
-      }
+    var self = this;
+    ["columnCount", "mode", "showProgress"].forEach(function (prop) {
+      Object.defineProperty(self, prop, {
+        get: function () { return world[prop]; },
+        set: function (val) { world[prop] = val; }
+      });
     });
     world.canvasWidth = opts.canvas.width;
     world.columnCount = opts.columns;
