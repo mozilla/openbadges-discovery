@@ -4,15 +4,14 @@ const config = require('./lib/config');
 const async = require('async');
 const _ = require('underscore');
 const Fixture = require('./fixture-data');
-const DataStore = require('nedb');
 
-const Achievements = new DataStore();
-const Requirements = new DataStore();
-const Favorites = new DataStore();
+var dataStore;
 
 function log () { if (config('DEV', false)) console.log.apply(null, arguments); }
 
-module.exports = function load (cb) {
+module.exports = function load (data, cb) {
+  dataStore = data;
+
   var googleAuth = new GoogleClientLogin({
     email: config('GOOGLE_EMAIL'),
     password: config('GOOGLE_PASSWORD'),
@@ -61,7 +60,7 @@ function processSpreadsheet(spreadsheet, cb) {
         }).forEach(function (achievement) {
           achievement.created_at = time--;
         });
-        Achievements.insert(results, function (err, docs) {
+        dataStore.achievements.insert(results, function (err, docs) {
           if (err) throw err;
           log('Created %d badges', docs.length);
           cb();
@@ -83,11 +82,7 @@ function processSpreadsheet(spreadsheet, cb) {
   ], function (err, results) {
     if (err) throw err;
 
-    cb(null, {
-      achievements: Achievements,
-      requirements: Requirements,
-      favorites: Favorites
-    });
+    cb(null, dataStore);
   });
 }
 
@@ -132,12 +127,12 @@ function processPathway(cells, cb) {
     created_at: Date.now()
   };
   pathway.imgSrc = pathway.imgSrc.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
-  Achievements.insert(pathway, function (err, doc) {
+  dataStore.achievements.insert(pathway, function (err, doc) {
     if (err) throw err;
     var id = doc._id;
     log('Created pathway %s', id);
     async.map(cells, function (cell, cb) {
-      Achievements.findOne({title: cell.badgename}, function (err, badge) {
+      dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
         if (err) throw err;
         cell.x = parseInt(cell.x);
         cell.y = parseInt(cell.y);
@@ -154,7 +149,7 @@ function processPathway(cells, cb) {
         cb(null, requirement);
       });
     }, function (err, results){
-      Requirements.insert(results, function (err, docs) {
+      dataStore.requirements.insert(results, function (err, docs) {
         if (err) throw err;
         log('Created %d requirements on pathway %s', docs.length, id);
         cb();

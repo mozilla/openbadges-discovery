@@ -4,6 +4,7 @@ const config = require('./lib/config');
 const _ = require('underscore');
 const async = require('async');
 const request = require('request');
+const db = require('./dummy-db').singleton;
 const fakeData = require('./fake-data');
 
 function log () {
@@ -26,7 +27,7 @@ function createApp(opts) {
     }
     if (loading) return wait();
     loading = true;
-    return generator(function (err, dataStores) {
+    return generator(db, function (err, dataStores) {
       appData = dataStores;
       loading = false;
       return next(err);

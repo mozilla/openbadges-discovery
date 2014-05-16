@@ -7,8 +7,7 @@ const persona = require('express-persona');
 const path = require('path');
 const http = require('http');
 const middleware = require('./middleware');
-const DataStore = require('nedb');
-const User = new DataStore();
+const db = require('./dummy-db').singleton;
 
 const DEV_MODE = config('DEV', false);
 const PORT = config('PORT', 3000);
@@ -53,7 +52,7 @@ persona(app, {
       reason: err
     });
 
-    User.findOne({email: email}, function (err, user) {
+    db.users.findOne({email: email}, function (err, user) {
       if (err) {
         console.log(err.message);
         return res.json({
@@ -71,7 +70,7 @@ persona(app, {
       }
 
       if (!user) {
-        User.insert({email: email}, function (err, user) {
+        db.users.insert({email: email}, function (err, user) {
           if (err) {
             return res.json({
               status: 'failure',
