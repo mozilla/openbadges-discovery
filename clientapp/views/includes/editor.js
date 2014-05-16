@@ -34,7 +34,8 @@ module.exports = HumanView.extend({
       columns: query('columns') || 5,
       canvas: this.$('canvas')[0],
       mode: this.mode,
-      requirements: this.collection
+      requirements: this.collection,
+      showProgress: window.app.currentUser.loggedIn
     });
     this.editor.render();
 

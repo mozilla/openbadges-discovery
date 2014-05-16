@@ -5,6 +5,16 @@ Backbone.$ = window.$; // WHHHHHHYYYYYYYY?!
 var badgeBackground = new createjs.Bitmap("/static/badge-background.svg");
 var coreFlag = new createjs.Bitmap("/static/badge-core.svg");
 var newFlag = new createjs.Bitmap("/static/badge-new.svg");
+var doneBtnSheet = new createjs.SpriteSheet({
+  images: ["/static/pathway/badge-icon-checked-spritesheet-v2.svg"],
+  frames: {width: 30, height: 30},
+  animations: {
+    unchecked: [0],
+    checked: [1],
+    button: ['unchecked', 'checked']
+  }
+});
+var grayscale = new createjs.ColorMatrixFilter(new createjs.ColorMatrix(0, 0, -100));
 
 function World () {
 
@@ -97,6 +107,12 @@ function makePathwayItem(item) {
     container.addChild(core);
   }
 
+  var doneBtn = new createjs.Sprite(doneBtnSheet, "button");
+  container.addChild(doneBtn);
+  reemit(doneBtn, 'rollover', 'button-rollover');
+  reemit(doneBtn, 'rollout', 'button-rollout');
+  reemit(doneBtn, 'click', 'toggleComplete');
+
   var delBtn = new createjs.Shape();
   delBtn.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
     .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
@@ -128,6 +144,21 @@ function makePathwayItem(item) {
     rect.x = rect.y = margin;
     rect.scaleX = rw / rect.getBounds().width;
     rect.scaleY = rh / rect.getBounds().height;
+
+    doneBtn.visible = world.showProgress;
+    if (doneBtn.visible) {
+      doneBtn.x = doneBtn.y = margin + 2;
+      if (item.complete) {
+        doneBtn.gotoAndStop('checked');
+        img.filters = [];
+        img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+      }
+      else {
+        doneBtn.gotoAndStop('unchecked');
+        img.filters = [grayscale];
+        img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+      }
+    }
 
     if (item.core) {
       core.x = margin + rect.getTransformedBounds().width - core.getBounds().width - 5;
@@ -168,17 +199,12 @@ module.exports = Backbone.View.extend({
     if (!(opts && opts.canvas && opts.columns && opts.requirements))
       throw new Error('You must specify canvas, columns, and requirements options');
 
-    Object.defineProperties(this, {
-      "columnCount": {
-        get: function () { return world.columnCount; },
-        set: function (val) { world.columnCount = val; }
-      },
-      "mode": {
-        get: function () { return world.mode; },
-        set: function (val) {
-          world.mode = val;
-        }
-      }
+    var self = this;
+    ["columnCount", "mode", "showProgress"].forEach(function (prop) {
+      Object.defineProperty(self, prop, {
+        get: function () { return world[prop]; },
+        set: function (val) { world[prop] = val; }
+      });
     });
     world.canvasWidth = opts.canvas.width;
     world.columnCount = opts.columns;
@@ -268,6 +294,13 @@ module.exports = Backbone.View.extend({
     item.on('ready', function () {
       this.stage.addChild(item);
       this.refresh();
+    }, this);
+
+    item.on('toggleComplete', function () {
+      if (this.isRearrangeable()) {
+        item.model.complete = !item.model.complete;
+        this.refresh();
+      }
     }, this);
 
     item.on('button-rollover', function () {

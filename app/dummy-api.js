@@ -142,6 +142,11 @@ function createApp(opts) {
 
     var requirement = req.body;
     requirement.pathwayId = pid;
+    if (requirement.hasOwnProperty('complete') && req.userId) {
+      var entry = {userId: req.userId, itemId: requirement.badgeId};
+      if (requirement.complete) appData.earned.update(entry, {$set: entry}, {upsert: true});
+      else appData.earned.remove(entry);
+    }
     appData.requirements.update({_id: rid}, {$set: req.body}, {upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
       var changed = {};
@@ -161,7 +166,18 @@ function createApp(opts) {
   });
 
   app.get('/user/:uid/earned', function (req, res, next) {
-    return res.json([]);
+    var uid = req.params.uid;
+    appData.earned.find({userId: uid}, function (err, docs) {
+      if (err) throw err;
+      var ids = _.pluck(docs, 'itemId');
+      var query = {
+        _id: {$in: ids},
+        created_at: {$lt: req.pagination.after}
+      };
+      appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
+        return res.json(docs);
+      });
+    });
   });
 
   app.get('/user/:uid/favorite', function (req, res, next) {
