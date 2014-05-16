@@ -16,6 +16,10 @@ module.exports = HumanModel.define({
       type: 'boolean',
       default: false
     },
+    complete: {
+      type: 'boolean',
+      default: false
+    },
     imgSrc: {
       type: 'string',
       default: '/static/badge.png'
