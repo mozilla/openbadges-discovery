@@ -14,6 +14,7 @@ var doneBtnSheet = new createjs.SpriteSheet({
     button: ['unchecked', 'checked']
   }
 });
+var grayscale = new createjs.ColorMatrixFilter(new createjs.ColorMatrix(0, 0, -100));
 
 function World () {
 
@@ -108,12 +109,9 @@ function makePathwayItem(item) {
 
   var doneBtn = new createjs.Sprite(doneBtnSheet, "button");
   container.addChild(doneBtn);
-  doneBtn.on('click', function () {
-    item.complete = !item.complete;
-  });
   reemit(doneBtn, 'rollover', 'button-rollover');
   reemit(doneBtn, 'rollout', 'button-rollout');
-  reemit(doneBtn, 'click', 'refresh');
+  reemit(doneBtn, 'click', 'toggleComplete');
 
   var delBtn = new createjs.Shape();
   delBtn.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
@@ -148,8 +146,16 @@ function makePathwayItem(item) {
     rect.scaleY = rh / rect.getBounds().height;
 
     doneBtn.x = doneBtn.y = margin + 2;
-    if (item.complete) doneBtn.gotoAndStop('checked');
-    else doneBtn.gotoAndStop('unchecked');
+    if (item.complete) {
+      doneBtn.gotoAndStop('checked');
+      img.filters = [];
+      img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+    }
+    else {
+      doneBtn.gotoAndStop('unchecked');
+      img.filters = [grayscale];
+      img.cache(0, 0, img.getBounds().width, img.getBounds().height);
+    }
 
     if (item.core) {
       core.x = margin + rect.getTransformedBounds().width - core.getBounds().width - 5;
@@ -292,8 +298,11 @@ module.exports = Backbone.View.extend({
       this.refresh();
     }, this);
 
-    item.on('refresh', function () {
-      this.refresh();
+    item.on('toggleComplete', function () {
+      if (this.isRearrangeable()) {
+        item.model.complete = !item.model.complete;
+        this.refresh();
+      }
     }, this);
 
     item.on('button-rollover', function () {
