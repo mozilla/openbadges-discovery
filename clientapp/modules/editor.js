@@ -5,6 +5,15 @@ Backbone.$ = window.$; // WHHHHHHYYYYYYYY?!
 var badgeBackground = new createjs.Bitmap("/static/badge-background.svg");
 var coreFlag = new createjs.Bitmap("/static/badge-core.svg");
 var newFlag = new createjs.Bitmap("/static/badge-new.svg");
+var doneBtnSheet = new createjs.SpriteSheet({
+  images: ["/static/pathway/badge-icon-checked-spritesheet-v2.svg"],
+  frames: {width: 30, height: 30},
+  animations: {
+    unchecked: [0],
+    checked: [1],
+    button: ['unchecked', 'checked']
+  }
+});
 
 function World () {
 
@@ -97,6 +106,15 @@ function makePathwayItem(item) {
     container.addChild(core);
   }
 
+  var doneBtn = new createjs.Sprite(doneBtnSheet, "button");
+  container.addChild(doneBtn);
+  doneBtn.on('click', function () {
+    item.complete = !item.complete;
+  });
+  reemit(doneBtn, 'rollover', 'button-rollover');
+  reemit(doneBtn, 'rollout', 'button-rollout');
+  reemit(doneBtn, 'click', 'refresh');
+
   var delBtn = new createjs.Shape();
   delBtn.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
     .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
@@ -128,6 +146,10 @@ function makePathwayItem(item) {
     rect.x = rect.y = margin;
     rect.scaleX = rw / rect.getBounds().width;
     rect.scaleY = rh / rect.getBounds().height;
+
+    doneBtn.x = doneBtn.y = margin + 2;
+    if (item.complete) doneBtn.gotoAndStop('checked');
+    else doneBtn.gotoAndStop('unchecked');
 
     if (item.core) {
       core.x = margin + rect.getTransformedBounds().width - core.getBounds().width - 5;
@@ -267,6 +289,10 @@ module.exports = Backbone.View.extend({
 
     item.on('ready', function () {
       this.stage.addChild(item);
+      this.refresh();
+    }, this);
+
+    item.on('refresh', function () {
       this.refresh();
     }, this);
 
