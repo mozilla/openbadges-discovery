@@ -134,6 +134,10 @@ function processPathway(cells, cb) {
     async.map(cells, function (cell, cb) {
       dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
         if (err) throw err;
+        if (!badge) {
+          console.log('Could not find badge', cell.badgename);
+          return cb(null);
+        }
         cell.x = parseInt(cell.x);
         cell.y = parseInt(cell.y);
         var rowY = parseInt(cell.title.match(/\d+/)[0] - 3);
@@ -149,6 +153,7 @@ function processPathway(cells, cb) {
         cb(null, requirement);
       });
     }, function (err, results){
+      results = results.filter(function (result) { return !!result; });
       dataStore.requirements.insert(results, function (err, docs) {
         if (err) throw err;
         log('Created %d requirements on pathway %s', docs.length, id);

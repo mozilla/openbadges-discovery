@@ -268,7 +268,11 @@ function createApp(opts) {
     appData.achievements.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       if (!doc || !doc.imgSrc) return res.send(400);
-      res.type('png');
+      res.header('Cache-Control', 'public, max-age=86400');
+      var old = res.setHeader;
+      res.setHeader = function (header, val) {
+        if (header.toLowerCase() !== 'cache-control') old.apply(res, arguments);
+      };
       return request(doc.imgSrc).pipe(res);
     });
   });

@@ -75,31 +75,33 @@ function makePathwayItem(item) {
     });
   }
 
-  var rect = badgeBackground.clone();
-  reemit(rect, 'rollover', 'grab-rollover');
-  reemit(rect, 'rollout', 'grab-rollout');
-  reemit(rect, 'mousedown', 'grab');
-  reemit(rect, 'pressmove', 'move');
-  reemit(rect, 'pressup', 'release');
+  var grabContainer = new createjs.Container();
+  reemit(grabContainer, 'rollover', 'grab-rollover');
+  reemit(grabContainer, 'rollout', 'grab-rollout');
+  reemit(grabContainer, 'mousedown', 'grab');
+  reemit(grabContainer, 'pressmove', 'move');
+  reemit(grabContainer, 'pressup', 'release');
   var move = false;
-  rect.on('mousedown', function (evt) {
+  grabContainer.on('mousedown', function (evt) {
     move = false;
   });
-  rect.on('pressmove', function (evt) {
+  grabContainer.on('pressmove', function (evt) {
     move = true;
   });
-  rect.on('click', function () {
+  grabContainer.on('click', function () {
     if (!move) container.dispatchEvent('tile-click');
   });
-  reemit(rect, 'dblclick', 'tile-dblclick');
+  reemit(grabContainer, 'dblclick', 'tile-dblclick');
 
+  var rect = badgeBackground.clone();
   var img = new createjs.Bitmap(item.imgSrc);
   img.image.onload = function () {
     container.layout();
     container.dispatchEvent('ready');
   };
   var title = new createjs.Text(item.name, "14px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif");
-  container.addChild(rect, img, title);
+  grabContainer.addChild(rect, img, title);
+  container.addChild(grabContainer);
 
   var core;
   if (item.core) {
@@ -227,7 +229,7 @@ module.exports = Backbone.View.extend({
       this.addBadge(req);
     }.bind(this));
 
-    this.listenTo(this.requirements, "add", this.addBadge);
+    this.listenTo(this.requirements, "add", this.addBadge, this);
 
     this.listenTo(this.requirements, "remove", function (req) {
       if (req.cid) {
@@ -293,13 +295,13 @@ module.exports = Backbone.View.extend({
 
     item.on('ready', function () {
       this.stage.addChild(item);
-      this.refresh();
+      this.refresh(item);
     }, this);
 
     item.on('toggleComplete', function () {
       if (this.isRearrangeable()) {
         item.model.complete = !item.model.complete;
-        this.refresh();
+        this.refresh(item);
       }
     }, this);
 
@@ -329,12 +331,13 @@ module.exports = Backbone.View.extend({
     item.on('move', function (evt) {
       if (this.isRearrangeable()) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
-        item.model.set({
+        var model = item.model.set({
           x: coords.x,
           y: coords.y
         });
         evt.nativeEvent.preventDefault();
-        this.refresh();
+        if (model.changedAttributes())
+          this.refresh(item);
       }
     }, this);
 
@@ -348,20 +351,24 @@ module.exports = Backbone.View.extend({
   isDeletable: function () {
     return world.deletable;
   },
-  layout: function () {
+  layout: function (item) {
     world.canvasWidth = this.stage.canvas.width;
     this.stage.children.forEach(function (child) {
       if (child.layout) child.layout();
     });
   },
-  render: function () {
-    this.stage.canvas.height = this.stage.getTransformedBounds().height;
+  render: function (item) {
+    if (!item)
+      this.stage.canvas.height = this.stage.getTransformedBounds().height;
     this.stage.update();
     return this;
   },
-  refresh: function () {
-    this.layout();
-    this.render();
+  refresh: function (item) {
+    if (item)
+      item.layout();
+    else
+      this.layout();
+    this.render(item);
   },
   remove: function () {
     createjs.Touch.disable(this.stage);

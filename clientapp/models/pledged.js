@@ -22,6 +22,9 @@ module.exports = HumanModel.define({
     tags: {
       type: 'array',
       required: false
+    },
+    imgSrc: {
+      type: 'string'
     }
   },
   idAttribute: '_id',
