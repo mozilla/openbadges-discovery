@@ -100,8 +100,8 @@ function makePathwayItem(item) {
     container.dispatchEvent('ready');
   };
   var title = new createjs.Text(item.name, "14px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif");
-  grabContainer.addChild(rect, img);
-  container.addChild(grabContainer, title);
+  grabContainer.addChild(rect, img, title);
+  container.addChild(grabContainer);
 
   var core;
   if (item.core) {
@@ -295,13 +295,13 @@ module.exports = Backbone.View.extend({
 
     item.on('ready', function () {
       this.stage.addChild(item);
-      this.refresh();
+      this.refresh(item);
     }, this);
 
     item.on('toggleComplete', function () {
       if (this.isRearrangeable()) {
         item.model.complete = !item.model.complete;
-        this.refresh();
+        this.refresh(item);
       }
     }, this);
 
@@ -331,12 +331,13 @@ module.exports = Backbone.View.extend({
     item.on('move', function (evt) {
       if (this.isRearrangeable()) {
         var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
-        item.model.set({
+        var model = item.model.set({
           x: coords.x,
           y: coords.y
         });
         evt.nativeEvent.preventDefault();
-        this.refresh();
+        if (model.changedAttributes())
+          this.refresh(item);
       }
     }, this);
 
@@ -350,20 +351,24 @@ module.exports = Backbone.View.extend({
   isDeletable: function () {
     return world.deletable;
   },
-  layout: function () {
+  layout: function (item) {
     world.canvasWidth = this.stage.canvas.width;
     this.stage.children.forEach(function (child) {
       if (child.layout) child.layout();
     });
   },
-  render: function () {
-    this.stage.canvas.height = this.stage.getTransformedBounds().height;
+  render: function (item) {
+    if (!item)
+      this.stage.canvas.height = this.stage.getTransformedBounds().height;
     this.stage.update();
     return this;
   },
-  refresh: function () {
-    this.layout();
-    this.render();
+  refresh: function (item) {
+    if (item)
+      item.layout();
+    else
+      this.layout();
+    this.render(item);
   },
   remove: function () {
     createjs.Touch.disable(this.stage);
