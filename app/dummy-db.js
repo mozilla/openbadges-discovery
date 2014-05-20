@@ -7,7 +7,8 @@ var DummyDB = module.exports = function () {
     'requirements', 
     'favorites', 
     'users', 
-    'earned'
+    'earned',
+    'notes'
   ].forEach(function (name) {
     db[name] = new DataStore();
   });

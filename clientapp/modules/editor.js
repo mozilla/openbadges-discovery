@@ -14,6 +14,7 @@ var doneBtnSheet = new createjs.SpriteSheet({
     button: ['unchecked', 'checked']
   }
 });
+var noteIcon = new createjs.Bitmap("/static/pathway/note-icon.svg");
 var grayscale = new createjs.ColorMatrixFilter(new createjs.ColorMatrix(0, 0, -100));
 
 function World () {
@@ -196,10 +197,58 @@ function makePathwayItem(item) {
   return container;
 }
 
+function makeNote(model) {
+  var container = new createjs.Container();
+  container.model = model;
+  container.name = model.cid;
+  container.setBounds(0, 0, world.columnWidth, world.columnWidth);
+
+  function reemit (obj, evtName, newName) {
+    obj.on(evtName, function (evt) {
+      var newEvt = evt.clone();
+      newEvt.type = newName;
+      newEvt.nativeEvent = evt.nativeEvent;
+      container.dispatchEvent(newEvt);
+    });
+  }
+
+  var icon = noteIcon.clone();
+  icon.scaleX = icon.scaleY = (container.getBounds().width - 20) / icon.getBounds().width;
+  icon.x = 10;
+  reemit(icon, 'rollover', 'grab-rollover');
+  reemit(icon, 'rollout', 'grab-rollout');
+  reemit(icon, 'mousedown', 'grab');
+  reemit(icon, 'pressmove', 'move');
+  reemit(icon, 'pressup', 'release');
+  reemit(icon, 'dblclick', 'note-dblclick');
+
+  var delBtn = new createjs.Shape();
+  delBtn.graphics.beginFill('#0fa1d6').drawRoundRect(0, 0, 40, 40, 40)
+    .beginStroke('white').moveTo(10, 10).lineTo(30, 30)
+    .moveTo(10, 30).lineTo(30, 10);
+  delBtn.x = 60;
+  delBtn.y = 20;
+  reemit(delBtn, 'click', 'delete');
+  reemit(delBtn, 'rollover', 'button-rollover');
+  reemit(delBtn, 'rollout', 'button-rollout');
+
+  container.addChild(icon, delBtn);
+
+  container.layout = function () {
+    var coords = world.gridToPixel(model.x, model.y);
+    container.x = coords.x;
+    container.y = coords.y;
+
+    delBtn.visible = world.deletable;
+  };
+
+  return container;
+}
+
 module.exports = Backbone.View.extend({
   initialize: function (opts) {
-    if (!(opts && opts.canvas && opts.columns && opts.requirements))
-      throw new Error('You must specify canvas, columns, and requirements options');
+    if (!(opts && opts.canvas && opts.columns && opts.requirements && opts.notes))
+      throw new Error('You must specify canvas, columns, requirements, and notes options');
 
     var self = this;
     ["columnCount", "mode", "showProgress"].forEach(function (prop) {
@@ -239,6 +288,20 @@ module.exports = Backbone.View.extend({
       }
     });
 
+    this.notes.forEach(function (note) {
+      this.addNote(note);
+    }.bind(this));
+
+    this.listenTo(this.notes, "add", this.addNote, this);
+
+    this.listenTo(this.notes, "remove", function (note) {
+      if (note.cid) {
+        var item = this.stage.getChildByName(note.cid);
+        this.stage.removeChild(item);
+        this.refresh();
+      }
+    });
+
     var editor = this;
     gridLayer.layout = function () {
       this.removeAllChildren();
@@ -258,11 +321,11 @@ module.exports = Backbone.View.extend({
 
     this.layout();
   },
-  addBadge: function (model) {
+  position: function (model) {
     if (model.y === undefined) {
       var row = 0;
       while (model.y === undefined) {
-        var xs = _.pluck(this.requirements.where({y: row}), 'x');
+        var xs = _.pluck(_.where(this.requirements.models.concat(this.notes.models), {y: row}), 'x');
         var empties = _.difference(_.range(world.columnCount), xs);
         if (empties.length) {
           model.set({
@@ -276,6 +339,9 @@ module.exports = Backbone.View.extend({
         }
       }
     }
+  },
+  addBadge: function (model) {
+    this.position(model);
     this.maxRow = Math.max(this.maxRow, model.y);
     var item = makePathwayItem(model);
 
@@ -344,6 +410,53 @@ module.exports = Backbone.View.extend({
     item.on('tile-dblclick', function (evt) {
       this.trigger('click', evt.currentTarget.model);
     }, this);
+  },
+  addNote: function (note) {
+    this.position(note);
+    var item = makeNote(note);
+
+    item.on('grab-rollover', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grab');
+    }, this);
+    item.on('grab', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).addClass('cursor-grabbing');
+    }, this);
+    item.on('release', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grabbing');
+    }, this);
+    item.on('grab-rollout', function () {
+      if (this.isRearrangeable()) $(this.stage.canvas).removeClass('cursor-grab');
+    }, this);
+
+    item.on('move', function (evt) {
+      if (this.isRearrangeable()) {
+        var coords = world.pixelToGrid(this.stage.globalToLocal(evt.stageX, evt.stageY));
+        var model = item.model.set({
+          x: coords.x,
+          y: coords.y
+        });
+        evt.nativeEvent.preventDefault();
+        if (model.changedAttributes())
+          this.refresh(item);
+      }
+    }, this);
+    
+    item.on('button-rollover', function () {
+      $(this.stage.canvas).addClass('cursor-button');
+    }, this);
+    item.on('button-rollout', function () {
+      $(this.stage.canvas).removeClass('cursor-button');
+    }, this);
+    item.on('delete', function (evt) {
+      this.trigger('delete', evt.target.model);
+    }, this);
+
+    item.on('note-dblclick', function (evt) {
+      this.trigger('click', evt.currentTarget.model);
+    }, this);
+
+    this.stage.addChild(item);
+    this.refresh(item);
   },
   isRearrangeable: function () {
     return world.mode && (world.mode === 'edit');

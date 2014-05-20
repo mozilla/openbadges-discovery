@@ -82,6 +82,9 @@
   .editor-add {
     @include icon("/static/pathway/icon-add-badge.svg", "/static/pathway/icon-add-badge-active.svg");
   }
+  .editor-note {
+    @include icon("/static/pathway/icon-add-note.svg", "/static/pathway/icon-add-note-active.svg");
+  }
   .editor-delete {
     @include icon("/static/pathway/icon-remove-parts.svg", "/static/pathway/icon-remove-parts-active.svg");
   }

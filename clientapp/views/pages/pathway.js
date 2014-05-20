@@ -5,13 +5,18 @@ var Pledged = require('../../models/pledged');
 
 module.exports = HumanView.extend({
   template: templates.pages.pathway,
+  initialize: function (opts) {
+    this.requirements = opts.requirements || this.collection;
+    this.notes = opts.notes;
+  },
   render: function () {
     this.renderAndBind({
       pathway: this.model,
       user: window.app.currentUser
     });
     this.renderSubview(new Editor({
-      collection: this.collection,
+      requirements: this.requirements,
+      notes: this.notes,
       mode: 'view'
     }), '.pathway-editor-container');
     return this;

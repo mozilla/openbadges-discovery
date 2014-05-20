@@ -284,3 +284,23 @@ footer {
     }
   }
 }
+
+.note-page {
+  padding-bottom: 2em;
+
+  .page-header {
+    background-image: url("/static/badges/badges-header-desktop.svg");
+
+    .main-icon img {
+      width: 100%; 
+    }
+  }
+
+  .page-title {
+  	margin: 60px 0 20px 0;
+  	font-family: "Open Sans Light", helvetica, arial, sans-serif;
+  	font-size: 32px;
+  	color: $text-dark;
+  	line-height: 1em;
+  }
+}

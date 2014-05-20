@@ -2,6 +2,7 @@ var HumanView = require('human-view');
 var templates = require('templates');
 var Editor = require('../includes/editor');
 var AddPanel = require('../includes/add-panel');
+var NotePanel = require('../includes/note-panel');
 var Requirement = require('../../models/requirement');
 var PathwayTitleView = require('../includes/pathway-title');
 var PathwayEditView = require('../includes/pathway-edit');
@@ -12,16 +13,28 @@ module.exports = HumanView.extend({
   initialize: function (opts) {
     opts = opts || {};
     this.addSources = opts.addSources;
+    this.requirements = opts.requirements || this.collection;
+    this.notes = opts.notes;
     this.listenTo(this.model, 'change', function (model) {
       model.save();
     });
-    this.listenTo(this.collection, 'change', function (model) {
+    this.listenTo(this.requirements, 'change', function (model) {
       if (!model.isNew()) model.save();
     });
-    this.listenTo(this.collection, 'positioned', function (model) {
+    this.listenTo(this.requirements, 'positioned', function (model) {
       model.save();
     });
-    this.listenTo(this.collection, 'remove', function (model) {
+    this.listenTo(this.requirements, 'remove', function (model) {
+      model.destroy();
+    });
+
+    this.listenTo(this.notes, 'change', function (model) {
+      if (!model.isNew()) model.save();
+    });
+    this.listenTo(this.notes, 'positioned', function (model) {
+      model.save();
+    });
+    this.listenTo(this.notes, 'remove', function (model) {
       model.destroy();
     });
   },
@@ -32,7 +45,8 @@ module.exports = HumanView.extend({
     });
 
     this.editor = new Editor({
-      collection: this.collection,
+      requirements: this.requirements,
+      notes: this.notes,
       mode: 'edit'
     });
     this.renderSubview(this.editor, '.pathway-editor-container');
@@ -41,7 +55,7 @@ module.exports = HumanView.extend({
       sources: this.addSources
     });
     addPanel.on('add', function (models) {
-      this.collection.add(models.map(function (model) {
+      this.requirements.add(models.map(function (model) {
         return Requirement.fromAchievement(model, {newFlag: true});
       }));
       this.moveToTop('#editorPanel');
@@ -51,10 +65,20 @@ module.exports = HumanView.extend({
     }, this);
     this.renderSubview(addPanel, '.add-panel-container');
 
+    var notePanel = new NotePanel();
+    notePanel.on('cancel', function () {
+      this.moveToTop('#editorPanel');
+    }, this);
+    notePanel.on('save', function (note) {
+      note.pathwayId = this.model._id;
+      this.notes.add(note);
+      this.moveToTop('#editorPanel');
+    }, this);
+    this.renderSubview(notePanel, '.note-panel-container');
+
     var pathwayTitleView = new PathwayTitleView({
       model: this.model
     });
-
     this.renderSubview(pathwayTitleView, '.pathway-title');
 
     var pathwayEditView = new PathwayEditView({
