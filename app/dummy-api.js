@@ -19,7 +19,7 @@ function createApp(opts) {
   var generator = opts.dataGenerator || fakeData;
   var appData;
   var loading = false;
-  app.use(function (req, res, next) {
+  function lazyLoad (req, res, next) {
     if (appData) return next();
     function wait() {
       if (!appData) return setTimeout(wait, 250);
@@ -32,7 +32,8 @@ function createApp(opts) {
       loading = false;
       return next(err);
     });
-  });
+  }
+  app.use(lazyLoad);
 
   app.use(express.bodyParser());
   app.use(function (req, res, next) {
@@ -274,6 +275,14 @@ function createApp(opts) {
         if (header.toLowerCase() !== 'cache-control') old.apply(res, arguments);
       };
       return request(doc.imgSrc).pipe(res);
+    });
+  });
+
+  app.get('/refresh', function (req, res, next) {
+    appData = undefined;
+    lazyLoad(req, res, function (err) {
+      if (err) return next(err); 
+      res.redirect('/');
     });
   });
 

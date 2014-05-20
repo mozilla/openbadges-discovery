@@ -135,7 +135,7 @@ function processPathway(cells, cb) {
       dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
         if (err) throw err;
         if (!badge) {
-          console.log('Could not find badge', cell.badgename);
+          log('Could not find badge', cell.badgename);
           return cb(null);
         }
         cell.x = parseInt(cell.x);
