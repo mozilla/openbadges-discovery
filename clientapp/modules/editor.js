@@ -213,8 +213,11 @@ function makeNote(model) {
   }
 
   var icon = noteIcon.clone();
-  icon.scaleX = icon.scaleY = (container.getBounds().width - 20) / icon.getBounds().width;
-  icon.x = 10;
+  icon.scaleX = icon.scaleY = ((container.getBounds().width - 20) / icon.getBounds().width) * 0.5;
+  icon.regX = icon.getBounds().width / 2;
+  icon.regY = icon.getBounds().height / 2;
+  icon.x = container.getBounds().width / 2;
+  icon.y = container.getBounds().height / 2;
   reemit(icon, 'rollover', 'grab-rollover');
   reemit(icon, 'rollout', 'grab-rollout');
   reemit(icon, 'mousedown', 'grab');

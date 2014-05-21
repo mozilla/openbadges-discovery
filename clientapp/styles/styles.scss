@@ -289,10 +289,10 @@ footer {
   padding-bottom: 2em;
 
   .page-header {
-    background-image: url("/static/badges/badges-header-desktop.svg");
+    background-image: url("/static/pathway/note-header-desktop.svg");
 
     .main-icon img {
-      width: 100%; 
+      width: 100px;
     }
   }
 
@@ -303,4 +303,8 @@ footer {
   	color: $text-dark;
   	line-height: 1em;
   }
+}
+
+.tall {
+  height: 15em;
 }
