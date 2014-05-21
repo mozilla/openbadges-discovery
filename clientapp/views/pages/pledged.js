@@ -69,7 +69,7 @@ module.exports = HumanView.extend({
     }, this);
     notePanel.on('save', function (note) {
       note.pathwayId = this.model._id;
-      this.notes.add(note);
+      this.model.notes.add(note);
       this.moveToTop('#editorPanel');
     }, this);
     this.renderSubview(notePanel, '.note-panel-container');
