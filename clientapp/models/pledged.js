@@ -1,5 +1,6 @@
 var HumanModel = require('human-model');
 var Requirements = require('./requirements');
+var Notes = require('./notes');
 
 module.exports = HumanModel.define({
   initialize: function () {
@@ -37,7 +38,8 @@ module.exports = HumanModel.define({
     }
   },
   collections: {
-    requirements: Requirements
+    requirements: Requirements,
+    notes: Notes
   },
   session: {
     complete: {
@@ -48,5 +50,5 @@ module.exports = HumanModel.define({
   idAttribute: '_id',
   urlRoot: function () {
     return '/api/user/' + this.userId + '/pledged/';
-  },
+  }
 });

@@ -13,7 +13,6 @@ module.exports = HumanView.extend({
   initialize: function (opts) {
     opts = opts || {};
     this.addSources = opts.addSources;
-    this.notes = opts.notes;
     this.listenTo(this.model, 'change', function (model) {
       model.save();
     });
@@ -27,13 +26,13 @@ module.exports = HumanView.extend({
       model.destroy();
     });
 
-    this.listenTo(this.notes, 'change', function (model) {
+    this.listenTo(this.model.notes, 'change', function (model) {
       if (!model.isNew()) model.save();
     });
-    this.listenTo(this.notes, 'positioned', function (model) {
+    this.listenTo(this.model.notes, 'positioned', function (model) {
       model.save();
     });
-    this.listenTo(this.notes, 'remove', function (model) {
+    this.listenTo(this.model.notes, 'remove', function (model) {
       model.destroy();
     });
   },
@@ -45,7 +44,7 @@ module.exports = HumanView.extend({
 
     this.editor = new Editor({
       requirements: this.model.requirements,
-      notes: this.notes,
+      notes: this.model.notes,
       mode: 'edit'
     });
     this.renderSubview(this.editor, '.pathway-editor-container');
