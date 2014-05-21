@@ -19,6 +19,13 @@
 	.pathway-title-edit{ padding-top: 1em; }
 
   .pledge-button { margin-top: 1em; }
+
+  .banner {
+    visibility: hidden;
+    &.complete {
+      visibility: visible;
+    }
+  }
 }
 
 .content.active { float: none; }

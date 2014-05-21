@@ -1,6 +1,15 @@
 var HumanModel = require('human-model');
+var Requirements = require('./requirements');
 
 module.exports = HumanModel.define({
+  initialize: function () {
+    this.requirements.on('add', this.checkComplete, this);
+    this.requirements.on('remove', this.checkComplete, this);
+    this.requirements.on('change:complete', this.checkComplete, this);
+  },
+  checkComplete: function () {
+    this.complete = !this.requirements.findWhere({complete: false});
+  },
   props: {
     _id: {
       type: 'string'
@@ -25,6 +34,15 @@ module.exports = HumanModel.define({
     },
     imgSrc: {
       type: 'string'
+    }
+  },
+  collections: {
+    requirements: Requirements
+  },
+  session: {
+    complete: {
+      type: 'boolean',
+      default: false
     }
   },
   idAttribute: '_id',
