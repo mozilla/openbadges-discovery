@@ -132,26 +132,42 @@ function processPathway(cells, cb) {
     var id = doc._id;
     log('Created pathway %s', id);
     async.map(cells, function (cell, cb) {
-      dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
-        if (err) throw err;
-        if (!badge) {
-          log('Could not find badge', cell.badgename);
-          return cb(null);
-        }
-        cell.x = parseInt(cell.x);
-        cell.y = parseInt(cell.y);
-        var rowY = parseInt(cell.title.match(/\d+/)[0] - 3);
-        var requirement = {
-          pathwayId: id,
+      cell.x = parseInt(cell.x);
+      cell.y = parseInt(cell.y);
+      var rowY = parseInt(cell.title.match(/\d+/)[0] - 3);
+      if (cell.notetitle) {
+        var note = {
+          title: cell.notetitle,
+          body: cell.notebody,
           x: _.isNaN(cell.x) ? 1 : cell.x,
           y: _.isNaN(cell.y) ? rowY : cell.y,
-          name: cell.badgename,
-          core: !!cell.core,
-          badgeId: badge._id
+          pathwayId: id
         };
-        if (badge && badge.imgSrc) requirement.imgSrc = '/api/image/' + badge._id;
-        cb(null, requirement);
-      });
+        return dataStore.notes.insert(note, function (err) {
+          if (err) throw err;
+          log('Created note', cell.notetitle);
+          cb(null);
+        });
+      }
+      else {
+        dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
+          if (err) throw err;
+          if (!badge) {
+            log('Could not find badge', cell.badgename);
+            return cb(null);
+          }
+          var requirement = {
+            pathwayId: id,
+            x: _.isNaN(cell.x) ? 1 : cell.x,
+            y: _.isNaN(cell.y) ? rowY : cell.y,
+            name: cell.badgename,
+            core: !!cell.core,
+            badgeId: badge._id
+          };
+          if (badge && badge.imgSrc) requirement.imgSrc = '/api/image/' + badge._id;
+          cb(null, requirement);
+        });
+      }
     }, function (err, results){
       results = results.filter(function (result) { return !!result; });
       dataStore.requirements.insert(results, function (err, docs) {
