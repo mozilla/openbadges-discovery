@@ -311,6 +311,19 @@ function createApp(opts) {
     });
   });
 
+  app.get('/user/:uid/stats', function (req, res, next) {
+    var id = req.params.uid;
+
+    async.parallel({
+      earned: appData.earned.count.bind(appData.earned, {userId: id}),
+      favorited: appData.favorites.count.bind(appData.favorites, {userId: id}),
+      pledged: appData.achievements.count.bind(appData.achievements, {userId: id})
+    }, function (err, results) {
+      if (err) throw err;
+      return res.json(results);
+    });
+  });
+
   app.get('/image/:id', function (req, res, next) {
     var id = req.params.id;
     appData.achievements.findOne({_id: id}, function (err, doc) {

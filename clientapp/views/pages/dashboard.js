@@ -11,9 +11,7 @@ module.exports = HumanView.extend({
   render: function () {
     this.renderAndBind({
       currentUser: window.app.currentUser,
-      backpack: this.sources.backpack,
-      wishlist: this.sources.wishlist,
-      pathways: this.sources.pathways
+      stats: this.model
     });
 
     var backpackList = new ListingView({collection: this.sources.backpack});

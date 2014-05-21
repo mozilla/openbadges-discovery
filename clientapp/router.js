@@ -5,6 +5,7 @@ var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
 var Note = require('./models/note');
 var Notes = require('./models/notes');
+var Stats = require('./models/stats');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
@@ -145,6 +146,9 @@ module.exports = Backbone.Router.extend({
   },
 
   showDashboard: function () {
+    var stats = new Stats({
+      userId: window.app.currentUser._id
+    });
     var backpack = new Achievements([], {
       pageSize: 4,
       source: Achievements.BACKPACK
@@ -157,9 +161,9 @@ module.exports = Backbone.Router.extend({
       pageSize: 4,
       source: Achievements.PLEDGED
     });
-    $.when(backpack.fetch(), wishlist.fetch(), pathways.fetch()).done(function () {
+    $.when(stats.fetch(), backpack.fetch(), wishlist.fetch(), pathways.fetch()).done(function () {
       app.renderPage(new DashboardPage({
-        model: window.app,
+        model: stats,
         sources: {
           backpack: backpack,
           wishlist: wishlist,
