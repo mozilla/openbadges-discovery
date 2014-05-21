@@ -13,15 +13,15 @@
         <ul class="dashboard-stats">
           <li>
             <img src="/static/dashboard/icoDashboardPathway.svg">
-            <p class="icon-length">{{pathways.models.length}} Pathway{% if pathways.models.length > 1 %}s{% endif %}</p>
+            <p class="icon-length">{{stats.pledged}} Pathway{% if pathways.models.length > 1 %}s{% endif %}</p>
           </li>
           <li>
             <img src="static/dashboard/icoDashboardBadge.svg">
-            <p class="icon-length">{{backpack.models.length}} Earned</p>
+            <p class="icon-length">{{stats.earned}} Earned</p>
           </li>
           <li>
             <img src="/static/dashboard/icoDashboardFavorited.svg">
-            <p class="icon-length">{{wishlist.models.length}} Favorited</p>
+            <p class="icon-length">{{stats.favorited}} Favorited</p>
           </li>
         </ul>
       </div>
@@ -29,19 +29,19 @@
   </section>
   <div class="row text-center page-body-rounded">
     <div class="small-12 columns">
-      <h2>{{pathways.models.length}} Pathway{% if pathways.models.length > 1 %}s{% endif %}</h2>
+      <h2>{{stats.pledged}} Pathway{% if pathways.models.length > 1 %}s{% endif %}</h2>
       <div id="pathwayPanel" class="js-pathway-items">
       </div>
 
       <hr class="full-length-hr">
 
-      <h2>{{backpack.models.length}} Earned</h2>
+      <h2>{{stats.earned}} Earned</h2>
       <div id="backpackPanel" class="js-backpack-items">
       </div>
 
       <hr class="full-length-hr">
 
-      <h2>{{wishlist.models.length}} Favorited</h2>
+      <h2>{{stats.favorited}} Favorited</h2>
       <div id="wishlistPanel" class="js-wishlist-items">
       </div>
     </div>
