@@ -10,6 +10,8 @@ module.exports = HumanView.extend({
   template: templates.includes.editor,
   initialize: function (opts) {
     this.mode = opts.mode;
+    this.requirements = opts.requirements || this.collection;
+    this.notes = opts.notes;
     var undoManager = this.undoManager = new UndoManager();
     undoManager.changeUndoType("remove", {
       "undo": function (collection, before, after, options) {
@@ -25,7 +27,8 @@ module.exports = HumanView.extend({
         return !(Object.keys(changed).length === 1 && changed.hasOwnProperty('_id'));
       }
     });
-    undoManager.register(this.collection);
+    undoManager.register(this.requirements);
+    undoManager.register(this.notes);
     undoManager.startTracking();
   },
   render: function () {
@@ -34,17 +37,24 @@ module.exports = HumanView.extend({
       columns: query('columns') || 5,
       canvas: this.$('canvas')[0],
       mode: this.mode,
-      requirements: this.collection,
+      requirements: this.requirements,
+      notes: this.notes,
       showProgress: window.app.currentUser.loggedIn
     });
     this.editor.render();
 
     this.editor.on('delete', function (model) {
-      this.collection.remove(model);
+      if (model.badgeId)
+        this.requirements.remove(model);
+      else
+        this.notes.remove(model);
     }, this);
 
     this.listenTo(this.editor, 'click', function (model) {
-      app.router.navigateTo('/badge/' + model.badgeId);
+      if (model.badgeId)
+        app.router.navigateTo('/badge/' + model.badgeId);
+      else
+        app.router.navigateTo('/note/' + model._id);
     });
 
     return this;

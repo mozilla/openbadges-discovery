@@ -3,9 +3,12 @@ var Pledged = require('./models/pledged');
 var Achievement = require('./models/achievement');
 var Achievements = require('./models/achievements');
 var Requirements = require('./models/requirements');
+var Note = require('./models/note');
+var Notes = require('./models/notes');
 var LandingView = require('./views/pages/landing');
 var BadgePage = require('./views/pages/badge');
 var PathwayPage = require('./views/pages/pathway');
+var NotePage = require('./views/pages/note');
 var PledgedPage = require('./views/pages/pledged');
 var DashboardPage = require('./views/pages/dashboard');
 var StaticPage = require('./views/pages/static');
@@ -25,6 +28,7 @@ module.exports = Backbone.Router.extend({
     '(y/:type/)(t/:tag/)(c/:count/)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
+    'note/:id': 'showNote',
     'pledged/:id': 'showEditor',
     'page/:name': 'showPage',
     'dashboard': 'showDashboard',
@@ -84,8 +88,24 @@ module.exports = Backbone.Router.extend({
     var requirements = new Requirements({
       parentId: pathway._id
     });
-    $.when(pathway.fetch(), requirements.fetch()).done(function () {
-      app.renderPage(new PathwayPage({model: pathway, collection: requirements}));
+    var notes = new Notes({
+      parentId: pathway._id
+    });
+    $.when(pathway.fetch(), requirements.fetch(), notes.fetch()).done(function () {
+      app.renderPage(new PathwayPage({
+        model: pathway, 
+        requirements: requirements,
+        notes: notes
+      }));
+    });
+  },
+
+  showNote: function (id) {
+    var note = new Note({
+      _id: id
+    });
+    $.when(note.fetch()).then(function () {
+      app.renderPage(new NotePage({model: note}));
     });
   },
 
@@ -95,6 +115,9 @@ module.exports = Backbone.Router.extend({
       userId: window.app.currentUser._id
     });
     var requirements = new Requirements({
+      parentId: pledged._id
+    });
+    var notes = new Notes({
       parentId: pledged._id
     });
     var backpack = new Achievements({
@@ -108,10 +131,11 @@ module.exports = Backbone.Router.extend({
     });
     backpack.fetch();
     wishlist.fetch();
-    $.when(pledged.fetch(), requirements.fetch()).done(function () {
+    $.when(pledged.fetch(), requirements.fetch(), notes.fetch()).done(function () {
       app.renderPage(new PledgedPage({
         model: pledged,
-        collection: requirements,
+        requirements: requirements,
+        notes: notes,
         addSources: {
           backpack: backpack,
           wishlist: wishlist

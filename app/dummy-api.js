@@ -118,6 +118,44 @@ function createApp(opts) {
     });
   }
 
+  app.post('/note', function (req, res, next) {
+    var note = req.body;
+    appData.notes.insert(note, function (err, doc) {
+      if (err) throw err;
+      return res.json({_id: doc._id});
+    });
+  });
+
+  app.get('/note/:id', function (req, res, next) {
+    var id = req.params.id;
+
+    appData.notes.findOne({_id: id}, function (err, doc) {
+      if (err) throw err;
+      return res.json(doc);
+    });
+  });
+
+  app.put('/note/:id', function (req, res, next) {
+    var id = req.params.id;
+    
+    var note = req.body;
+    appData.notes.update({_id: id}, {$set: note}, {upsert: true}, function (err, num, newDoc) {
+      if (err) throw err;
+      var changed = {};
+      if (newDoc && newDoc._id !== id) changed._id = newDoc._id;
+      return res.json(changed);
+    });
+  });
+
+  app.delete('/note/:id', function (req, res, next) {
+    var id = req.params.id;
+
+    appData.notes.remove({_id: id}, function (err, num) {
+      if (err) throw err;
+      return res.send(200);
+    });
+  });
+
   app.get('/pathway/:id/requirement', function (req, res, next) {
     var id = req.params.id;
 
@@ -163,6 +201,15 @@ function createApp(opts) {
     appData.requirements.remove({_id: rid}, function (err, num) {
       if (err) throw err;
       return res.send(200);
+    });
+  });
+
+  app.get('/pathway/:id/note', function (req, res, next) {
+    var id = req.params.id;
+
+    appData.notes.find({pathwayId: id}, function (err, docs) {
+      if (err) throw err;
+      return res.json(docs);
     });
   });
 
