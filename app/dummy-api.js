@@ -65,12 +65,22 @@ function createApp(opts) {
   app.get('/achievement', function getAchievements(req, res, next) {
     var type = req.query.type;
     var tag = req.query.tag;
+    var search = req.query.search;
 
     var query = {
       created_at: {$lt: req.pagination.after}
     };
     if (type) query.type = type;
     if (tag) query.tags = tag;
+    if (search) {
+      var pattern = new RegExp(search, 'i');
+      query.$or = [
+        {title: {$regex: pattern}},
+        {description: {$regex: pattern}},
+        {tags: search}
+      ];
+    }
+
     appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
       if (err) throw err;
       if (req.userId) {
@@ -137,7 +147,7 @@ function createApp(opts) {
 
   app.put('/note/:id', function (req, res, next) {
     var id = req.params.id;
-    
+
     var note = req.body;
     appData.notes.update({_id: id}, {$set: note}, {upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
@@ -254,7 +264,7 @@ function createApp(opts) {
     var userId = req.params.id;
 
     var query = {
-      userId: userId, 
+      userId: userId,
       created_at: {
         $lt: req.pagination.after
       }
@@ -352,7 +362,7 @@ function createApp(opts) {
   app.get('/refresh', function (req, res, next) {
     appData = undefined;
     lazyLoad(req, res, function (err) {
-      if (err) return next(err); 
+      if (err) return next(err);
       res.redirect('/');
     });
   });
