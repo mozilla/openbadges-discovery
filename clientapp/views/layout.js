@@ -56,11 +56,12 @@ module.exports = HumanView.extend({
       window.app.router.navigateTo('dashboard');
   },
   search: function (evt) {
-    console.log(evt.keyCode);
     if (evt.keyCode === 13) {
-      console.log('it was enter!');
       var search = this.$('.search-input').val();
-      window.app.router.navigateTo('s/' + encodeURIComponent(search.trim()) + '/');
+      if (search.trim())
+        window.app.router.navigateTo('s/' + encodeURIComponent(search.trim()) + '/');
+      else
+        window.app.router.navigateTo('/');
     }
   }
 });
