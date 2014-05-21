@@ -5,7 +5,8 @@ var _ = require('underscore');
 module.exports = Backbone.Collection.extend({
   model: Requirement,
   url: function () {
-    return '/api/pathway/' + this.parentId + '/requirement';
+    var id = this.parent ? this.parent._id : this.parentId;
+    return '/api/pathway/' + id + '/requirement';
   },
   initialize: function (opts) {
     opts = opts || {};

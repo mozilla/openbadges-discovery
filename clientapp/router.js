@@ -115,12 +115,6 @@ module.exports = Backbone.Router.extend({
       _id: id,
       userId: window.app.currentUser._id
     });
-    var requirements = new Requirements({
-      parentId: pledged._id
-    });
-    var notes = new Notes({
-      parentId: pledged._id
-    });
     var backpack = new Achievements({
       pageSize: 4,
       source: Achievements.BACKPACK
@@ -132,11 +126,9 @@ module.exports = Backbone.Router.extend({
     });
     backpack.fetch();
     wishlist.fetch();
-    $.when(pledged.fetch(), requirements.fetch(), notes.fetch()).done(function () {
+    $.when(pledged.fetch(), pledged.requirements.fetch(), pledged.notes.fetch()).done(function () {
       app.renderPage(new PledgedPage({
         model: pledged,
-        requirements: requirements,
-        notes: notes,
         addSources: {
           backpack: backpack,
           wishlist: wishlist

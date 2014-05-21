@@ -13,28 +13,26 @@ module.exports = HumanView.extend({
   initialize: function (opts) {
     opts = opts || {};
     this.addSources = opts.addSources;
-    this.requirements = opts.requirements || this.collection;
-    this.notes = opts.notes;
     this.listenTo(this.model, 'change', function (model) {
       model.save();
     });
-    this.listenTo(this.requirements, 'change', function (model) {
+    this.listenTo(this.model.requirements, 'change', function (model) {
       if (!model.isNew()) model.save();
     });
-    this.listenTo(this.requirements, 'positioned', function (model) {
+    this.listenTo(this.model.requirements, 'positioned', function (model) {
       model.save();
     });
-    this.listenTo(this.requirements, 'remove', function (model) {
+    this.listenTo(this.model.requirements, 'remove', function (model) {
       model.destroy();
     });
 
-    this.listenTo(this.notes, 'change', function (model) {
+    this.listenTo(this.model.notes, 'change', function (model) {
       if (!model.isNew()) model.save();
     });
-    this.listenTo(this.notes, 'positioned', function (model) {
+    this.listenTo(this.model.notes, 'positioned', function (model) {
       model.save();
     });
-    this.listenTo(this.notes, 'remove', function (model) {
+    this.listenTo(this.model.notes, 'remove', function (model) {
       model.destroy();
     });
   },
@@ -45,8 +43,8 @@ module.exports = HumanView.extend({
     });
 
     this.editor = new Editor({
-      requirements: this.requirements,
-      notes: this.notes,
+      requirements: this.model.requirements,
+      notes: this.model.notes,
       mode: 'edit'
     });
     this.renderSubview(this.editor, '.pathway-editor-container');
@@ -55,7 +53,7 @@ module.exports = HumanView.extend({
       sources: this.addSources
     });
     addPanel.on('add', function (models) {
-      this.requirements.add(models.map(function (model) {
+      this.model.requirements.add(models.map(function (model) {
         return Requirement.fromAchievement(model, {newFlag: true});
       }));
       this.moveToTop('#editorPanel');
@@ -101,6 +99,9 @@ module.exports = HumanView.extend({
   },
   events: {
     'click [data-stack]': 'handleStackButton',
+  },
+  classBindings: {
+    'complete': '.banner'
   },
   handleStackButton: function (evt) {
     this.moveToTop('#' + $(evt.currentTarget).data('stack'));

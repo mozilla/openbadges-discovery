@@ -86,7 +86,8 @@ header {
 .main-icon {
   width: 155px;
   height: 155px;
-  margin-top: 73px;
+  margin: 62px auto 16px auto;
+  display: block;
 }
 
 .dashboard-icon{
@@ -302,6 +303,36 @@ footer {
   }
 }
 
+.banner {
+  background: url(/static/banner-mid.svg) left top repeat;
+  display: inline-block;
+  height: 40px;
+  padding: 0 2em;
+  line-height: 30px;
+  color: white;
+  font-family: "Open Sans", helvetica, arial, sans-serif;
+  font-weight: normal;
+  position: relative;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 40px;
+    position: absolute;
+  }
+  &:before {
+    background: url(/static/banner-left.svg) right top no-repeat;
+    left: -36px;
+    top: 0;
+  }
+  &:after {
+    background: url(/static/banner-right.svg) left top no-repeat;
+    right: -36px;
+    top: 0;
+  }
+}
 .note-page {
   padding-bottom: 2em;
 
