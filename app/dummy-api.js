@@ -286,7 +286,18 @@ function createApp(opts) {
           });
           appData.requirements.insert(pledgedReqs, function (err) {
             if (err) throw err;
-            return res.json(pledged);
+            appData.notes.find({pathwayId: cloneId}, function (err, baseNotes) {
+              if (err) throw err;
+              var pledgedNotes = baseNotes.map(function(note) {
+                delete note._id;
+                note.pathwayId = pledged._id;
+                return note;
+              });
+              appData.notes.insert(pledgedNotes, function (err) {
+                if (err) throw err;
+                return res.json(pledged);
+              });
+            });
           });
         });
       });
