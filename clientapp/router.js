@@ -26,7 +26,7 @@ module.exports = Backbone.Router.extend({
   },
 
   routes: {
-    '(y/:type/)(t/:tag/)(c/:count/)': 'landing',
+    '(s/:search/)(y/:type/)(t/:tag/)(c/:count/)': 'landing',
     'badge/:id': 'showBadge',
     'pathway/:id': 'showPathway',
     'note/:id': 'showNote',
@@ -36,14 +36,16 @@ module.exports = Backbone.Router.extend({
     '*url': 'nope'
   },
 
-  landing: function (type, tag, count) {
+  landing: function (search, type, tag, count) {
     var initialCount = parseInt(count || 16);
     var listing = new Achievements([], {
       pageSize: 8,
       type: type,
-      tag: tag
+      tag: tag,
+      search: search
     });
     var args = {
+      s: search,
       y: type,
       t: tag,
       c: count
@@ -55,6 +57,9 @@ module.exports = Backbone.Router.extend({
     }
     else if (tag) {
       name = "#" + tag;
+    }
+    else if (search) {
+      name = "Search";
     }
     else {
       name = "Latest";

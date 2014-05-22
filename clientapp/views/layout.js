@@ -10,7 +10,8 @@ module.exports = HumanView.extend({
     'click .js-view-pathways': 'pathways',
     'click .js-view-badges': 'badges',
     'click .js-view-tag': 'tag',
-    'click .user-panel': 'dashboard'
+    'click .user-panel': 'dashboard',
+    'keyup .search-input': 'search'
   },
   render: function () {
     this.renderAndBind(this.model);
@@ -53,5 +54,14 @@ module.exports = HumanView.extend({
   },
   dashboard: function (evt) {
       window.app.router.navigateTo('dashboard');
+  },
+  search: function (evt) {
+    if (evt.keyCode === 13) {
+      var search = this.$('.search-input').val();
+      if (search.trim())
+        window.app.router.navigateTo('s/' + encodeURIComponent(search.trim()) + '/');
+      else
+        window.app.router.navigateTo('/');
+    }
   }
 });

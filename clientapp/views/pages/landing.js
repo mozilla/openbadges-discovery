@@ -29,7 +29,7 @@ module.exports = HumanView.extend({
   buildUrl: function (parts) {
     var args = _.extend({}, this.args, parts);
     var url = '';
-    var ordered = ['y', 't', 'c'];
+    var ordered = ['s', 'y', 't', 'c'];
     ordered.forEach(function (key) {
       if (args[key]) url += key + '/' + args[key] + '/';
     });

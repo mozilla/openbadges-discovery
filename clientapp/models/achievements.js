@@ -29,6 +29,7 @@ module.exports = Backbone.Collection.extend({
     };
     if (opts.type) this.params.type = opts.type;
     if (opts.tag) this.params.tag = opts.tag;
+    if (opts.search) this.params.search = opts.search;
   },
   sync: function (method, collection, options) {
     options.data = _.extend({}, this.params, options.data);
