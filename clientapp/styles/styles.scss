@@ -356,3 +356,25 @@ footer {
 .tall {
   height: 15em;
 }
+
+.ribbon {
+  background-color: #F2DE6D;
+  text-align: center;
+  height: 2em;
+  line-height: 2em;
+}
+
+@media #{$large-up} {
+  .ribbon {
+    width: 200px;
+    position: absolute;
+    right: 0;
+    top: -2em;
+    right: -60px;
+    transform-origin: left bottom;
+    -webkit-transform-origin: left bottom;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    box-shadow: 0 0 8px #888;
+  }
+}
