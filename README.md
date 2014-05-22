@@ -5,24 +5,20 @@ Discovery tool for Open Badges
 
 ## Quick Start
 
-Assuming a [neo4j database](docs/neo4j-installation.md)...
-
 ```bash
 npm install
 echo '{  
   "url": "http://localhost:3000",
   "cookie": {
     "secret": "macadamianuts"
-  },
-  "neo4j_url": "http://localhost:7474"
+  }
 }' > config.json
 DEV=1 node app
 ```
 
 Then navigate to http://localhost:3000.
 
-This app can also be [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku) if you 
-set up a [neo4j add-on](https://addons.heroku.com/graphenedb) as appropriate.
+This app can also be [deployed to Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-your-application-to-heroku).
 
 ## Configuration
 
@@ -34,7 +30,6 @@ Available app parameters are:
 * URL: **required** The url (protocol, host, port) where your app lives. This is used as the Persona audience, and must match what you see in your browser's url bar exactly.
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
-* NEO4J_URL: *optional* The neo4j database url to use. Defaults to http://localhost:7474.
 
 ### Alternatives
 
@@ -50,17 +45,55 @@ For example, ```node app --cookieSecret=macadamianuts``` or adding a `config.jso
 }
 ```
 
-are equivalent to using an environment parameter as shown in the quick start.
+are equivalent to setting `COOKIE_SECRET` in the environment.
 
 See [js-config-store](https://github.com/andrewhayward/js-config-store#config-store) for more information.
 
 ## Developers
 
-### Database Setup
+### Data Setup
 
-Currently some one-time database setup, and data population happens by running `bin/db-setup`. This will probably need
-to be replaced eventually with a more robust migration tactic of some sort, despite the fact that neo4j is more
-or less schema-less.
+This prototype currently uses [nedb] for non-persistent data storage, meaning user data is lost when the app is killed.
+It can be populated with some demo data in two ways: there is a fake data generator that may still work, and a module
+that can read data from a Google spreadsheet in a particular format described below.
+
+[nedb]: https://github.com/louischatriot/nedb
+
+#### Google spreadsheet data
+
+The Google data reader makes many assumptions about the format of the spreadsheet. In general to load data this way:
+
+* set the following configuration:
+    * `GOOGLE_EMAIL`: the email address of an account with read access on the spreadsheet
+    * `GOOGLE_PASSWARD`: the password for the same account
+    * `GOOGLE_KEY`: the spreadsheet key, found in the url e.g. `https://docs.google.com/spreadsheet/ccc?key={THIS IS THE KEY}&usp=drive_web#gid=0`
+* build your spreadsheet as follows
+    * define your badges using as many sheets as you would like with the following column names
+        * `Badge name`: name
+        * `Description`: description
+        * `Tags`: comma-separated list of tags
+        * `Creator`: creator
+        * `Image file`: url of badge image
+        * `Criteria`: criteria as HTML<sup>†</sup>
+        * `Keeping`: rows with a blank cell here will be skipped
+    * define your pathways, one sheet per pathway with the following column names
+        * `Name`: name
+        * `Description`: description
+        * `Image file`: url of pathway image
+        * `Tags`: comma-separated list of tags
+        * `Creator`: creator
+        * `Badge name`: name of badge to include in pathway
+        * `X`: x position on grid, starting at 0
+        * `Y`: y position on grid, starting at 0
+        * `Core`: any value here indicates this badge is core to this pathway
+        * `Note title`: title of note
+        * `Note body`: body of note
+    * on the first line, fill out `Name` through `Creator`
+    * for each badge in the pathway, fill out `Badge name` through `Core`
+    * for each note in the pathway, fill out `X`, `Y`, `Note title`, and `Note body`
+    * make sure all pathway sheets have the word "pathway" in the sheet name
+
+<sup>†</sup> This mimics retreiving the criteria url a badge would normally provide and parsing the content there to retrieve an HTML snippet for display.
 
 ### Precommit Hooks
 
