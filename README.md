@@ -95,6 +95,7 @@ The Google data reader makes many assumptions about the format of the spreadshee
     * make sure all pathway sheets have the word "pathway" in the sheet name
 
 <sup>†</sup> This is an older style of Google spreadsheet url, YMMV on the newer updated style.
+
 <sup>‡</sup> This mimics retreiving the criteria url a badge would normally provide and parsing the content there to retrieve an HTML snippet for display.
 
 ### Precommit Hooks
