@@ -358,10 +358,22 @@ footer {
 }
 
 .ribbon {
-  background-color: #F2DE6D;
+  background-color: #fc9141;
+  color: white;
   text-align: center;
-  height: 2em;
-  line-height: 2em;
+  text-transform: uppercase;
+  font-family: "Open Sans Semibold";
+  font-weight: bold;
+  font-style: normal;
+  font-size: 16px;
+  height: 32px;
+  line-height: 32px;
+
+  img {
+    height: 14px;
+    vertical-align: -2px;
+    margin-left: 0.25em;
+  }
 }
 
 @media #{$large-up} {

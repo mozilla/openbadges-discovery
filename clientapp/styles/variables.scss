@@ -30,6 +30,16 @@ $six-wide: 100%;
 }
 
 @font-face {
+  font-family: "Open Sans Semibold";
+  font-style: normal;
+  font-weight: bold;
+  src: url("/static/fonts/OpenSans-Semibold-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/static/fonts/OpenSans-Semibold-webfont.woff") format("woff"),
+       url("/static/fonts/OpenSans-Semibold-webfont.ttf") format("truetype"),
+       url("/static/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold") format("svg");
+}
+
+@font-face {
   font-family: "Open Sans Light";
   font-style: normal;
   font-weight: normal;
