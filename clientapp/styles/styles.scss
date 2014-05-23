@@ -356,3 +356,37 @@ footer {
 .tall {
   height: 15em;
 }
+
+.ribbon {
+  background-color: #fc9141;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Open Sans Semibold";
+  font-weight: bold;
+  font-style: normal;
+  font-size: 16px;
+  height: 32px;
+  line-height: 32px;
+
+  img {
+    height: 14px;
+    vertical-align: -2px;
+    margin-left: 0.25em;
+  }
+}
+
+@media #{$large-up} {
+  .ribbon {
+    width: 200px;
+    position: absolute;
+    right: 0;
+    top: -2em;
+    right: -60px;
+    transform-origin: left bottom;
+    -webkit-transform-origin: left bottom;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    box-shadow: 0 0 8px #888;
+  }
+}
