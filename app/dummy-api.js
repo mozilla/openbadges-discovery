@@ -360,9 +360,15 @@ function createApp(opts) {
   });
 
   app.get('/refresh', function (req, res, next) {
-    appData = undefined;
-    lazyLoad(req, res, function (err) {
-      if (err) return next(err);
+    var steps = [];
+    Object.keys(appData).forEach(function (key) {
+      steps.push(function (cb) {
+        appData[key].remove({}, {multi: true}, cb);
+      });
+    });
+    async.parallel(steps, function(err, results) {
+      if (err) throw err;
+      appData = undefined;
       res.redirect('/');
     });
   });

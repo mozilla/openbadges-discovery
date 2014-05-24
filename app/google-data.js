@@ -97,6 +97,7 @@ function value(val, def) {
 function processBadges(cells, cb) {
   log('Fetched %d cells', cells.length);
   var result = cells.filter(function (cell) {
+    if (!cell.keeping) log("Skipping", cell.badgename);
     return cell.keeping;
   }).map(function (cell) {
     var badge = {
