@@ -1,4 +1,4 @@
-const api = require('../../app/dummy-api');
+const api = require('../../app/api');
 const should = require('should');
 const request = require('supertest');
 const _ = require('underscore');
