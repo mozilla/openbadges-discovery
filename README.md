@@ -5,12 +5,18 @@ Discovery tool for Open Badges
 
 ## Quick Start
 
+With mongo running locally...  
+
 ```bash
 npm install
 echo '{  
   "url": "http://localhost:3000",
   "cookie": {
     "secret": "macadamianuts"
+  },
+  "database": {
+    "app": "mongodb://127.0.0.1:27017/app",
+    "test": "mongodb://127.0.0.1:27017/test"
   }
 }' > config.json
 DEV=1 node app
@@ -30,6 +36,8 @@ Available app parameters are:
 * URL: **required** The url (protocol, host, port) where your app lives. This is used as the Persona audience, and must match what you see in your browser's url bar exactly.
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
+* DATABASE_APP: Mongo url for your app database
+* DATABASE_TEST: Mongo url for your test database
 
 ### Alternatives
 
@@ -53,11 +61,8 @@ See [js-config-store](https://github.com/andrewhayward/js-config-store#config-st
 
 ### Data Setup
 
-This prototype currently uses [nedb] for non-persistent data storage, meaning user data is lost when the app is killed.
-It can be populated with some demo data in two ways: there is a fake data generator that may still work, and a module
-that can read data from a Google spreadsheet in a particular format described below.
-
-[nedb]: https://github.com/louischatriot/nedb
+`app/fake-data.js` is currently defunct. You can run `node app/google-data` to wipe the app database and load in initial
+data from a Google spreadsheet as detailed below.
 
 #### Google spreadsheet data
 
