@@ -4,8 +4,9 @@ const config = require('./lib/config');
 const _ = require('underscore');
 const async = require('async');
 const request = require('request');
-const db = require('./dummy-db').singleton;
+const db = require('./lib/db');
 const fakeData = require('./fake-data');
+const ObjectID = require('mongodb').ObjectID;
 
 function log () {
   if (config('DEV', false)) console.log.apply(null, arguments);
@@ -13,27 +14,9 @@ function log () {
 
 function createApp(opts) {
   opts = opts || {};
+  var db = opts.db;
 
   var app = express();
-
-  var generator = opts.dataGenerator || fakeData;
-  var appData;
-  var loading = false;
-  function lazyLoad (req, res, next) {
-    if (appData) return next();
-    function wait() {
-      if (!appData) return setTimeout(wait, 250);
-      next();
-    }
-    if (loading) return wait();
-    loading = true;
-    return generator(db, function (err, dataStores) {
-      appData = dataStores;
-      loading = false;
-      return next(err);
-    });
-  }
-  app.use(lazyLoad);
 
   app.use(express.bodyParser());
   app.use(function (req, res, next) {
@@ -42,23 +25,38 @@ function createApp(opts) {
   });
 
   app.use(function (req, res, next) {
-    if (req.session && req.session.user) req.userId = req.session.user._id;
+    if (req.session && req.session.user) req.userId = new ObjectID(req.session.user._id);
     var pagination = req.pagination = {};
     if (!Number.isNaN(parseInt(req.query.pageSize))) pagination.pageSize = parseInt(req.query.pageSize);
     pagination.after = parseInt(req.query.after) || Date.now();
     next();
   });
 
+  app.use(function (req, res, next) {
+    if (req.body && typeof req.body === 'object') {
+      Object.keys(req.body).forEach(function (key) {
+        if (key.match(/^_id|.*Id$/))
+          req.body[key] = new ObjectID(req.body[key]);
+      });
+      next();
+    }
+  });
+
   function addFavs (docs, uid, cb) {
-    if (!_.isArray(docs)) docs = [docs];
+    var single = false;
+    if (!_.isArray(docs)) {
+      docs = [docs];
+      single = true;
+    }
     var itemIds = _.pluck(docs, '_id');
-    return appData.favorites.find({userId: uid, itemId: {$in: itemIds}}, function (err, favs) {
+    return db.favorites.find({userId: uid, itemId: {$in: itemIds}}).toArray(function (err, favs) {
       if (err) cb(err);
+      favs = favs.map(function (fav) { fav.itemId = fav.itemId.toString(); return fav; });
       docs.forEach(function (doc) {
-        var entry = _.findWhere(favs, {itemId: doc._id});
+        var entry = _.findWhere(favs, {itemId: doc._id.toString()});
         doc.favorite = entry ? entry.favorite : false;
       });
-      return cb(null, docs.length === 1 ? docs[0] : docs);
+      return cb(null, single ? docs[0] : docs);
     });
   }
 
@@ -81,7 +79,7 @@ function createApp(opts) {
       ];
     }
 
-    appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
+    db.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).toArray(function (err, docs) {
       if (err) throw err;
       if (req.userId) {
         return addFavs(docs, req.userId, function (err, docs) {
@@ -97,8 +95,8 @@ function createApp(opts) {
   app.get('/pathway/:id', getAchievement);
   app.get('/achievement/:id', getAchievement);
   function getAchievement(req, res, next) {
-    var id = req.params.id;
-    appData.achievements.findOne({_id: id}, function (err, doc) {
+    var id = new ObjectID(req.params.id);
+    db.achievements.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       if (doc) {
         if (req.userId) {
@@ -117,12 +115,12 @@ function createApp(opts) {
   app.patch('/pathway/:id', setFavorite);
   app.patch('/achievement/:id', setFavorite);
   function setFavorite(req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
     if (!req.userId) res.send(403);
 
     var data = _.pick(req.body, 'favorite');
-    appData.favorites.update({userId: req.userId, itemId: id}, {$set: data}, {upsert: true}, function (err) {
+    db.favorites.update({userId: req.userId, itemId: id}, {$set: data}, {safe: true, upsert: true}, function (err) {
       if (err) throw err;
       return res.json({});
     });
@@ -130,26 +128,28 @@ function createApp(opts) {
 
   app.post('/note', function (req, res, next) {
     var note = req.body;
-    appData.notes.insert(note, function (err, doc) {
+    db.notes.insert(note, {safe:true}, function (err, docs) {
       if (err) throw err;
+      var doc = docs[0];
       return res.json({_id: doc._id});
     });
   });
 
   app.get('/note/:id', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.notes.findOne({_id: id}, function (err, doc) {
+    db.notes.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       return res.json(doc);
     });
   });
 
   app.put('/note/:id', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
     var note = req.body;
-    appData.notes.update({_id: id}, {$set: note}, {upsert: true}, function (err, num, newDoc) {
+    delete note._id;
+    db.notes.update({_id: id}, {$set: note}, {safe:true, upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
       var changed = {};
       if (newDoc && newDoc._id !== id) changed._id = newDoc._id;
@@ -158,45 +158,47 @@ function createApp(opts) {
   });
 
   app.delete('/note/:id', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.notes.remove({_id: id}, function (err, num) {
+    db.notes.remove({_id: id}, function (err, num) {
       if (err) throw err;
       return res.send(200);
     });
   });
 
   app.get('/pathway/:id/requirement', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.requirements.find({pathwayId: id}, function (err, docs) {
+    db.requirements.find({pathwayId: id}).toArray(function (err, docs) {
       if (err) throw err;
       return res.json(docs);
     });
   });
 
   app.post('/pathway/:pid/requirement', function (req, res, next) {
-    var pid = req.params.pid;
+    var pid = new ObjectID(req.params.pid);
     var requirement = req.body;
     requirement.pathwayId = pid;
-    appData.requirements.insert(requirement, function (err, doc) {
+    db.requirements.insert(requirement, function (err, docs) {
       if (err) throw err;
+      var doc = docs[0];
       return res.json({_id: doc._id});
     });
   });
 
   app.put('/pathway/:pid/requirement/:rid', function (req, res, next) {
-    var pid = req.params.pid;
-    var rid = req.params.rid;
+    var pid = new ObjectID(req.params.pid);
+    var rid = new ObjectID(req.params.rid);
 
     var requirement = req.body;
     requirement.pathwayId = pid;
+    delete requirement._id;
     if (requirement.hasOwnProperty('complete') && req.userId) {
       var entry = {userId: req.userId, itemId: requirement.badgeId};
-      if (requirement.complete) appData.earned.update(entry, {$set: entry}, {upsert: true});
-      else appData.earned.remove(entry);
+      if (requirement.complete) db.earned.update(entry, {$set: entry}, {upsert: true, safe: false});
+      else db.earned.remove(entry, {safe: false});
     }
-    appData.requirements.update({_id: rid}, {$set: req.body}, {upsert: true}, function (err, num, newDoc) {
+    db.requirements.update({_id: rid}, {$set: requirement}, {upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
       var changed = {};
       if (newDoc && newDoc._id !== rid) changed._id = newDoc._id;
@@ -205,44 +207,43 @@ function createApp(opts) {
   });
 
   app.delete('/pathway/:pid/requirement/:rid', function (req, res, next) {
-    var pid = req.params.pid;
-    var rid = req.params.rid;
+    var rid = new ObjectID(req.params.rid);
 
-    appData.requirements.remove({_id: rid}, function (err, num) {
+    db.requirements.remove({_id: rid}, function (err, num) {
       if (err) throw err;
       return res.send(200);
     });
   });
 
   app.get('/pathway/:id/note', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.notes.find({pathwayId: id}, function (err, docs) {
+    db.notes.find({pathwayId: id}).toArray(function (err, docs) {
       if (err) throw err;
       return res.json(docs);
     });
   });
 
   app.get('/user/:uid/earned', function (req, res, next) {
-    var uid = req.params.uid;
-    appData.earned.find({userId: uid}, function (err, docs) {
+    var uid = new ObjectID(req.params.uid);
+    db.earned.find({userId: uid}).toArray(function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
       var query = {
         _id: {$in: ids},
         created_at: {$lt: req.pagination.after}
       };
-      appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
+      db.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).toArray(function (err, docs) {
         return res.json(docs);
       });
     });
   });
 
   app.get('/user/:uid/favorite', function (req, res, next) {
-    var uid = req.params.uid;
+    var uid = new ObjectID(req.params.uid);
     var type = req.query.type;
 
-    appData.favorites.find({userId: uid, favorite: true}, function (err, docs) {
+    db.favorites.find({userId: uid, favorite: true}).toArray(function (err, docs) {
       if (err) throw err;
       var ids = _.pluck(docs, 'itemId');
       var query = {
@@ -250,7 +251,7 @@ function createApp(opts) {
         created_at: {$lt: req.pagination.after}
       };
       if (type) query.type = type;
-      appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
+      db.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).toArray(function (err, docs) {
         docs = docs.map(function (doc) {
           doc.favorite = true;
           return doc;
@@ -261,7 +262,7 @@ function createApp(opts) {
   });
 
   app.get('/user/:id/pledged', function (req, res, next) {
-    var userId = req.params.id;
+    var userId = new ObjectID(req.params.id);
 
     var query = {
       userId: userId,
@@ -269,76 +270,93 @@ function createApp(opts) {
         $lt: req.pagination.after
       }
     };
-    appData.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).exec(function (err, docs) {
+    db.achievements.find(query).sort({created_at: -1}).limit(req.pagination.pageSize).toArray(function (err, docs) {
       if (err) throw err;
       return res.json(docs);
     });
   });
 
   app.post('/user/:id/pledged', function (req, res, next) {
-    var cloneId = req.body.cloneId;
-    var userId = req.params.id;
+    var cloneId = new ObjectID(req.body.cloneId);
+    var userId = new ObjectID(req.params.id);
 
-    appData.achievements.findOne({_id: cloneId}, function (err, base) {
+    db.achievements.findOne({_id: cloneId}, function (err, base) {
       if (err) throw err;
       if (!base) res.send(404);
       delete base._id;
       base.userId = userId;
       base.created_at = Date.now();
-      appData.achievements.insert(base, function (err, pledged) {
+      db.achievements.insert(base, function (err, pledged) {
         if (err) throw err;
-        appData.requirements.find({pathwayId: cloneId}, function (err, baseReqs) {
-          if (err) throw err;
-          var pledgedReqs = baseReqs.map(function(req) {
-            delete req._id;
-            req.pathwayId = pledged._id;
-            return req;
-          });
-          appData.requirements.insert(pledgedReqs, function (err) {
-            if (err) throw err;
-            appData.notes.find({pathwayId: cloneId}, function (err, baseNotes) {
+        pledged = pledged[0];
+        async.parallel([
+          function (cb) {
+            db.requirements.find({pathwayId: cloneId}).toArray(function (err, baseReqs) {
               if (err) throw err;
-              var pledgedNotes = baseNotes.map(function(note) {
-                delete note._id;
-                note.pathwayId = pledged._id;
-                return note;
-              });
-              appData.notes.insert(pledgedNotes, function (err) {
-                if (err) throw err;
-                return res.json(pledged);
-              });
+              if (baseReqs.length) {
+                var pledgedReqs = baseReqs.map(function(req) {
+                  delete req._id;
+                  req.pathwayId = pledged._id;
+                  return req;
+                });
+                db.requirements.insert(pledgedReqs, {safe: true}, cb);
+              }
+              else {
+                cb(null);
+              }
             });
-          });
+          },
+          function (cb) {
+            db.notes.find({pathwayId: cloneId}).toArray(function (err, baseNotes) {
+              if (err) throw err;
+              if (baseNotes.length) {
+                var pledgedNotes = baseNotes.map(function(note) {
+                  delete note._id;
+                  note.pathwayId = pledged._id;
+                  return note;
+                });
+                db.notes.insert(pledgedNotes, {safe: true}, cb);
+              }
+              else {
+                return cb(null);
+              }
+            });
+          }
+        ], function (err) {
+          if (err) throw err;
+          return res.json(pledged);
         });
       });
     });
   });
 
   app.get('/user/:uid/pledged/:id', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.achievements.findOne({_id: id}, function (err, doc) {
+    db.achievements.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       return res.json(doc);
     });
   });
 
   app.put('/user/:uid/pledged/:id', function (req, res, next) {
-    var id = req.params.id;
+    var id = new ObjectID(req.params.id);
 
-    appData.achievements.update({_id: id}, {$set: req.body}, function (err, doc) {
+    var pledged = req.body;
+    delete pledged._id;
+    db.achievements.update({_id: id}, {$set: pledged}, function (err, doc) {
       if (err) throw err;
       return res.json({});
     });
   });
 
   app.get('/user/:uid/stats', function (req, res, next) {
-    var id = req.params.uid;
+    var id = new ObjectID(req.params.uid);
 
     async.parallel({
-      earned: appData.earned.count.bind(appData.earned, {userId: id}),
-      favorited: appData.favorites.count.bind(appData.favorites, {userId: id}),
-      pledged: appData.achievements.count.bind(appData.achievements, {userId: id})
+      earned: db.earned.count.bind(db.earned, {userId: id}),
+      favorited: db.favorites.count.bind(db.favorites, {userId: id}),
+      pledged: db.achievements.count.bind(db.achievements, {userId: id})
     }, function (err, results) {
       if (err) throw err;
       return res.json(results);
@@ -346,8 +364,8 @@ function createApp(opts) {
   });
 
   app.get('/image/:id', function (req, res, next) {
-    var id = req.params.id;
-    appData.achievements.findOne({_id: id}, function (err, doc) {
+    var id = new ObjectID(req.params.id);
+    db.achievements.findOne({_id: id}, function (err, doc) {
       if (err) throw err;
       if (!doc || !doc.imgSrc) return res.send(400);
       res.header('Cache-Control', 'public, max-age=86400');
@@ -360,11 +378,7 @@ function createApp(opts) {
   });
 
   app.get('/refresh', function (req, res, next) {
-    appData = undefined;
-    lazyLoad(req, res, function (err) {
-      if (err) return next(err);
-      res.redirect('/');
-    });
+    res.send(418);
   });
 
   app.all('*', function (req, res, next) {
@@ -376,13 +390,16 @@ function createApp(opts) {
 
 if (!module.parent) {
   const PORT = config('PORT', 3001);
-  var app = createApp();
-  app.listen(PORT, function(err) {
-    if (err) {
-      throw err;
-    }
+  db.get('FIXME', function (err, db) {
+    if (err) throw err;
+    var app = createApp({db: db});
+    app.listen(PORT, function(err) {
+      if (err) {
+        throw err;
+      }
 
-    log('Listening on port ' + PORT + '.');
+      log('Listening on port ' + PORT + '.');
+    });
   });
 } else {
   module.exports.createServer = function(opts) {

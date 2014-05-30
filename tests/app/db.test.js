@@ -1,129 +1,62 @@
-const db = require('../../app/lib/db');
-const async = require('async');
-const stream = require('stream');
+var should = require('should');
+var async = require('async');
+var db = require('../../app/lib/db');
 
-describe.skip('db', function () {
+describe('DB', function () {
+  after(function () {
+    db.closeAll();
+  });
 
-  describe('callback API', function () {
-    beforeEach(function (done) {
-      db.deleteAll(done);
-    });
-
-    it('should query', function (done) {
-      db.query('CREATE n RETURN n', {}, function (err, results) {
+  it('should reuse database connection', function (done) {
+    db.get('test', function (err, db1) {
+      if (err) return done(err);
+      db.get('test', function (err, db2) {
         if (err) return done(err);
-        results.length.should.equal(1);
+        db1.should.equal(db2);
         done();
       });
     });
+  });
 
-    it('should make query params optional', function (done) {
-      db.query('CREATE n RETURN n', function (err, results) {
+  it('should be able to connect to multiple dbs', function (done) {
+    db.get('test1', function (err, db1) {
+      if (err) return done(err);
+      db.get('test2', function (err, db2) {
         if (err) return done(err);
-        results.length.should.equal(1);
+        db1.should.not.equal(db2);
         done();
       });
     });
+  });
 
-    it('should return results as list of row objects keyed by column name', function (done) {
-      db.query('CREATE (n {params}) RETURN n', {params:[
-        {name: 'a'}, {name: 'b'}
-      ]}, function (err, results) {
-        if (err) return done(err);
-        results.length.should.equal(2);
-        results[0].should.be.an.Object;
-        results[0].should.have.key('n');
-        results[1].should.be.an.Object;
-        results[1].should.have.key('n');
-        done();
-      });
-    });
-
-    it('should return nodes as data objects with ids', function (done) {
-      db.query('CREATE (n {params}) RETURN n', {params:[
-        {name: 'a'}, {name: 'b'}
-      ]}, function (err, results) {
-        if (err) return done(err);
-        results[0].n.should.be.an.Object;
-        results[0].n.should.have.keys('id', 'name');
-        results[0].n.id.should.be.a.Number;
-        done();
-      });
-    });
-
-    it('should key row objects by RETURN variables', function (done) {
-      db.query('CREATE (n:Foo {params}) RETURN n as thing, "hi" as greeting', {params:[
-        {name: 'a'}, {name: 'b'}
-      ]}, function (err, results) {
-        if (err) return done(err);
-        results[0].should.have.keys('thing', 'greeting');
-        done();
-      });
-    });
-
-    it('should delete all', function (done) {
+  it('should remove all docs in all collections', function (done) {
+    db.get('test', function (err, db) {
+      if (err) return done(err);
       async.series([
         function (cb) {
-          db.query('CREATE (n {params}) RETURN n', {
-            params: [
-              {name: 'a'},
-              {name: 'b'},
-              {name: 'c'}
-            ]
-           }, function (err, results) {
+          db.achievements.insert({hello: 'world'}, {safe: true}, cb);
+        },
+        function (cb) {
+          db.notes.insert({hello: 'note'}, {safe: true}, cb);
+        },
+        function (cb) {
+          db.removeAll(cb);
+        },
+        function (cb) {
+          db.achievements.count(function (err, count) {
             if (err) return cb(err);
-            results.length.should.equal(3);
+            count.should.equal(0);
             cb();
           });
         },
         function (cb) {
-          db.query('CREATE ()-[r:touches]->() RETURN r', {}, function (err, results) {
+          db.notes.count(function (err, count) {
             if (err) return cb(err);
-            results.length.should.equal(1);
-            cb();
-          });
-        },
-
-        db.deleteAll,
-
-        function (cb) {
-          db.query('MATCH n RETURN n', {}, function (err, results) {
-            if (err) return cb(err);
-            results.length.should.equal(0);
+            count.should.equal(0);
             cb();
           });
         }
       ], done);
-    });
-  });
-
-  describe('stream API', function () {
-    beforeEach(function (done) {
-      db.deleteAll(done);
-    });
-
-    it('should emit rows', function (done) {
-      var s = db.queryStream('CREATE (n {params}) RETURN n', {params: [
-        {name: 'a'}, {name: 'b'}, {name: 'c'}
-      ]});
-      var count = 0;
-      s.on('data', function (row) {
-        row.should.have.keys('n');
-        count++;
-      });
-      s.on('end', function () {
-        count.should.equal(3);
-        done();
-      });
-    });
-
-    it('should emit error', function (done) {
-      var s = db.queryStream('THIS IS NOT VALID CYPHER');
-      s.on('error', function (err) {
-        err.should.be.an.Object;
-        err.should.have.properties('message', 'exception', 'fullname', 'stacktrace');
-        done();
-      });
     });
   });
 });
