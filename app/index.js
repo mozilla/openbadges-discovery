@@ -101,7 +101,7 @@ function createServer(opts) {
 }
 
 if (!module.parent) {
-  db.get('FIXME', function (err, db) {
+  db.get('app', function (err, db) {
     var app = createServer({db: db});
     app.listen(PORT, function(err) {
       if (err) {

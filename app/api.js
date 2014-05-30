@@ -390,7 +390,7 @@ function createApp(opts) {
 
 if (!module.parent) {
   const PORT = config('PORT', 3001);
-  db.get('FIXME', function (err, db) {
+  db.get('app', function (err, db) {
     if (err) throw err;
     var app = createApp({db: db});
     app.listen(PORT, function(err) {

@@ -1,4 +1,5 @@
 var async = require('async');
+var config = require('./config');
 var MongoClient = require('mongodb').MongoClient;
 
 if (!global.hasOwnProperty('db')) {
@@ -31,10 +32,11 @@ function Database(db) {
 }
 
 function get(name, cb) {
+  var mongoUrl = config('DATABASE_' + name);
   if (!global.db[name]) {
     global.db[name] = 'connecting';
-    MongoClient.connect('mongodb://127.0.0.1:27017/' + name, function (err, db) {
-      if (err) global.db[name] = undefined;
+    MongoClient.connect(mongoUrl, function (err, db) {
+      if (err) throw err;
       else global.db[name] = new Database(db);
       cb(err, global.db[name]);
     });

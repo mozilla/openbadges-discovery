@@ -202,7 +202,7 @@ function Loader (name) {
 }
 
 if (!module.parent) {
-  load('FIXME', function () {
+  load('app', function () {
     log('Done.'); 
   });
 }

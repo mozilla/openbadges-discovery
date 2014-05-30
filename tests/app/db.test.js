@@ -18,17 +18,6 @@ describe('DB', function () {
     });
   });
 
-  it('should be able to connect to multiple dbs', function (done) {
-    db.get('test1', function (err, db1) {
-      if (err) return done(err);
-      db.get('test2', function (err, db2) {
-        if (err) return done(err);
-        db1.should.not.equal(db2);
-        done();
-      });
-    });
-  });
-
   it('should remove all docs in all collections', function (done) {
     db.get('test', function (err, db) {
       if (err) return done(err);
