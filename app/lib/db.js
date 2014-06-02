@@ -1,81 +1,62 @@
-var url = require('url');
+var async = require('async');
 var config = require('./config');
-var request = require('request');
-var _ = require('underscore');
-var Neo4jStreamDeserializer = require('./neo4j-stream-deserializer');
-var util = require('util');
+var MongoClient = require('mongodb').MongoClient;
 
-var BASE = config('NEO4J_URL', 'http://localhost:7474');
+if (!global.hasOwnProperty('db')) {
+  global.db = {};
+}
+
+function Database(db) {
+  var self = this;
+  self.db = db;
+
+  var collections = [ 
+    'achievements', 
+    'requirements', 
+    'favorites', 
+    'users', 
+    'earned',
+    'notes'
+  ];
+  collections.forEach(function (name) {
+    self[name] = db.collection(name); 
+  });
+
+  self.removeAll = function (cb) {
+    async.each(collections, function (name, cb) {
+      self[name].remove(cb);
+    }, cb);
+  };
+
+  return self;
+}
+
+function get(name, cb) {
+  var mongoUrl = config('DATABASE_' + name);
+  if (!global.db[name]) {
+    global.db[name] = 'connecting';
+    MongoClient.connect(mongoUrl, function (err, db) {
+      if (err) throw err;
+      else global.db[name] = new Database(db);
+      cb(err, global.db[name]);
+    });
+  }
+  else if (global.db[name] === 'connecting') {
+    setTimeout(getDb.bind(null, name, cb), 0);
+  }
+  else {
+    cb(null, global.db[name]);
+  }
+}
+
+function closeAll() {
+  Object.keys(global.db).forEach(function (key) {
+    global.db[key].db.close();
+    global.db[key] = undefined;
+  });
+}
 
 module.exports = {
-  query: function run (query, params, cb) {
-    if (typeof params === 'function') {
-      cb = params;
-      params = {};
-    }
-
-    var r = module.exports.queryStream(query, params);
-    var results = [];
-    r.on('error', function (err) {
-      return cb(err);
-    });
-    r.on('data', function(row) {
-      results.push(row);
-    });
-    r.on('end', function() {
-      cb(null, results);
-    });
-  },
-
-  deleteAll: function (cb) {
-    var uri = url.resolve(BASE, '/db/data/transaction/commit');
-    return request({
-      uri: uri,
-      method: 'POST',
-      json: {
-        statements: [
-          {statement: "MATCH n-[r]->() DELETE n,r"},
-          {statement: "MATCH n DELETE n"}
-        ]
-      },
-      //qs: { includeStats: true }
-    }, function (err, response, body) {
-      if (err && err.code && err.code === 'ECONNREFUSED')
-        err = new Error("Unable to connect to " + uri + " (Is the Neo4j server running?)");
-
-      if (err) return cb(err);
-      if (body && body.errors.length) return cb(new Error('Delete statements returned errors'));
-      if (response.statusCode !== 200) return cb(new Error('Status code ' + response.statusCode));
-      cb();
-    });
-  },
-
-  queryStream: function (query, params) {
-    params = params || {};
-
-    var uri = url.resolve(BASE, '/db/data/cypher');
-    var r = request({
-      uri: uri,
-      headers: {
-        'X-Stream': true
-      },
-      method: 'POST',
-      json: {
-        query : query,
-        params: params
-      }
-      //qs: { includeStats: true }
-    });
-    var d = new Neo4jStreamDeserializer();
-    r.on('error', function (err) {
-      if (err.code && err.code === 'ECONNREFUSED')
-        throw new Error("Unable to connect to " + uri + " (Is the Neo4j server running?)");
-      else
-        throw new Error(util.format('Unable to POST to %s: %s', uri, err.message));
-    });
-    r.on('response', function (response) {
-      if (response.statusCode !== 200) d.error(response.statusCode);
-    });
-    return r.pipe(d);
-  }
+  get: get,
+  closeAll: closeAll
 };
