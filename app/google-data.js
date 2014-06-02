@@ -115,14 +115,14 @@ function Loader (name) {
   function processBadges(cells, cb) {
     log('Fetched %d cells', cells.length);
     var result = cells.filter(function (cell) {
-      return cell.keeping;
+      return cell.keeping && cell.keeping.trim();
     }).map(function (cell) {
       var badge = {
         type: 'badge',
-        title: value(cell.badgename, "No title in " + cell.title),
+        title: value(cell.badgename.trim(), "No title in " + cell.title),
         description: value(cell.description, "No description in " + cell.title),
         tags: value(cell.tags, []),
-        creator: cell.creator || "A. Creator",
+        creator: cell.creator,
         imgSrc: value(cell.imagefile, ''),
         criteria: cell.criteria
       };
@@ -169,17 +169,17 @@ function Loader (name) {
           });
         }
         else {
-          self.dataStore.achievements.findOne({title: cell.badgename}, function (err, badge) {
+          self.dataStore.achievements.findOne({title: cell.badgename.trim()}, function (err, badge) {
             if (err) throw err;
             if (!badge) {
-              log('Could not find badge', cell.badgename);
+              log('Could not find badge', cell.badgename.trim());
               return cb(null);
             }
             var requirement = {
               pathwayId: id,
               x: _.isNaN(cell.x) ? 1 : cell.x,
               y: _.isNaN(cell.y) ? rowY : cell.y,
-              name: cell.badgename,
+              name: cell.badgename.trim(),
               core: !!cell.core,
               badgeId: new ObjectID(badge._id)
             };
