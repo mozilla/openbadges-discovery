@@ -169,10 +169,12 @@ function Loader (name) {
           });
         }
         else {
-          self.dataStore.achievements.findOne({title: cell.badgename.trim()}, function (err, badge) {
+          self.dataStore.achievements.find({title: cell.badgename.trim()}).toArray(function (err, badges) {
             if (err) throw err;
+            if (badges.length > 1) log('Found duplicates for', cell.badgename.trim());
+            var badge = badges[0];
             if (!badge) {
-              log('Could not find badge', cell.badgename.trim());
+              log('Could not find badge', cell.badgename.trim(), 'in', pathway.title);
               return cb(null);
             }
             var requirement = {
