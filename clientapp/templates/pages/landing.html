@@ -4,15 +4,11 @@
   <section class="landing-title-section">
     <div class="row text-center landing-title">
       <div class="medium-9 columns">
-        {% if app.currentUser.loggedIn %}
-          <p>Welcome! Now that you are all settled help us help you. Tell us what you like doing so we can make some recommendations.</p>
-        {% else %}
-          <p>Explore pathways to career opportunities. Discover your own personalized journey with Open Badges. Learn valued skills and navigate your potential along the way!</p>
+        {% if not app.currentUser.loggedIn %}
+          <p>Design the path to your dream job. Mozilla's Discover project helps you identify an amazing career, then map the skills and experiences you need to land it. </p>
         {% endif %}
       </div>
-      {% if app.currentUser.loggedIn %}
-        <a href="https://docs.google.com/a/varelidi.com/forms/d/1T0FqgLKYw0cLUPvxirTZ2UIvOJHVZYtC71cU8jU1I24/viewform" class="button button-callout">Take the Quiz  &raquo;</a>
-      {% else %}
+      {% if not app.currentUser.loggedIn %}
         <a href="#" class="button button-callout js-login">Log In Using Persona &raquo;</a>
       {% endif %}
     </div>
