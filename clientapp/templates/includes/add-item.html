@@ -2,19 +2,21 @@
   <div class="achievement">
     <div class="token">
       <label class="add-selector">
+        <span href="#" class="item-link js-view-item">
         <img src="{{image}}">
-        <input type="checkbox" class="js-add-item" data-id="{{_id}}">
-        <span class="add-checkbox"> </span>
+        {% if type == 'badge' %}
+          <img src="/static/badgeIconBadge.svg" class="badge-icon">
+        {% else %}
+          <img src="/static/badgeIconPathway.svg" class="pathway-icon">
+        {% endif %}
+          <input type="checkbox" class="js-add-item" data-id="{{_id}}">
+          <span class="add-checkbox"> </span>
+        </span>
       </label>
     </div>
     <div class="data">
-      <h5>{{title}}</h5>
-      {% for tag in tags %}
-        <span class="label achievement-tag">#{{tag}}</span>
-      {% endfor %}
-      <div>
-        Created by {{creator}}
-      </div>
+      <h5 class="data-badge-title">{{title}}</h5>
+      <h5 class="data-created-by">{% if creatorDisplay %}Created by {{creatorDisplay}}{% endif %}</h5>
     </div>
   </div>
 </li>
