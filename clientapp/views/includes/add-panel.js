@@ -13,7 +13,7 @@ module.exports = HumanView.extend({
     this.renderAndBind();
     this.backpackList = new ItemList({collection: this.backpack});
     this.wishlistList = new ItemList({collection: this.wishlist});
-    this.renderSubview(this.backpackList, '.js-backpack-items');
+    //this.renderSubview(this.backpackList, '.js-backpack-items'); hiding earned badges for demo
     this.renderSubview(this.wishlistList, '.js-wishlist-items');
     return this;
   },
