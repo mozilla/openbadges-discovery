@@ -17,7 +17,7 @@
     </div>
     <div class="data">
       <h5 class="data-badge-title">{{title}}</h5>
-      <h5 class="data-created-by">Created by {{creatorDisplay}}</h5>
+      <h5 class="data-created-by">{% if creatorDisplay %}Created by {{creatorDisplay}}{% endif %}</h5>
       {% for tag in tags %}
         <a class="label achievement-tag js-tag" data-tag="{{tag}}">#{{tag}}</a>
       {% endfor %}

@@ -19,9 +19,6 @@ module.exports = HumanView.extend({
     this.listenTo(this.model.requirements, 'change', function (model) {
       if (!model.isNew()) model.save();
     });
-    this.listenTo(this.model.requirements, 'positioned', function (model) {
-      model.save();
-    });
     this.listenTo(this.model.requirements, 'remove', function (model) {
       model.destroy();
     });
@@ -31,9 +28,6 @@ module.exports = HumanView.extend({
 
     this.listenTo(this.model.notes, 'change', function (model) {
       if (!model.isNew()) model.save();
-    });
-    this.listenTo(this.model.notes, 'positioned', function (model) {
-      model.save();
     });
     this.listenTo(this.model.notes, 'remove', function (model) {
       model.destroy();
