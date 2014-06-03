@@ -6,7 +6,8 @@ module.exports = HumanView.extend({
   events: {
     'click .js-login': 'login',
     'click .js-logout': 'logout',
-    'click .js-view-latest': 'landing',
+    'click .js-view-featured': 'landing',
+    'click .js-view-latest': 'latest',
     'click .js-view-pathways': 'pathways',
     'click .js-view-badges': 'badges',
     'click .js-view-tag': 'tag',
@@ -40,6 +41,9 @@ module.exports = HumanView.extend({
     // TODO: generalize the following to all(?) dropdown buttons
     var dropdown = $(evt.currentTarget).closest('.f-dropdown');
     Foundation.libs.dropdown.close(dropdown);
+  },
+  latest: function (evt) {
+    window.app.router.navigateTo('y/latest/');
   },
   pathways: function (evt) {
     window.app.router.navigateTo('y/pathway/');
