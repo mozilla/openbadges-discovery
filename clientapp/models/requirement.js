@@ -22,7 +22,7 @@ module.exports = HumanModel.define({
     },
     imgSrc: {
       type: 'string',
-      default: '/static/badge.png'
+      default: '/static/default_badge.svg'
     }
   },
   session: {

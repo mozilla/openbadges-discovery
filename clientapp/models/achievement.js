@@ -4,8 +4,8 @@ var BADGE = 'badge';
 var PATHWAY = 'pathway';
 
 var DEFAULT_IMG = {
-  'badge': '/static/badge.png',
-  'pathway': '/static/pathway.png'
+  'badge': '/static/default_badge.svg',
+  'pathway': '/static/default_pathway.svg'
 };
 
 module.exports = HumanModel.define({
