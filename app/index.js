@@ -1,7 +1,10 @@
+const config = require('./lib/config');
+if (config('NEWRELIC_KEY')) {
+  require('newrelic');
+}
 const express = require('express');
 const clientApp = require('../clientapp');
 const api = require('./api');
-const config = require('./lib/config');
 const nunjucks = require('nunjucks');
 const persona = require('express-persona');
 const path = require('path');

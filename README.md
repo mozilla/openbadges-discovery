@@ -34,10 +34,13 @@ Available app parameters are:
 
 * COOKIE_SECRET: **required** Should be a large, unguessable string.
 * URL: **required** The url (protocol, host, port) where your app lives. This is used as the Persona audience, and must match what you see in your browser's url bar exactly.
+* DATABASE_APP: **required** Mongo url for your app database.
+* DATABASE_TEST: *optional* Mongo url for your test database, required if you want to run tests.
 * PORT: *optional* Port the server will run on. Defaults to 3000.
 * DEV: *optional* Run in development mode. Defaults to false.
-* DATABASE_APP: Mongo url for your app database
-* DATABASE_TEST: Mongo url for your test database
+* NEWRELIC_KEY: *optional* Your newrelic license key, if you have one. Setting this turns on New Relic logging.
+* NEWRELIC_NAME: *optional* Your app name in New Relic.
+* NEWRELIC_LOG_LEVEL: *optional* The log level to use.
 
 ### Alternatives
 
