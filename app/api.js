@@ -169,9 +169,28 @@ function createApp(opts) {
   app.get('/pathway/:id/requirement', function (req, res, next) {
     var id = new ObjectID(req.params.id);
 
-    db.requirements.find({pathwayId: id}).toArray(function (err, docs) {
+    db.requirements.find({pathwayId: id}).toArray(function (err, requirements) {
       if (err) throw err;
-      return res.json(docs);
+      if (req.userId) {
+        var ids = _.pluck(requirements, 'badgeId');
+        var query = {
+          userId: req.userId,
+          itemId: {$in: ids}
+        };
+        db.earned.find(query).toArray(function (err, earned) {
+          if (err) throw err;
+          requirements.forEach(function (requirement) {
+            var found = _.filter(earned, function(item){ return item.itemId.equals(requirement.badgeId); });
+            if (found.length) {
+              requirement.complete = true;
+            }
+          });
+          return res.json(requirements);
+        });
+      }
+      else {
+        return res.json(requirements);
+      }
     });
   });
 
@@ -198,6 +217,7 @@ function createApp(opts) {
       if (requirement.complete) db.earned.update(entry, {$set: entry}, {upsert: true, safe: false});
       else db.earned.remove(entry, {safe: false});
     }
+    delete requirement.complete;
     db.requirements.update({_id: rid}, {$set: requirement}, {upsert: true}, function (err, num, newDoc) {
       if (err) throw err;
       var changed = {};
