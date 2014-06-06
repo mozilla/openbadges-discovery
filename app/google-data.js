@@ -140,7 +140,7 @@ function Loader (name) {
       title: value(cell.name, "No title in " + cell.title),
       description: value(cell.description, ''),
       tags: value(cell.tags, []),
-      creator: value(cell.creator, 'A. Creator'),
+      creator: value(cell.creator, ''),
       imgSrc: value(cell.imagefile, ''),
       created_at: Date.now()
     };

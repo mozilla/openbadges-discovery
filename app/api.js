@@ -306,6 +306,7 @@ function createApp(opts) {
       delete base._id;
       base.userId = userId;
       base.created_at = Date.now();
+      base.tags = _.without(base.tags, 'Featured'); // Hacky fix for https://github.com/mozilla/openbadges-discovery/issues/395
       db.achievements.insert(base, function (err, pledged) {
         if (err) throw err;
         pledged = pledged[0];
