@@ -37,6 +37,14 @@ module.exports = HumanModel.define({
       type: 'string'
     }
   },
+  derived: {
+    image: {
+      deps: ['imgSrc', 'type'],
+      fn: function () {
+        return this.imgSrc ? this.imgSrc : DEFAULT_IMG[this.type];
+      }
+    },
+  },
   collections: {
     requirements: Requirements,
     notes: Notes
