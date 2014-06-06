@@ -1,5 +1,5 @@
 const config = require('./lib/config');
-if (config('NEWRELIC_KEY')) {
+if (config('NEWRELIC_KEY', false)) {
   require('newrelic');
 }
 const express = require('express');
