@@ -181,7 +181,7 @@ module.exports = function init(canvas) {
   
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - TICKER
-  createjs.Ticker.setFPS(60);
+  createjs.Ticker.setFPS(30);
   createjs.Ticker.addEventListener("tick", stage);
 
 
