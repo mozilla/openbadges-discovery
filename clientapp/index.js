@@ -27,7 +27,7 @@ module.exports = function (app, config) {
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.js'),
       path.join(__dirname, '../bower_components/foundation/js/foundation/foundation.dropdown.js'),
       path.join(__dirname, '../bower_components/easeljs/lib/easeljs-0.7.1.min.js'),
-      path.join(__dirname, '../bower_components/tweenjs/lib/tweenjs-0.5.1.min.js'),
+      path.join(__dirname, '../bower_components/TweenJS/lib/tweenjs-0.5.1.min.js'),
       path.join(__dirname, '../node_modules/nunjucks/browser/nunjucks-slim.js')
     ],
     stylesheets: [
