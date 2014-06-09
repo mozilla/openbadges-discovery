@@ -86,7 +86,7 @@ module.exports = HumanModel.define({
       deps: ['creator'],
       fn: function () {
         var user = window.app.currentUser;
-        return (user.loggedIn && user._id === this.userId) ? "You" : this.creator;
+        return (user.loggedIn && user._id === this.userId) ? "You" : '';
       }
     }
   }
