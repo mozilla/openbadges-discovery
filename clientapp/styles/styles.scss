@@ -12,6 +12,10 @@
 @import "button";
 @import "add-badge-button";
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   background-color: $background-color;
   font-family: Helvetica, sans-serif;
