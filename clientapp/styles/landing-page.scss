@@ -3,9 +3,10 @@
 .landing-page {
   padding-bottom: 4em;
 
-  .landing-cover-image{
-    background-image: url("/static/landing/landingHeaderDesktop2000-v2.svg");
+  .landing-cover-image {
+    background: url("/static/landing/landingHeaderDesktop.svg") 50% no-repeat, #1aa1d6;
     height: 230px;
+    text-align: center
   }
 
   .landing-title-section{

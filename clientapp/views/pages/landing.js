@@ -1,5 +1,6 @@
 var HumanView = require('human-view');
 var templates = require('templates');
+var animate = require('animate');
 var ListingView = require('../includes/listing');
 
 module.exports = HumanView.extend({
@@ -24,6 +25,7 @@ module.exports = HumanView.extend({
       });
       this.replaceNext = true;
     });
+    animate(this.$("#animate-me")[0]);
     return this;
   },
   buildUrl: function (parts) {
